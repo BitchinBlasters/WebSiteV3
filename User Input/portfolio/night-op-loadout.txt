@@ -1,0 +1,7 @@
+Title: Night Op Loadout
+Description: Full night-skirmish setup, IR-friendly, quiet-carry accessories.
+Breakdown: Built for one specific night event brief: low profile, nothing reflective, nothing that rattles. The flash bang mount from the CQB rig got reused here since it already solved the quiet-carry problem.
+Type: Build
+Keywords: flash-bang (1:32), 3d-printed (0:45), cqb-loadout (2:10)
+YouTube: https://youtube.com/watch?v=PLACEHOLDER_VIDEO_ID
+Hover Start: 0:45

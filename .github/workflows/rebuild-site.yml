@@ -1,0 +1,46 @@
+name: Rebuild site from User Input
+
+# Runs automatically once a week, or any time from the Actions tab via the
+# "Run workflow" button (use this when you've only added one thing and don't
+# want to wait for the weekly run).
+on:
+  schedule:
+    # Every Sunday at 00:00 Brisbane time (Brisbane has no daylight saving,
+    # always UTC+10 — so this is Saturday 14:00 UTC).
+    - cron: "0 14 * * 6"
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Rebuild every page
+        run: python3 build_site2.py
+
+      # The build is fully deterministic — the exact same content in
+      # "User Input/" always produces byte-identical HTML. So even though
+      # this step regenerates every page every run, git only ever sees a
+      # difference in the files that were ACTUALLY affected by whatever you
+      # added or changed. Nothing else gets touched or committed.
+      - name: Commit only what changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Nothing changed — skipping commit."
+          else
+            git commit -m "Automated rebuild: reflect updates to User Input"
+            git push
+          fi

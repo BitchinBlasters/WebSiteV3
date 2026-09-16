@@ -1,0 +1,5 @@
+Title: Flash Bang Carry
+Description: A CQB loadout built around a 3D-printed flash bang prop.
+Breakdown: This build started as a request for something that could carry a prop flash bang without adding bulk. The mount was custom-printed to clip straight onto the existing MOLLE webbing, and the barrel upgrade came out of a spare parts bin clean-up. Everything on this rig was picked for one thing: quick access without snagging.
+Type: Build
+Keywords: flash-bang, cqb-loadout

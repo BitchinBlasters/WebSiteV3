@@ -1,0 +1,14 @@
+## Homepage Hero
+Image: hero-home.jpg
+
+#Desktop
+Scale: 100%
+Alignment: top-left
+Opacity: 100
+Nudge: 0px 0px
+
+#Mobile
+Scale: 80%
+Alignment: top
+Opacity: 100
+Nudge: 0px -20px

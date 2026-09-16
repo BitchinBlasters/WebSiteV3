@@ -1,0 +1,4 @@
+Title: Acme Airsoft
+Description: Aftermarket parts and 3D-printed accessories.
+Keywords: acme
+Supplier Link: https://example.com/acme-airsoft
