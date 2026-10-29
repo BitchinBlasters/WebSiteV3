@@ -132,7 +132,7 @@ label{display:block;font-size:13px;color:var(--muted);margin:10px 0 4px}
 .ackb .al{list-style:none;margin:6px 0 0 32px;padding:0;font-size:12.5px;color:var(--muted)}
 .ackb .al li{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .ackb .al a{color:var(--blue);text-decoration:none}
-.ackt{font-weight:700;font-size:13.5px;line-height:1.3}#ack-saf .al{margin:6px 0 10px 0}.ackb .al a{color:var(--blue)}
+.qm{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-left:4px;vertical-align:middle;border-radius:50%;border:2px solid var(--blue);background:transparent;color:var(--blue);font:700 13px/1 inherit;cursor:pointer;padding:0}.qm:hover{background:var(--blue);color:#000}.ackb .al a .clk{width:13px;height:13px;margin-left:3px;vertical-align:-2px}.ackt{font-weight:700;font-size:13.5px;line-height:1.3}#ack-saf .al{margin:6px 0 10px 0}.ackb .al a{color:var(--blue)}
 .ackhint{font-size:12px;color:var(--orange);margin:0 0 6px}
 .contact{max-width:720px;margin:22px auto 0;padding:0 16px;text-align:center}.contact h3{margin:0 0 4px;font-size:17px}.contact p{margin:0 0 10px;color:var(--muted);font-size:14px}.contact .links{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.contact .links a{background:var(--panel2);border:1px solid var(--line);border-radius:999px;padding:9px 16px;color:var(--text);font-weight:700;font-size:14px;text-decoration:none}.contact .links a:hover{border-color:var(--green)}.contact small{display:block;margin-top:10px;color:var(--muted);font-size:12.5px;user-select:all}
 .priv{margin-top:10px;text-align:left;font-size:12.5px}.priv summary{cursor:pointer;color:var(--blue);font-weight:700;text-align:center}.priv p{margin:8px 0}
@@ -197,7 +197,7 @@ footer{padding:18px 0 100px;color:var(--muted);font-size:12.5px;text-align:cente
         <div class="fine" id="fine"></div>
         <div class="acks" id="acks">
           <label class="ck"><input type="checkbox" id="ck-ok"><span><b>I understand</b></span></label>
-          <div class="ackb" id="ack-saf" hidden><div class="ackt">The following product/s remove mechanical trigger lock in safe position.</div><ul class="al"></ul><label class="ck"><input type="checkbox"><span><b>I understand</b></span></label></div>
+          <div class="ackb" id="ack-saf" hidden><div class="ackt">The following product/s remove mechanical trigger lock in safe position. <button type="button" class="qm" data-help="saf" aria-label="What does this mean?">?</button></div><ul class="al"></ul><label class="ck"><input type="checkbox"><span><b>I understand</b></span></label></div>
           <div class="ackb" id="ack-cmp" hidden><label class="ck"><input type="checkbox"><span><b>I have checked compatibility</b></span></label><ul class="al"></ul></div>
         </div>
         <div class="err" id="err" role="alert"></div>
@@ -298,6 +298,13 @@ function renderRec() {
   $('#recg').innerHTML = items.map(i => { const p = DATA.products[i]; return `<button type="button" class="rt" data-i="${i}">${p.img ? `<img loading="lazy" referrerpolicy="no-referrer" src="${esc(p.img)}" alt="">` : ''}<span>${esc(p.name)}</span></button>`; }).join('');
 }
 document.addEventListener('click', e => { const a = e.target.closest('#lines [data-gocode]'); if (a) goCode(a.dataset.gocode); });
+document.addEventListener('click', e => {
+  if (!e.target.closest('[data-help="saf"]')) return;
+  const m = document.createElement('div'); m.className = 'modal'; m.setAttribute('role', 'dialog');
+  m.innerHTML = '<div class="box"><h3>Trigger lock removed</h3><p>These products work by removing the mechanical trigger lock. That lock is what stops the trigger being physically pulled when the fire selector is in the <b>Safe</b> position.</p><p>With it removed, the trigger can still be pulled on Safe. The app lets you set Safe electronically, or even add a fire type on that position, on all non-HPA models.</p><div class="mb"><button type="button" class="btn ghost" data-m="no">Got it</button></div></div>';
+  m.addEventListener('click', ev => { if (ev.target.closest('[data-m]') || ev.target === m) m.remove(); });
+  document.body.appendChild(m);
+});
 function goTo(i) {
   tab = DATA.products[i].g; $('#q').value = ''; renderTabs(); renderList();
   const el = $(`#list [data-i="${i}"]`);
@@ -344,10 +351,11 @@ function updateAcks(u) {
   const live = Object.keys(cart).filter(id => idx[id] && cart[id] > 0);
   const uniq = f => { const seen = {}; return live.filter(id => f(idx[id]) && !seen[idx[id].code] && (seen[idx[id].code] = 1)); };
   const li = ids => ids.map(id => `<li>${esc(idx[id].name)}</li>`).join('');
+  const lkc = ids => ids.map(id => idx[id].link ? `<li><a href="${esc(idx[id].link)}" target="_blank" rel="noopener">${esc(idx[id].name)}${CLK}</a></li>` : `<li>${esc(idx[id].name)}</li>`).join('');
   const lk = ids => ids.map(id => idx[id].link ? `<li><a href="${esc(idx[id].link)}" target="_blank" rel="noopener">${esc(idx[id].name)}</a></li>` : `<li>${esc(idx[id].name)}</li>`).join('');
   const saf = uniq(o => o.saf), cmp = uniq(o => o.chk);
   const show = (key, on, html) => { const b = document.getElementById('ack-' + key), cb = b.querySelector('input'); b.hidden = !on; if (html !== undefined) { const sig = html; if (ackSig[key] !== sig) { ackSig[key] = sig; cb.checked = false; b.querySelector('.al').innerHTML = html; } } if (!on) { cb.checked = false; ackSig[key] = null; } };
-  show('saf', saf.length > 0, lk(saf)); show('cmp', cmp.length > 0, lk(cmp));
+  show('saf', saf.length > 0, lk(saf)); show('cmp', cmp.length > 0, lkc(cmp));
   syncSend(u === undefined ? units() : u);
 }
 function acksOk() { return document.getElementById('ck-ok').checked && [...document.querySelectorAll('.ackb:not([hidden]) input')].every(c => c.checked); }
