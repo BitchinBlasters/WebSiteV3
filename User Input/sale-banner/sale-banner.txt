@@ -2,5 +2,5 @@ Enabled: yes
 Title: Jefftron Sale On Now
 Description:
 Button: View the Sale
-Link: bitchinblaster.com.au/JefftronSale
+Link: bitchinblasters.com.au/JefftronSale
 Delay: 60
