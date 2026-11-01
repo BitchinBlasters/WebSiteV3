@@ -99,6 +99,11 @@ CSS = """
     initial-value: 81%;
   }
 
+  .terms-page .terms-section{ margin-bottom:34px; }
+  .terms-page h2{ margin:0 0 12px; }
+  .terms-page p, .terms-page li{ line-height:1.65; margin:0 0 12px; }
+  .terms-page ul{ margin:0 0 12px 22px; padding:0; }
+  .terms-page .terms-updated{ opacity:.7; margin-bottom:28px; }
   .nav-tiles{ display:flex; align-items:flex-end; gap:24px; align-self:flex-end; flex-wrap:nowrap; justify-content:flex-end; }
   .nav-tile{ position:relative; }
   .tile-label{
@@ -863,6 +868,7 @@ def _hero(location_name, default_file, default_alignment="center"):
 
 
 import sale_banner
+import terms_content
 SALE = sale_banner.load()
 
 
@@ -1335,26 +1341,15 @@ BRANDS_BODY = f"""<section class="page-banner">
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: TERMS (footer link only, not in nav)
 # ---------------------------------------------------------------------------
-TERMS_BODY = """<section class="page-banner" style="min-height:180px;">
+TERMS_BODY = f"""<section class="page-banner" style="min-height:180px;">
   <div class="page-banner-content">
     <h1>Terms &amp; Conditions</h1>
   </div>
 </section>
 
 <section>
-  <div class="wrap" style="max-width:820px;">
-    <div class="section-head">
-      <h2>Orders &amp; Commissions</h2>
-      <p>Placeholder terms — replace with your actual policies on deposits, lead times, and order changes before publishing.</p>
-    </div>
-    <div class="section-head">
-      <h2>Returns &amp; Warranty</h2>
-      <p>Placeholder terms — outline your real returns, warranty, and repair policy here.</p>
-    </div>
-    <div class="section-head" style="margin-bottom:0;">
-      <h2>Liability</h2>
-      <p>Placeholder terms — this page is a starting template only and hasn't been reviewed for legal accuracy. Get it checked before relying on it.</p>
-    </div>
+  <div class="wrap terms-page" style="max-width:820px;">
+    {terms_content.sections_html()}
   </div>
 </section>"""
 
