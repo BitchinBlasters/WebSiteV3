@@ -1,4 +1,4 @@
-import base64, os
+import base64, os, html as _html, urllib.parse
 
 BASE = os.path.dirname(os.path.abspath(__file__))
 IMG = os.path.join(BASE, "images")
@@ -21,7 +21,6 @@ CONTACT_EMAIL = "b1tch1nblasters@gmail.com"
 INSTAGRAM_URL = "https://www.instagram.com/bitchinblasters"
 YOUTUBE_URL = "https://www.youtube.com/@BitchinBlasters"
 FACEBOOK_URL = "https://facebook.com/b1tch1nblasters"
-AMAZON_URL = "https://www.amazon.com.au/"
 
 # ---------------------------------------------------------------------------
 # SHARED CSS
@@ -574,6 +573,46 @@ CSS = """
   .video-channel-name{ font-size:13px; font-weight:600; }
   .video-jump-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
   .gallery-item[data-yt-id]{ cursor:pointer; }
+
+  /* ---------- BANNER BUTTONS / CUSTOM SECTIONS ---------- */
+  .banner-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+  .btn.btn-compact{ padding:10px 18px; font-size:12.5px; }
+  .split.single{ grid-template-columns:1fr; }
+  .split.single .copy{ max-width:760px; }
+  .split.single .copy p{ max-width:none; }
+  .mini-block p + p{ margin-top:12px; }
+  .promo-banner .kicker{ display:inline-block; color:var(--lime); font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; border-left:2px solid var(--lime); padding-left:10px; }
+  .sale-store-banner{ margin-bottom:24px; }
+  .construction-banner{ justify-content:center; text-align:center; }
+  .construction-banner h3{ margin-bottom:0; }
+
+  /* ---------- FOOTER SIGN-UP ---------- */
+  .foot-mid-row{ display:flex; align-items:center; gap:22px; }
+  .foot-signup .btn{ white-space:nowrap; }
+  .signup-tile{ display:none; }
+
+  /* ---------- SALE POP-UP ---------- */
+  .sale-popup{ position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(5,8,5,.82); }
+  .sale-popup.open{ display:flex; }
+  .sale-popup-panel{ position:relative; width:min(520px,100%); background:var(--panel); border:2px solid var(--lime);
+    padding:56px 36px 40px; text-align:center;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px); }
+  .sale-popup-panel .kicker{ display:inline-block; color:var(--lime); font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:12px; }
+  .sale-popup-panel h2{ font-size:clamp(30px,6vw,44px); margin-bottom:14px; }
+  .sale-popup-panel p{ color:var(--text-dim); margin-bottom:22px; }
+  .sale-popup-panel .btn{ margin-top:10px; }
+  .sale-popup-close{ position:absolute; top:0; right:0; width:56px; height:56px; border:none; cursor:pointer;
+    background:var(--lime); display:flex; align-items:center; justify-content:center; }
+  .sale-popup-close svg{ width:30px; height:30px; fill:none; stroke:#08110a; stroke-width:3.5; stroke-linecap:square; }
+  .sale-popup-close:hover{ background:#fff; }
+  .sale-popup-close:focus-visible{ outline:3px solid #fff; outline-offset:-6px; }
+
+  @media (max-width: 900px){
+    .foot-mid-row{ display:block; }
+    .foot-signup{ display:none; }
+    .signup-tile{ display:block; }
+    .sale-popup-panel{ padding:60px 22px 32px; }
+  }
 """.replace("__CARBON__", CARBON).replace("__GRAIN__", GRAIN).replace("__FOOTER_TEXTURE__", FOOTER_TEXTURE)
 
 HEAD_LINKS = """<link rel="preconnect" href="https://fonts.googleapis.com">
@@ -588,7 +627,6 @@ PLAY_SVG = """<svg viewBox="0 0 68 48"><path d="M66.5 7.7c-.8-2.9-2.6-5.2-4.9-6C
 NAV_SECTIONS = [
     ("who-we-are.html", "who-we-are", "Who We Are", [
         ("Why We Build", "why-we-build"),
-        ("Professional History", "professional-history"),
         ("Our Promise", "our-promise"),
     ]),
     ("your-build.html", "your-build", "Your Build", [
@@ -602,7 +640,7 @@ NAV_SECTIONS = [
         ("Request a Print", "request-a-print"),
     ]),
     ("store.html", "store", "Store", [
-        ("Amazon for Consumables", "amazon-consumables"),
+        ("Online Store", "online-store"),
         ("Spare Deals", "spare-deals"),
         ("Used Blasters", "used-blasters"),
     ]),
@@ -612,8 +650,6 @@ NAV_SECTIONS = [
         ("Videos", "videos"),
     ]),
     ("brands.html", "brands", "Brands We Endorse", [
-        ("Recommended Parts", "recommended-parts"),
-        ("Trusted Suppliers", "trusted-suppliers"),
         ("Brands We Stand By", "brands-we-stand-by"),
     ]),
 ]
@@ -664,10 +700,13 @@ def footer():
       </div>
       <div class="foot-mid">
         <div class="foot-follow-label">Follow</div>
-        <div class="foot-social">
-          <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="Instagram">{IG_ICON}</a>
-          <a href="{YOUTUBE_URL}" target="_blank" rel="noopener" aria-label="YouTube">{YT_ICON}</a>
-          <a href="{FACEBOOK_URL}" target="_blank" rel="noopener" aria-label="Facebook">{FB_ICON}</a>
+        <div class="foot-mid-row">
+          <div class="foot-social">
+            <a href="{INSTAGRAM_URL}" target="_blank" rel="noopener" aria-label="Instagram">{IG_ICON}</a>
+            <a href="{YOUTUBE_URL}" target="_blank" rel="noopener" aria-label="YouTube">{YT_ICON}</a>
+            <a href="{FACEBOOK_URL}" target="_blank" rel="noopener" aria-label="Facebook">{FB_ICON}</a>
+          </div>
+          <div class="foot-signup">{BTN_SIGNUP}</div>
         </div>
       </div>
       <div class="foot-right">
@@ -823,6 +862,26 @@ def _hero(location_name, default_file, default_alignment="center"):
     return img_path, css_class
 
 
+import sale_banner
+SALE = sale_banner.load()
+
+
+def enquiry_link(label, message, same_page=False, cls="btn primary", style=""):
+    """A button that takes the visitor to the 'Other enquiries' form with the
+    message box already started with `message` (always begins 'I would like to ...')."""
+    href = "#other-enquiries" if same_page else "your-build.html?msg=" + urllib.parse.quote(message) + "#other-enquiries"
+    st = f' style="{style}"' if style else ""
+    return f'<a href="{href}" class="{cls}" data-prefill="{_html.escape(message, quote=True)}"{st}>{label}</a>'
+
+
+BTN_REQUEST_DRAWING = enquiry_link("Request a Drawing", "I would like to request a drawing")
+BTN_ASK_STOCK = enquiry_link("Ask What's In Stock", "I would like to ask what's in stock", style="margin-top:24px;")
+BTN_REQUEST_PRINT = enquiry_link("Request a Print", "I would like to request a print", style="margin-top:24px;")
+BTN_ENQUIRE = enquiry_link("Enquire", "I would like to enquire", style="margin-top:24px;")
+BTN_SIGNUP = enquiry_link("Sign Up For News &amp; Updates", "I would like to sign up for news & updates", cls="btn btn-compact")
+BTN_SIGNUP_TILE = enquiry_link("Sign Up", "I would like to sign up for news & updates")
+BTN_ASK_QUESTION = enquiry_link("Questions", "I would like to ask a question", same_page=True, cls="btn btn-compact")
+
 HOME_HERO_IMG, HOME_HERO_CLASS = _hero("Homepage Hero", HERO, default_alignment="top-left")
 CONTENT = parse_content.load_all()
 
@@ -846,7 +905,22 @@ INDEX_BODY = f"""<section class="hero" id="top">
       <p>Every build starts with how you actually play — your role, your field, your habits — not with a spec sheet I think looks impressive. Bring your own blaster for an upgrade, or start from nothing. One-off and bespoke means exactly that: no two builds leave the bench the same.</p>
     </div>
   </div>
-</section>"""
+</section>
+
+<section class="signup-tile">
+  <div class="wrap">
+    <div class="promo-banner">
+      <div>
+        <span class="kicker">Stay in the loop</span>
+        <h3>News &amp; updates</h3>
+      </div>
+      {BTN_SIGNUP_TILE}
+    </div>
+  </div>
+</section>
+
+{sale_banner.popup_html(SALE)}
+"""
 
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: HOW WE ARE
@@ -862,7 +936,7 @@ HOW_WE_ARE_BODY = f"""<section class="page-banner">
 </section>
 
 <section id="why-we-build">
-  <div class="wrap split">
+  <div class="wrap split single">
     <div class="copy">
       <div class="mini-block">
         <span class="kicker">Who</span>
@@ -871,37 +945,16 @@ HOW_WE_ARE_BODY = f"""<section class="page-banner">
       </div>
       <div class="mini-block">
         <span class="kicker">Why</span>
-        <h3>Built to how you play</h3>
-        <p><strong>Every build starts with how you actually play</strong> — your role, your field, your habits — not with a spec sheet I think looks impressive. If you run CQB and need something light and fast, that's what you get. If you sit back and support, that's what you get.</p>
+        <h3>Why I started building</h3>
+        <p>I started doing my own builds because I will always challenge myself, and the skill set I have from my professional career made it a quick transition.</p>
+        <p>I pushed the limits of as many brands and parts as I could to find the true limitations and optimal use case for each, and I will always continue to do so on my own builds.</p>
+        <p>I started Bitchin' Blasters to offer this to others — to give people the outcomes they want, not just a pre-designed package or upgrade level.</p>
       </div>
       <div class="mini-block" style="margin-bottom:0;">
         <span class="kicker">How</span>
-        <h3>No template. No house style.</h3>
-        <p>Bring your own blaster for an upgrade, or start from nothing. Either way, the build is shaped around your outcome, not mine. One-off and bespoke means exactly that: no two builds leave the bench the same.</p>
+        <h3>No template. Built to how you play</h3>
+        <p>Bring your own blaster for an upgrade, or start from nothing. Either way, the build is shaped around your outcome, not mine. Every build starts with how you actually play — your role, your field, your habits — not with a spec sheet I think looks impressive. One-off and bespoke means exactly that: no two builds leave the bench the same.</p>
       </div>
-    </div>
-    <div class="card-stack">
-      <div class="promise">
-        <div class="num">01</div>
-        <h3>Built around your playstyle</h3>
-        <p>Role, field conditions and habits come first. The parts list follows from that.</p>
-      </div>
-      <div class="promise">
-        <div class="num">02</div>
-        <h3>Carbon fibre, wherever it fits</h3>
-        <p>The signature habit on every build — light, stiff, and it's how you'll spot one of mine on the field.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="professional-history">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">Professional history</span>
-      <h2>The background</h2>
-      <p>This is where your story goes — how you got into building, what led you to go bespoke, any milestones, past work, or experience worth mentioning. Drop your own background in here.</p>
-      <p class="placeholder-note">Placeholder section — replace with your real history before this goes live.</p>
     </div>
   </div>
 </section>
@@ -928,28 +981,23 @@ HOW_WE_ARE_BODY = f"""<section class="page-banner">
     </div>
   </div>
 </section>
-
-<section class="signature" style="border-bottom:none; padding:0;">
-  <div class="signature-inner">
-    <img src="{SIG}" alt="Close-up of a carbon fibre outer barrel on a custom gel blaster build">
-    <div class="signature-text">
-      <span class="tag">The tell</span>
-      <h2>Carbon fibre outers, wherever the build allows it</h2>
-      <p>It's the small habit that carries across every build — light, stiff, and it's how you'll spot one of mine on the field before you spot me.</p>
-    </div>
-  </div>
-</section>"""
+"""
 
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: YOUR BUILD
 # ---------------------------------------------------------------------------
 YOUR_BUILD_HERO_IMG, YOUR_BUILD_HERO_CLASS = _hero("Your Build Hero", SIG)
 YOUR_BUILD_BODY = f"""<section class="page-banner">
-  <img class="{YOUR_BUILD_HERO_CLASS}" src="{YOUR_BUILD_HERO_IMG}" alt="Custom build with carbon fibre outer barrel">
+  <img class="{YOUR_BUILD_HERO_CLASS}" src="{YOUR_BUILD_HERO_IMG}" alt="Custom gel blaster build">
   <div class="page-banner-content">
     <span class="kicker">Your build</span>
     <h1>Commission a build</h1>
-    <p>Dream build, an upgrade, or just a question — pick the one that fits.</p>
+    <p>Dream build, an upgrade, or just a question — we're here every step.</p>
+    <div class="banner-actions">
+      <a href="#dream-build" class="btn btn-compact">New Builds</a>
+      <a href="#level-up" class="btn btn-compact">Upgrade</a>
+      {BTN_ASK_QUESTION}
+    </div>
   </div>
 </section>
 
@@ -988,7 +1036,7 @@ YOUR_BUILD_BODY = f"""<section class="page-banner">
           <label class="choice"><input type="checkbox"><span>Carbon fibre outer barrel</span></label>
           <label class="choice"><input type="checkbox"><span>Suppressor cover</span></label>
           <label class="choice"><input type="checkbox"><span>Ghillie wrap</span></label>
-          <label class="choice"><input type="checkbox"><span>Custom cerakote / paint</span></label>
+          <label class="choice"><input type="checkbox"><span>Custom paint</span></label>
           <label class="choice"><input type="checkbox"><span>Hop-up tuning</span></label>
         </div>
       </div>
@@ -1044,7 +1092,25 @@ YOUR_BUILD_BODY = f"""<section class="page-banner">
   </div>
 </section>"""
 
-YOUR_BUILD_SCRIPT = choice_grid_script() + f"""
+YOUR_BUILD_SCRIPT = choice_grid_script() + """
+  // ---- Buttons that lead here start the Other enquiries message with "I would like to ..." ----
+  (function(){
+    const box = document.getElementById('oe-message');
+    if (!box) return;
+    let lastAuto = '';
+    function prefill(text){
+      if (!text) return;
+      if (box.value.trim() === '' || box.value === lastAuto) {
+        lastAuto = text + ' ';
+        box.value = lastAuto;
+      }
+    }
+    prefill(new URLSearchParams(window.location.search).get('msg'));
+    document.querySelectorAll('a[data-prefill]').forEach(function(a){
+      a.addEventListener('click', function(){ prefill(a.dataset.prefill); });
+    });
+  })();
+""" + f"""
   function selected(groupName){{
     const group = document.querySelector(`.choice-grid[data-group="${{groupName}}"]`);
     const labels = [];
@@ -1091,7 +1157,7 @@ PRINTING_BODY = f"""<section class="page-banner">
       <p>Parts that get asked for often enough to keep printed and on the shelf. Ask what's currently in stock and I'll confirm availability and turnaround.</p>
     </div>
     {render_dynamic.products_grid_html([p for p in CONTENT['products']['3d-printed'] if p['status'].lower() == 'in stock'], CONTENT['portfolio'], show_status=True)}
-    <a href="your-build.html#other-enquiries" class="btn primary" style="margin-top:24px;">Ask What's In Stock</a>
+    {BTN_ASK_STOCK}
   </div>
 </section>
 
@@ -1103,7 +1169,17 @@ PRINTING_BODY = f"""<section class="page-banner">
       <p>Anything outside the in-stock range gets printed to order. Turnaround depends on size and complexity.</p>
     </div>
     {render_dynamic.products_grid_html([p for p in CONTENT['products']['3d-printed'] if p['status'].lower() == 'print to order'], CONTENT['portfolio'], show_status=True)}
-    <a href="your-build.html#other-enquiries" class="btn primary" style="margin-top:24px;">Request a Print</a>
+    {BTN_REQUEST_PRINT}
+  </div>
+</section>
+
+<section id="custom-designs">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:28px;">
+      <span class="kicker">Custom designs</span>
+      <h2>We'll create the part</h2>
+    </div>
+    {BTN_REQUEST_DRAWING}
   </div>
 </section>
 
@@ -1144,14 +1220,14 @@ STORE_BODY = f"""<section class="page-banner">
   </div>
 </section>
 
-<section id="amazon-consumables">
+<section id="online-store">
   <div class="wrap">
-    <div class="promo-banner">
+    {sale_banner.store_banner_html(SALE)}
+    <div class="promo-banner construction-banner">
       <div>
-        <h3>Amazon for consumables</h3>
-        <p>Gel balls and hop-ups, sourced direct and sold through the Amazon storefront for fast, straightforward ordering.</p>
+        <span class="kicker">Online store</span>
+        <h3>Online store under construction</h3>
       </div>
-      <a href="{AMAZON_URL}" target="_blank" rel="noopener" class="btn primary">Shop on Amazon</a>
     </div>
   </div>
 </section>
@@ -1175,7 +1251,7 @@ STORE_BODY = f"""<section class="page-banner">
       <p>Trade-ins and used builds occasionally available — enquire to see what's currently on hand.</p>
     </div>
     {render_dynamic.products_grid_html(CONTENT['products']['used-blasters'], CONTENT['portfolio'], show_price=True)}
-    <a href="your-build.html#other-enquiries" class="btn primary" style="margin-top:24px;">Enquire</a>
+    {BTN_ENQUIRE}
   </div>
 </section>"""
 
@@ -1184,7 +1260,7 @@ STORE_BODY = f"""<section class="page-banner">
 # ---------------------------------------------------------------------------
 GALLERY_HERO_IMG, GALLERY_HERO_CLASS = _hero("Build Gallery Hero", GAL1)
 GALLERY_BODY = f"""<section class="page-banner">
-  <img class="{GALLERY_HERO_CLASS}" src="{GALLERY_HERO_IMG}" alt="Custom build aimed down carbon fibre outer barrel">
+  <img class="{GALLERY_HERO_CLASS}" src="{GALLERY_HERO_IMG}" alt="Custom gel blaster build aimed down the field">
   <div class="page-banner-content">
     <span class="kicker">Build gallery</span>
     <h1>Builds in the field</h1>
@@ -1219,8 +1295,8 @@ GALLERY_BODY = f"""<section class="page-banner">
       <div class="gallery-cap">Ghillie-wrapped build, moving through cover</div>
     </div>
     <div class="gallery-item">
-      <img src="{GAL1}" alt="Custom build aimed down carbon fibre outer barrel, forest game day">
-      <div class="gallery-cap">On the line — carbon fibre outer, suppressor cover</div>
+      <img src="{GAL1}" alt="Custom gel blaster build aimed down the field, forest game day">
+      <div class="gallery-cap">On the line — suppressor cover</div>
     </div>
     <div class="gallery-item">
       <img src="{GAL2}" alt="Close-up on custom build red dot and suppressor from cover">
@@ -1242,28 +1318,6 @@ BRANDS_BODY = f"""<section class="page-banner">
     <span class="kicker">Brands we endorse</span>
     <h1>Parts, suppliers &amp; brands</h1>
     <p>The names behind the builds.</p>
-  </div>
-</section>
-
-<section id="recommended-parts">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">Recommended parts</span>
-      <h2>What goes in the builds</h2>
-      <p>This is where you can list specific parts and manufacturers you personally recommend, with notes on why.</p>
-      <p class="placeholder-note">Placeholder section — add your real recommended parts here.</p>
-    </div>
-  </div>
-</section>
-
-<section id="trusted-suppliers">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">Trusted suppliers</span>
-      <h2>Who I source from</h2>
-      <p>List the suppliers you trust and buy from regularly, with a line on what they're good for.</p>
-      <p class="placeholder-note">Placeholder section — add your real suppliers here.</p>
-    </div>
   </div>
 </section>
 
@@ -1315,7 +1369,7 @@ CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS)
 pages = {
     "index.html": page("Bitchin' Blasters — Custom Gel Blaster Builds, Queensland",
                         "One-off custom gel blaster builds and upgrades, built to how you play. Queensland-based.",
-                        "home", INDEX_BODY),
+                        "home", INDEX_BODY, sale_banner.popup_script(SALE)),
     "who-we-are.html": page("Who We Are — Bitchin' Blasters",
                              "Why we build, our background, and what you can count on with every Bitchin' Blasters build.",
                              "who-we-are", HOW_WE_ARE_BODY),

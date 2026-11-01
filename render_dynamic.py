@@ -280,6 +280,11 @@ def write_detail_pages(output_dir, page_fn, data):
     Writes one file per portfolio entry into output_dir/builds/<slug>.html"""
     builds_dir = os.path.join(output_dir, "builds")
     os.makedirs(builds_dir, exist_ok=True)
+    # Remove pages for builds/events that no longer exist, so deleting an entry
+    # from User Input also removes its page on the next rebuild.
+    for old_page in os.listdir(builds_dir):
+        if old_page.endswith(".html"):
+            os.remove(os.path.join(builds_dir, old_page))
     for entry in data["portfolio"]:
         body = detail_page_body(entry, data["kw_index"], data["brand_lookup"])
         # detail pages live one level deeper (builds/), so relative asset

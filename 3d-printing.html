@@ -557,6 +557,46 @@
   .video-jump-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
   .gallery-item[data-yt-id]{ cursor:pointer; }
 
+  /* ---------- BANNER BUTTONS / CUSTOM SECTIONS ---------- */
+  .banner-actions{ display:flex; flex-wrap:wrap; gap:12px; margin-top:22px; }
+  .btn.btn-compact{ padding:10px 18px; font-size:12.5px; }
+  .split.single{ grid-template-columns:1fr; }
+  .split.single .copy{ max-width:760px; }
+  .split.single .copy p{ max-width:none; }
+  .mini-block p + p{ margin-top:12px; }
+  .promo-banner .kicker{ display:inline-block; color:var(--lime); font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:10px; border-left:2px solid var(--lime); padding-left:10px; }
+  .sale-store-banner{ margin-bottom:24px; }
+  .construction-banner{ justify-content:center; text-align:center; }
+  .construction-banner h3{ margin-bottom:0; }
+
+  /* ---------- FOOTER SIGN-UP ---------- */
+  .foot-mid-row{ display:flex; align-items:center; gap:22px; }
+  .foot-signup .btn{ white-space:nowrap; }
+  .signup-tile{ display:none; }
+
+  /* ---------- SALE POP-UP ---------- */
+  .sale-popup{ position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(5,8,5,.82); }
+  .sale-popup.open{ display:flex; }
+  .sale-popup-panel{ position:relative; width:min(520px,100%); background:var(--panel); border:2px solid var(--lime);
+    padding:56px 36px 40px; text-align:center;
+    clip-path: polygon(18px 0, 100% 0, 100% calc(100% - 18px), calc(100% - 18px) 100%, 0 100%, 0 18px); }
+  .sale-popup-panel .kicker{ display:inline-block; color:var(--lime); font-weight:600; font-size:12px; letter-spacing:0.14em; text-transform:uppercase; margin-bottom:12px; }
+  .sale-popup-panel h2{ font-size:clamp(30px,6vw,44px); margin-bottom:14px; }
+  .sale-popup-panel p{ color:var(--text-dim); margin-bottom:22px; }
+  .sale-popup-panel .btn{ margin-top:10px; }
+  .sale-popup-close{ position:absolute; top:0; right:0; width:56px; height:56px; border:none; cursor:pointer;
+    background:var(--lime); display:flex; align-items:center; justify-content:center; }
+  .sale-popup-close svg{ width:30px; height:30px; fill:none; stroke:#08110a; stroke-width:3.5; stroke-linecap:square; }
+  .sale-popup-close:hover{ background:#fff; }
+  .sale-popup-close:focus-visible{ outline:3px solid #fff; outline-offset:-6px; }
+
+  @media (max-width: 900px){
+    .foot-mid-row{ display:block; }
+    .foot-signup{ display:none; }
+    .signup-tile{ display:block; }
+    .sale-popup-panel{ padding:60px 22px 32px; }
+  }
+
 img.hero-photo-homepage-hero{ object-fit:cover; object-position:left top; transform-origin:0% 0%; }
 @media (max-width: 900px){ img.hero-photo-homepage-hero{ object-fit:cover; object-position:center top; transform-origin:50% 0%; transform:translate(0px, -20px) scale(0.8); } }
 
@@ -589,7 +629,6 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <span class="tile-sub-border"></span>
       <div class="tile-sub-inner">
       <a href="who-we-are.html#why-we-build" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Why We Build</span></a>
-      <a href="who-we-are.html#professional-history" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Professional History</span></a>
       <a href="who-we-are.html#our-promise" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Our Promise</span></a>
       </div>
     </div>
@@ -636,7 +675,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     <div class="tile-sub">
       <span class="tile-sub-border"></span>
       <div class="tile-sub-inner">
-      <a href="store.html#amazon-consumables" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Amazon for Consumables</span></a>
+      <a href="store.html#online-store" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Online Store</span></a>
       <a href="store.html#spare-deals" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Spare Deals</span></a>
       <a href="store.html#used-blasters" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Used Blasters</span></a>
       </div>
@@ -668,8 +707,6 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     <div class="tile-sub">
       <span class="tile-sub-border"></span>
       <div class="tile-sub-inner">
-      <a href="brands.html#recommended-parts" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Recommended Parts</span></a>
-      <a href="brands.html#trusted-suppliers" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Trusted Suppliers</span></a>
       <a href="brands.html#brands-we-stand-by" class="sub-link"><span class="sub-link-border"></span><span class="sub-link-fill"></span><span class="sub-link-text">Brands We Stand By</span></a>
       </div>
     </div>
@@ -694,18 +731,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <h2>Ready to ship</h2>
       <p>Parts that get asked for often enough to keep printed and on the shelf. Ask what's currently in stock and I'll confirm availability and turnaround.</p>
     </div>
-    <div class="card-row cols-3">
-    <div class="card product-card" data-keywords="flash-bang">
-      <img src="User Input/products/3d-printed/flash-bang/flash-bang.jpg" alt="Flash Bang Grenade Prop">
-      <div class="card-body">
-        <h3>Flash Bang Grenade Prop</h3>
-        <p>Fully 3D-printed, safe-for-play flash bang prop, MOLLE-mountable.</p>
-        <div class="product-meta"><span class="product-status status-in-stock">In Stock</span></div>
-        <a class="btn small" href="build-gallery.html?keyword=flash-bang">See Examples</a>
-      </div>
-    </div>
-  </div>
-    <a href="your-build.html#other-enquiries" class="btn primary" style="margin-top:24px;">Ask What's In Stock</a>
+    <p style="color:var(--text-dim);">Nothing listed here yet.</p>
+    <a href="your-build.html?msg=I%20would%20like%20to%20ask%20what%27s%20in%20stock#other-enquiries" class="btn primary" data-prefill="I would like to ask what&#x27;s in stock" style="margin-top:24px;">Ask What's In Stock</a>
   </div>
 </section>
 
@@ -717,7 +744,17 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <p>Anything outside the in-stock range gets printed to order. Turnaround depends on size and complexity.</p>
     </div>
     <p style="color:var(--text-dim);">Nothing listed here yet.</p>
-    <a href="your-build.html#other-enquiries" class="btn primary" style="margin-top:24px;">Request a Print</a>
+    <a href="your-build.html?msg=I%20would%20like%20to%20request%20a%20print#other-enquiries" class="btn primary" data-prefill="I would like to request a print" style="margin-top:24px;">Request a Print</a>
+  </div>
+</section>
+
+<section id="custom-designs">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:28px;">
+      <span class="kicker">Custom designs</span>
+      <h2>We'll create the part</h2>
+    </div>
+    <a href="your-build.html?msg=I%20would%20like%20to%20request%20a%20drawing#other-enquiries" class="btn primary" data-prefill="I would like to request a drawing">Request a Drawing</a>
   </div>
 </section>
 
@@ -754,10 +791,13 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       </div>
       <div class="foot-mid">
         <div class="foot-follow-label">Follow</div>
-        <div class="foot-social">
-          <a href="https://www.instagram.com/bitchinblasters" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33Zm0 1.98c-3.17 0-3.52.01-4.76.07-1.02.05-1.57.21-1.94.35-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.3.92-.35 1.94-.06 1.24-.07 1.59-.07 4.76s.01 3.52.07 4.76c.05 1.02.21 1.57.35 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.3 1.94.35 1.24.06 1.59.07 4.76.07s3.52-.01 4.76-.07c1.02-.05 1.57-.21 1.94-.35.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.3-.92.35-1.94.06-1.24.07-1.59.07-4.76s-.01-3.52-.07-4.76c-.05-1.02-.21-1.57-.35-1.94a3.1 3.1 0 0 0-.79-1.2 3.1 3.1 0 0 0-1.2-.79c-.37-.14-.92-.3-1.94-.35-1.24-.06-1.59-.07-4.76-.07Zm0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9Zm0 1.98a3.47 3.47 0 1 0 0 6.94 3.47 3.47 0 0 0 0-6.94Zm5.66-2.2a1.27 1.27 0 1 1 0 2.55 1.27 1.27 0 0 1 0-2.55Z"/></svg></a>
-          <a href="https://www.youtube.com/@BitchinBlasters" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.5 6.98a2.78 2.78 0 0 0-1.96-1.97C18.88 4.5 12 4.5 12 4.5s-6.88 0-8.54.51a2.78 2.78 0 0 0-1.96 1.97A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.02 2.78 2.78 0 0 0 1.96 1.97C5.12 19.5 12 19.5 12 19.5s6.88 0 8.54-.51a2.78 2.78 0 0 0 1.96-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.5-5.02ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/></svg></a>
-          <a href="https://facebook.com/b1tch1nblasters" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8.4h2.82l.42-3.28H13.5V8.24c0-.95.26-1.6 1.63-1.6h1.74V3.72C16.56 3.65 15.55 3.56 14.36 3.56c-2.48 0-4.18 1.51-4.18 4.29v2.47H7.34v3.28h2.84V22h3.32Z"/></svg></a>
+        <div class="foot-mid-row">
+          <div class="foot-social">
+            <a href="https://www.instagram.com/bitchinblasters" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.58.01 4.85.07 1.17.05 1.97.24 2.43.4a4.9 4.9 0 0 1 1.77 1.15 4.9 4.9 0 0 1 1.15 1.77c.16.46.35 1.26.4 2.43.06 1.27.07 1.65.07 4.85s-.01 3.58-.07 4.85c-.05 1.17-.24 1.97-.4 2.43a4.9 4.9 0 0 1-1.15 1.77 4.9 4.9 0 0 1-1.77 1.15c-.46.16-1.26.35-2.43.4-1.27.06-1.65.07-4.85.07s-3.58-.01-4.85-.07c-1.17-.05-1.97-.24-2.43-.4a4.9 4.9 0 0 1-1.77-1.15 4.9 4.9 0 0 1-1.15-1.77c-.16-.46-.35-1.26-.4-2.43C2.21 15.58 2.2 15.2 2.2 12s.01-3.58.07-4.85c.05-1.17.24-1.97.4-2.43a4.9 4.9 0 0 1 1.15-1.77A4.9 4.9 0 0 1 5.59 1.8c.46-.16 1.26-.35 2.43-.4C9.29 1.34 9.67 1.33 12 1.33Zm0 1.98c-3.17 0-3.52.01-4.76.07-1.02.05-1.57.21-1.94.35-.49.19-.84.42-1.2.79-.37.36-.6.71-.79 1.2-.14.37-.3.92-.35 1.94-.06 1.24-.07 1.59-.07 4.76s.01 3.52.07 4.76c.05 1.02.21 1.57.35 1.94.19.49.42.84.79 1.2.36.37.71.6 1.2.79.37.14.92.3 1.94.35 1.24.06 1.59.07 4.76.07s3.52-.01 4.76-.07c1.02-.05 1.57-.21 1.94-.35.49-.19.84-.42 1.2-.79.37-.36.6-.71.79-1.2.14-.37.3-.92.35-1.94.06-1.24.07-1.59.07-4.76s-.01-3.52-.07-4.76c-.05-1.02-.21-1.57-.35-1.94a3.1 3.1 0 0 0-.79-1.2 3.1 3.1 0 0 0-1.2-.79c-.37-.14-.92-.3-1.94-.35-1.24-.06-1.59-.07-4.76-.07Zm0 3.37a5.45 5.45 0 1 1 0 10.9 5.45 5.45 0 0 1 0-10.9Zm0 1.98a3.47 3.47 0 1 0 0 6.94 3.47 3.47 0 0 0 0-6.94Zm5.66-2.2a1.27 1.27 0 1 1 0 2.55 1.27 1.27 0 0 1 0-2.55Z"/></svg></a>
+            <a href="https://www.youtube.com/@BitchinBlasters" target="_blank" rel="noopener" aria-label="YouTube"><svg viewBox="0 0 24 24"><path d="M22.5 6.98a2.78 2.78 0 0 0-1.96-1.97C18.88 4.5 12 4.5 12 4.5s-6.88 0-8.54.51a2.78 2.78 0 0 0-1.96 1.97A29 29 0 0 0 1 12a29 29 0 0 0 .5 5.02 2.78 2.78 0 0 0 1.96 1.97C5.12 19.5 12 19.5 12 19.5s6.88 0 8.54-.51a2.78 2.78 0 0 0 1.96-1.97A29 29 0 0 0 23 12a29 29 0 0 0-.5-5.02ZM9.75 15.02V8.98L15.5 12l-5.75 3.02Z"/></svg></a>
+            <a href="https://facebook.com/b1tch1nblasters" target="_blank" rel="noopener" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M13.5 22v-8.4h2.82l.42-3.28H13.5V8.24c0-.95.26-1.6 1.63-1.6h1.74V3.72C16.56 3.65 15.55 3.56 14.36 3.56c-2.48 0-4.18 1.51-4.18 4.29v2.47H7.34v3.28h2.84V22h3.32Z"/></svg></a>
+          </div>
+          <div class="foot-signup"><a href="your-build.html?msg=I%20would%20like%20to%20sign%20up%20for%20news%20%26%20updates#other-enquiries" class="btn btn-compact" data-prefill="I would like to sign up for news &amp; updates">Sign Up For News &amp; Updates</a></div>
         </div>
       </div>
       <div class="foot-right">
