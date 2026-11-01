@@ -1,0 +1,98 @@
+# Last updated: 1 November 2026
+
+## 1. About these terms
+These terms apply to everything you order from Bitchin' Blasters: custom gel blaster builds and commissions, upgrades to your own blaster, parts and stock, and 3D prints made to order. Bitchin' Blasters (ABN 85 344 696 894) is a one-person business in Queensland, Australia. We are not registered for GST, so all prices are in Australian dollars and no GST is added.
+By placing an order, paying a deposit or handing over an item, you agree to these terms. "You" means the customer, and "we" or "us" means Bitchin' Blasters.
+Nothing on this page limits your rights under the Australian Consumer Law (see section 10).
+
+## 2. Quotes, orders and commissions
+Quotes are valid for 30 days from the date we issue them. After that, our costs for parts or labour may have changed and we may re-quote. A quote is not a contract until you accept it in writing (a message or email is fine) and we confirm we have taken the job.
+Each quote sets out the work, the price, the deposit, the estimated lead time and, where it applies, the cost of return postage. If you ask for extra work, or we find something that has to be fixed for the job to work properly, we will tell you and give you a revised price first. We will not carry out extra work you have not agreed to.
+Commissions and custom builds are made to your specification. We may decline any job we believe is unsafe, unlawful or beyond what we can do properly, and we do not have to give a reason.
+
+## 3. Deposits and payment
+All prices are in Australian dollars with no GST. Payment is by bank transfer against the invoice we send you, unless we agree something else in writing.
+For commissions and upgrades that need parts or materials, a deposit is due before work starts. The deposit equals the cost of the materials and parts for your job, so the amount is different for every job and is shown on your quote. The deposit is not refunded as cash, because we spend it on your parts. Those parts and materials are your property. If the job is not completed for any reason, we will return them to you, as long as nothing else is owing for work already carried out.
+The final payment is due when the job is complete and before you collect it or we post it. Please pay within 30 days of us telling you the job is finished. We keep the finished item until it is paid for in full.
+If you have not collected a finished item within 60 days of completion, and that is not our fault, a storage fee of $20 per week is added to your final invoice. It must be paid in full, along with the rest of the invoice, before the item is released.
+If you can't pay for any reason, please tell us early. We will talk with you about a way to settle the account, and we can offer a store or build credit equal to the value of your deposit and any other payments you have made towards the job.
+
+## 4. Lead times and changes to an order
+Lead times vary, so we give one for each job or order before we ask for or take any payment. Each lead time includes some stretch, because things like parts supply can slip. Treat it as our best estimate of when your order will be ready.
+If we think an agreed deadline might be missed, we will tell you as soon as we find out and talk through your options with you.
+If you want to change an order, tell us as early as you can. Before we have ordered parts or started work, we will normally accept the change and re-quote if the price or timing is affected. Once parts are ordered or work has started, a change is up to us, the price may change, and work already done is still payable.
+
+## 5. Upgrades to your own blaster
+**Handover and return.** Drop-offs are in person, at a gel field, on a day and time we agree beforehand. If we can't make the arrangement, we will pay for postage to us as a goodwill gesture. If you choose to post it instead, postage to us is at your expense. Collection is always available by appointment, and if we can't make an agreed collection time we will post the item at our cost. Otherwise, return postage is at your expense, at a price we quote before work starts (or before posting, if the return method changes).
+**Safe handover.** Please hand your blaster over unloaded: battery out, magazine and hopper empty of gels, and any gas discharged.
+**Condition of your blaster.** We work on your blaster as it is handed to us, and we are not responsible for its condition. That includes existing wear, worn or cracked parts, hidden damage, earlier repairs or modifications, and faults that only show up once the blaster is opened. We will tell you if we find a problem that affects the job. We are also not responsible for parts you supply that turn out to be faulty or unsuitable. We will carry out our work with due care and skill, and our workmanship is covered by the warranty in section 10.
+**Warranty and testing.** Upgrades and modifications may void the manufacturer's warranty on your blaster, and that is your decision to make. We may test-fire your blaster to check our work, and by handing it over you agree to that. You are responsible for making sure the finished blaster meets the law and the rules of any field or venue you use, such as power (FPS) limits.
+
+## 6. 3D printing and custom designs
+**Printing your files.** If you send us a file to print, we are providing the machine, the material and our time. We are not supplying a design. You confirm that you own the file or have permission to have it printed, and that printing it will not infringe anyone's copyright, trademark, design or patent rights. You are responsible for any claim that arises from your file, and you agree to cover our reasonable losses and costs if a claim is made. We do not check or engineer customer files, so we can't promise a part will fit, work or be strong enough. We may adjust orientation, supports, settings or scale to get a good print, and we may decline any file.
+**Designs we create.** When we design something for you, we keep the copyright in the design, the drawings and the files. You pay for the print, and you can also buy a licence to use the design. The licence is non-exclusive, which means we keep full rights to use the design ourselves, print it, sell it and licence it to others. Your licence lets you have the design made for your own use, it is not transferable, and the licence fee is quoted separately. If you want exclusive rights or want the copyright transferred to you, we need to agree that in writing before we start.
+**What we will not print.** All prints must follow Queensland and Australian law. We reject any request we believe is unsafe or unlawful, including anything that is, or works as, a firearm or firearm part, and we do not have to give a reason.
+**Materials and use.** Printed parts are plastic. Layer lines, small differences in size and colour variation are normal. Unless we agree in writing, prints are not for load-bearing, high-heat or safety-critical use.
+Prints and custom designs are made to order, so see section 9 for what happens if you change your mind.
+
+## 7. Parts and stock sales
+Parts and stock are sold subject to availability, at the price shown or quoted when you order. A sale is complete once we have received your payment in full and confirmed your order.
+Please check that a part is compatible with your blaster before you order. We are happy to help you work it out, but the final check is yours. Installing electronic or gearbox parts takes technical skill, so read and follow the manufacturer's instructions, and have a qualified tech do the work if you aren't confident. Some parts change safety features, such as removing the mechanical trigger lock, and we say so on the product page.
+Items we don't hold are ordered in from our supplier once you have paid, so they can take longer. We will tell you the expected timing and let you know if it changes. Colours and finishes can vary slightly from photos.
+Parts we sell or install carry the manufacturer's warranty where there is one. We pass it on to you and honour it, as the Australian Consumer Law requires, so make your claim through us.
+
+## 8. Shipping and collection
+We ship parts and stock within Australia, as long as it is lawful for you to receive and possess the item where you live. Gel blaster laws are different in each state and territory, and gel blasters are restricted or banned in some. We don't post complete blasters, or any other related component or part that is regulated in the destination state, outside Queensland, and we may refuse to ship any item to an address where we believe it is restricted. You are responsible for knowing the rules where you live.
+Shipping costs are quoted before you pay and are paid by you unless we say otherwise. We send items by Australia Post or courier and will give you tracking when we have it. Delivery times are estimates, and we pack carefully. If a parcel is lost or arrives damaged, tell us straight away and we will sort it out with the carrier and with you.
+Collection is by appointment, and we confirm the meeting place when we agree a time. For upgrades, the handover and return arrangements in section 5 apply.
+
+## 9. Returns, refunds and change of mind
+**Faulty goods or work.** If something you bought from us is faulty, isn't what we described, or our work isn't up to standard, contact us as set out in section 10. We may ask for photos or a short video, and we may need to inspect the item.
+If our inspection shows the problem was caused by misuse, neglect, incorrect installation, wiring or battery connection, accident, or repairs or changes made by someone other than us, we may reject the claim. Normal wear and tear is not a fault.
+Where a fault is ours to fix, we may repair, redo or replace the item before paying any refund. If the problem is not a major failure, the law allows us to fix it within a reasonable time first. For a major failure, you can choose a refund or a replacement, and nothing here limits that.
+**Change of mind.** The Australian Consumer Law does not give you a right to a refund just because you changed your mind, so this part is our own policy. After you have paid, if the part has not been shipped and is not a back-order item, we will offer you store credit. For back-order items, a refund may be available if the item becomes saleable again, less a 5% fee. Once an item has shipped, we can't accept change-of-mind returns.
+Change of mind is not available for work that has already been done. This includes custom builds, upgrades, made-to-order prints and custom designs once we have started. If you have paid for more than the work completed, we will work out the remaining amount and make it available as credit towards the change.
+
+## 10. Warranty and consumer guarantees
+Our goods and services come with guarantees that cannot be excluded under the Australian Consumer Law. For major failures with the service, you are entitled:
+- to cancel your service contract with us; and
+- to a refund for the unused portion, or to compensation for its reduced value.
+You are also entitled to choose a refund or replacement for major failures with goods. If a failure with the goods or a service does not amount to a major failure, you are entitled to have the failure rectified in a reasonable time. If this is not done you are entitled to a refund for the goods and to cancel the contract for the service and obtain a refund of any unused portion. You are also entitled to be compensated for any other reasonably foreseeable loss or damage from a failure in the goods or service.
+The warranty below is in addition to those guarantees and does not replace or limit them.
+**Who gives this warranty.** Bitchin' Blasters, ABN 85 344 696 894. Address: 5B McCallum Street, Caboolture QLD 4510. Phone: 0468 320 050. Email: b1tch1nblasters@gmail.com.
+**How long it lasts.** 6 months from the date we finish the work, or from the date we hand over or post the item to you.
+**What it covers.** Defects in our workmanship, meaning the build, upgrade, installation and repair work we do, and defects in how we print a 3D part. If a covered defect appears, we will fix it or redo the work at no charge. If we can't fix it, we will replace the item or refund the cost of the affected work.
+**What it does not cover.** Incorrect installation, wiring or battery connection by anyone else, misuse or neglect, liquids, heat or physical damage, normal wear and tear, repairs or changes by anyone other than us, use outside the parts' compatibility list, and problems that were already in your blaster before we worked on it.
+**Parts and stock.** Manufacturer warranties on parts we sell or install are passed on to you and honoured by us, as the Australian Consumer Law requires. Contact us and we will handle the claim with the manufacturer. Our own 6 month warranty above covers our installation work.
+**How to make a claim.** Message us on Instagram, email b1tch1nblasters@gmail.com or reply to your order email, with your name, your order or job number and a description of what went wrong. We may ask for photos or a short video, and we may ask you to bring or send the item in for inspection. Please stop using the item if it is not safe to keep using.
+**Who pays.** If your claim is accepted, we cover the reasonable cost of postage both ways. If it is not covered by this warranty, postage and any quoted work are at your expense.
+
+## 11. Gel blaster use and safety
+Gel blasters are replicas that can look like real firearms, and police may treat them that way. Use yours responsibly and follow the law and the rules of the field or venue you play at.
+- Wear full-seal eye protection whenever a blaster is in use, and never point one at anyone who isn't wearing it.
+- Use blasters only on private property with permission or at approved venues, and follow their power (FPS) and age rules.
+- Carry your blaster covered and out of sight in public, and store it securely, unloaded and away from children.
+- You must be 18 or older to order a blaster, and we may ask for proof of age.
+- Never modify a blaster to fire anything other than gel balls.
+- Always disconnect, handle, charge and store batteries correctly, following the manufacturer's instructions, and never leave a battery charging unattended. Follow the manufacturer's instructions for gas too.
+Upgrades and some parts increase power or change safety features, and they can void the manufacturer's warranty. Blasters, their parts and equipment, and related items such as printed props (for example cap grenades) are all used at your own risk. Gel blaster laws differ between states and territories and can change, so check the current rules with the Queensland Police Service or the police in your area.
+
+## 12. Liability
+To the extent the law allows, we are not liable for loss, damage or injury that results from how a blaster, part, upgrade or print is used or misused. That includes not following the manufacturer's instructions, fitting parts yourself, using a blaster against the law or a venue's rules, and a blaster, part or file that was already faulty, worn or unsafe when it came to us. We are also not liable for indirect or consequential loss, such as lost event fees or lost income, except where the law does not allow us to exclude it.
+**Use at your own risk.** Blasters and their related parts and equipment, and related items such as printed props (for example cap grenades), are used entirely at your own risk. To the extent the law allows, we take no responsibility and have no liability for injury, death or financial loss caused by misuse or neglect of any of them.
+**Batteries.** You must always disconnect, handle, charge and store batteries in the correct manner. To the extent the law allows, we take no responsibility and have no liability for any issue with or from batteries, including injury, death or financial loss.
+Where the law allows us to limit our liability for a breach of a consumer guarantee, we limit it, at our choice, to repairing, replacing or resupplying the goods or services, or paying the cost of doing so. Subject to that, our total liability for any claim relating to an order is limited to the price you paid for that order.
+Nothing in these terms excludes, restricts or modifies any right or remedy you have under the Australian Consumer Law or any other law that cannot be excluded.
+
+## 13. Privacy
+**What we collect.** Through the enquiry form we collect your name, your email address and your message. Through the news sign-up we collect your name and email address. When you place an order or commission a job, we also keep the order and job details, your contact details and any delivery details you give us.
+**Why we collect it.** We use enquiry details to reply to you. We use news sign-up details only to send you news, and only because you asked us to. We use order details to quote, build, deliver and support your job.
+**How it is stored.** Form submissions arrive in our email inbox. For the news sign-up, we then add your name and email to a mailing list kept in a secure Google Sheet, with a backup copy on a local drive. We will not share or sell your details. We only pass them to the services we need to run the business, such as Google for email and storage, the service that delivers the website forms to our inbox, and a courier if we post your order.
+**How long we keep it.** We keep news sign-up details until you unsubscribe or ask us to delete them. Enquiry emails stay in our inbox for as long as we need them to deal with your enquiry and any follow-up. We keep sales and job records for five years because tax rules require it.
+**Emails and unsubscribing.** We only send news to people who signed up, and every news email will tell you how to unsubscribe. You can also email us at any time and we will remove you from the list and from the backup.
+**Our website.** The website is hosted on GitHub Pages. We do not use cookies or analytics on it, although GitHub may keep its own server logs under its privacy statement.
+**Your choices.** You can ask what we hold about you, ask us to correct it, or ask us to delete it. Message us on Instagram or email b1tch1nblasters@gmail.com and we will sort it out. We aim to handle personal information in line with the Australian Privacy Principles.
+
+## 14. General
+We may update these terms from time to time. The version on our website when you place an order is the one that applies to that order. These terms are governed by the laws of Queensland, and any dispute will be dealt with by the courts of Queensland. If any part of these terms turns out to be unenforceable, the rest still applies.
+If you are unhappy with something, please contact us first so we can try to fix it. Message us on Instagram or email b1tch1nblasters@gmail.com.
