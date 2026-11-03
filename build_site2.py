@@ -479,8 +479,8 @@ CSS = """
     :root{ --nav-h:auto; }
     header.nav{ position:static; }
     .brand-logo{ height:104px; }
-    .nav-wrap{ justify-content:center; padding:16px 20px 8px; row-gap:8px; }
-    .brand{ width:100%; justify-content:center; margin-bottom:0; }
+    .nav-wrap{ justify-content:center; padding:16px 20px; }
+    .brand{ width:100%; justify-content:center; margin-bottom:6px; }
     .nav-tiles{
       display:grid; grid-template-columns:repeat(3, 1fr); width:100%;
       align-self:auto; gap:6px;
@@ -869,6 +869,7 @@ def _hero(location_name, default_file, default_alignment="center"):
 
 import sale_banner
 import terms_content
+import signup_form
 SALE = sale_banner.load()
 
 
@@ -884,8 +885,8 @@ BTN_REQUEST_DRAWING = enquiry_link("Request a Drawing", "I would like to request
 BTN_ASK_STOCK = enquiry_link("Ask What's In Stock", "I would like to ask what's in stock", style="margin-top:24px;")
 BTN_REQUEST_PRINT = enquiry_link("Request a Print", "I would like to request a print", style="margin-top:24px;")
 BTN_ENQUIRE = enquiry_link("Enquire", "I would like to enquire", style="margin-top:24px;")
-BTN_SIGNUP = enquiry_link("Sign Up For News &amp; Updates", "I would like to sign up for news & updates", cls="btn btn-compact")
-BTN_SIGNUP_TILE = enquiry_link("Sign Up", "I would like to sign up for news & updates")
+BTN_SIGNUP = '<a href="signup.html" class="btn btn-compact">Sign Up For News &amp; Updates</a>'
+BTN_SIGNUP_TILE = '<a href="signup.html" class="btn primary">Sign Up</a>'
 BTN_ASK_QUESTION = enquiry_link("Questions", "I would like to ask a question", same_page=True, cls="btn btn-compact")
 
 HOME_HERO_IMG, HOME_HERO_CLASS = _hero("Homepage Hero", HERO, default_alignment="top-left")
@@ -1356,7 +1357,7 @@ TERMS_BODY = f"""<section class="page-banner" style="min-height:180px;">
 # All hero/banner locations have now been resolved above, so their CSS
 # rule blocks are appended to the shared stylesheet once, here — before
 # any page() call embeds CSS into an actual HTML page.
-CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS)
+CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + signup_form.CSS
 
 # ---------------------------------------------------------------------------
 # WRITE FILES
@@ -1384,6 +1385,9 @@ pages = {
     "brands.html": page("Brands We Endorse — Bitchin' Blasters",
                          "Recommended parts, trusted suppliers, and the brands behind the builds.",
                          "brands", BRANDS_BODY),
+    "signup.html": page("Stay Up-To-Date — Bitchin' Blasters",
+                         "Sign up for Bitchin' Blasters news, deals and updates.",
+                         "", signup_form.body_html(), signup_form.script(CONTACT_EMAIL)),
     "terms.html": page("Terms & Conditions — Bitchin' Blasters",
                         "Terms and conditions for Bitchin' Blasters.",
                         "", TERMS_BODY),
