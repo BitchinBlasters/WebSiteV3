@@ -69,7 +69,8 @@ to find them:
 - `Your Build Hero`
 - `3D Printing Hero`
 - `Store Hero`
-- `Build Gallery Hero`
+- `Pics & Vids Hero` (the pinned header strip; falls back to the default image)
+- `Builds Hero`, `Events Hero`, `Tech Tips Hero`, `Reviews Hero` (one 300px banner per section)
 - `Brands Hero`
 
 Terms & Conditions has no hero image. If you add a heading name that
