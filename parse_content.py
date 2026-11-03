@@ -51,8 +51,25 @@ def parse_txt(path):
 
 KNOWN_KEYS = {
     "Title", "Description", "Breakdown", "Type", "Location", "Keywords",
-    "YouTube", "Hover Start", "Brand", "Status", "Price", "Supplier Link",
+    "YouTube", "Hover Start", "Brand", "Status", "Price", "Supplier Link", "Priority",
 }
+
+
+def parse_priority(raw):
+    """'Priority: 1' -> 1.0. Blank, missing or non-numeric -> None (unranked)."""
+    if raw is None:
+        return None
+    try:
+        return float(str(raw).strip())
+    except ValueError:
+        return None
+
+
+def priority_sort_key(entry):
+    """Lowest Priority number first. Entries with no Priority come after all
+    numbered ones. Ties (and all unranked entries) fall back to A-Z by title."""
+    pr = entry.get("priority")
+    return (pr is None, pr if pr is not None else 0, entry["title"].lower())
 
 
 def parse_keywords_field(raw):
@@ -140,8 +157,9 @@ def parse_portfolio():
             "images": images,
             "youtube": fields.get("YouTube") or None,
             "hover_start": fields.get("Hover Start") or None,
+            "priority": parse_priority(fields.get("Priority")),
         })
-    entries.sort(key=lambda e: e["title"].lower())
+    entries.sort(key=priority_sort_key)
     return entries
 
 
@@ -178,7 +196,9 @@ def parse_product_folder(section_path, section_name):
             "keywords": parse_keywords_field(fields.get("Keywords", "")),
             "images": ordered,
             "folder": item_path,
+            "priority": parse_priority(fields.get("Priority")),
         })
+    entries.sort(key=priority_sort_key)
     return entries
 
 
@@ -220,8 +240,9 @@ def parse_brands():
             "keywords": [k["kw"] for k in parse_keywords_field(fields.get("Keywords", ""))],
             "supplier_link": fields.get("Supplier Link", ""),
             "logo": images[0] if images else None,
+            "priority": parse_priority(fields.get("Priority")),
         })
-    entries.sort(key=lambda e: e["title"].lower())
+    entries.sort(key=priority_sort_key)
     return entries
 
 

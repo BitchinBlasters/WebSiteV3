@@ -446,7 +446,7 @@ CSS = """
 
   .foot-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:32px; padding:0 40px; }
 
-  .foot-left{ display:flex; flex-direction:column; align-items:flex-start; }
+  .foot-left{ display:flex; flex-direction:column; align-items:center; text-align:center; }
   .foot-brand-logo{ height:56px; width:auto; }
   .foot-est{ margin-top:8px; font-size:12px; color:var(--text-dim); }
 
@@ -460,7 +460,7 @@ CSS = """
   .foot-social a:hover{ border-color:var(--lime); color:var(--lime); }
   .foot-social svg{ width:22px; height:22px; fill:currentColor; }
 
-  .foot-right{ display:flex; flex-direction:column; align-items:flex-end; text-align:right; }
+  .foot-right{ display:flex; flex-direction:column; align-items:flex-end; text-align:right; align-self:center; }
   .foot-terms{ font-size:12px; }
   .foot-terms a:hover{ color:var(--lime); }
   .foot-email{ margin-top:8px; font-size:12px; color:var(--text-dim); }
@@ -516,7 +516,7 @@ CSS = """
     .foot-row{ position:relative; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:19px 0; text-align:left; padding:0; }
     .foot-left{ display:flex; flex-direction:column; align-items:center; text-align:center; position:absolute; left:0; top:16px; }
     .foot-mid{ position:absolute; top:-3px; right:0; align-items:flex-start; text-align:left; }
-    .foot-right{ flex-basis:100%; align-items:center; text-align:center; order:3; margin-top:116px; }
+    .foot-right{ align-self:auto; flex-basis:100%; align-items:center; text-align:center; order:3; margin-top:116px; }
     .foot-email{ margin-top:4px; }
     .foot-social{
       display:grid;
@@ -649,7 +649,7 @@ NAV_SECTIONS = [
         ("Spare Deals", "spare-deals"),
         ("Used Blasters", "used-blasters"),
     ]),
-    ("build-gallery.html", "build-gallery", "Build Gallery", [
+    ("build-gallery.html", "build-gallery", "Builds, Galleries", [
         ("The Builds", "the-builds"),
         ("In Play", "in-play"),
         ("Videos", "videos"),
@@ -768,7 +768,7 @@ BASE_SCRIPT = """
   });
 
   // ---- Desktop nav-tile dropdown: opens on hover, then stays locked open ----
-  // (ignores the mouse leaving) until another tile opens or the page is scrolled 50%.
+  // (ignores the mouse leaving) until another tile opens or the page is scrolled 25%.
   document.querySelectorAll('.nav-tile').forEach((navTile) => {
     navTile.addEventListener('mouseenter', () => {
       if (isMobileNav()) return;
@@ -782,7 +782,7 @@ BASE_SCRIPT = """
     if (isMobileNav()) return;
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const pct = scrollable > 0 ? (window.scrollY / scrollable) : 0;
-    if (pct >= 0.5) closeAllTiles();
+    if (pct >= 0.25) closeAllTiles();
   });
 """
 
