@@ -67,3 +67,17 @@ A GitHub Action rebuilds the site automatically:
 
 You never need to run anything locally. Add your files, commit, push (or
 just upload through GitHub's web UI), and the rebuild handles the rest.
+
+## Priority — choosing the order things appear in
+
+Add a `Priority:` line to any entry's `.txt` file (builds, events, products and brands) to choose where it appears:
+
+```
+Priority: 1
+```
+
+- **Lowest number goes first.** `1` is the top spot, then `2`, `3` and so on.
+- Entries **without** a Priority line go **after** all the numbered ones, in A-Z order by title.
+- Two entries with the same number are put in A-Z order by title.
+- Gaps are fine (1, 5, 10) so you can slot something in later. Decimals work too (`1.5`).
+- If the number is not a plain number (for example `top`), it is ignored and the entry is treated as having no Priority.
