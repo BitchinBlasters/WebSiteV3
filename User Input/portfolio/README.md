@@ -87,3 +87,11 @@ Priority: 1
 - Two entries with the same number are put in A-Z order by title.
 - Gaps are fine (1, 5, 10) so you can slot something in later. Decimals work too (`1.5`).
 - If the number is not a plain number (for example `top`), it is ignored and the entry is treated as having no Priority.
+
+
+## Type decides which Pics & Vids section it appears in
+
+`Type:` must be one of **Build**, **Event**, **Tech Tip** or **Review**. Each goes into the matching
+section of the Pics & Vids page. An entry with any other Type is not posted (the rebuild log says so).
+Photos and videos alternate within each section, ordered by `Priority:`. A section with nothing in it
+shows "Content coming soon".
