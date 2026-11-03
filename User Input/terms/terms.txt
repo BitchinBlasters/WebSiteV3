@@ -1,4 +1,4 @@
-# Last updated: 1 November 2026
+# Last updated: 2 November 2026
 
 ## 1. About these terms
 These terms apply to everything you order from Bitchin' Blasters: custom gel blaster builds and commissions, upgrades to your own blaster, parts and stock, and 3D prints made to order. Bitchin' Blasters (ABN 85 344 696 894) is a one-person business in Queensland, Australia. We are not registered for GST, so all prices are in Australian dollars and no GST is added.
@@ -89,7 +89,8 @@ Nothing in these terms excludes, restricts or modifies any right or remedy you h
 **Why we collect it.** We use enquiry details to reply to you. We use news sign-up details only to send you news, and only because you asked us to. We use order details to quote, build, deliver and support your job.
 **How it is stored.** Form submissions arrive in our email inbox. For the news sign-up, we then add your name and email to a mailing list kept in a secure Google Sheet, with a backup copy on a local drive. We will not share or sell your details. We only pass them to the services we need to run the business, such as Google for email and storage, the service that delivers the website forms to our inbox, and a courier if we post your order.
 **How long we keep it.** We keep news sign-up details until you unsubscribe or ask us to delete them. Enquiry emails stay in our inbox for as long as we need them to deal with your enquiry and any follow-up. We keep sales and job records for five years because tax rules require it.
-**Emails and unsubscribing.** We only send news to people who signed up, and every news email will tell you how to unsubscribe. You can also email us at any time and we will remove you from the list and from the backup.
+**Cancelling or changing your sign-up.** To stop the news emails, or to change which categories you get (Sales & Deals, Events & Field Updates, Industry News & Updates, New Listings), email b1tch1nblasters@gmail.com. We will update your sign-up within 5 business days. Unsubscribing stops the news emails only. We will still contact you about any order or job you have with us.
+**Having your information removed.** You can email b1tch1nblasters@gmail.com at any time and ask us to permanently remove all of your information from our system. That covers your news sign-up and the details collected with your orders, including from the mailing list and its backup. The one exception is that we keep a copy of the invoice and related receipt for each order, for tax and warranty purposes only, and we do not use them for anything else. We will complete your request promptly, and within 30 days.
 **Our website.** The website is hosted on GitHub Pages. We do not use cookies or analytics on it, although GitHub may keep its own server logs under its privacy statement.
 **Your choices.** You can ask what we hold about you, ask us to correct it, or ask us to delete it. Message us on Instagram or email b1tch1nblasters@gmail.com and we will sort it out. We aim to handle personal information in line with the Australian Privacy Principles.
 
