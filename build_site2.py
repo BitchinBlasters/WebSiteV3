@@ -649,10 +649,11 @@ NAV_SECTIONS = [
         ("Spare Deals", "spare-deals"),
         ("Used Blasters", "used-blasters"),
     ]),
-    ("build-gallery.html", "build-gallery", "Builds, Galleries", [
-        ("The Builds", "the-builds"),
-        ("In Play", "in-play"),
-        ("Videos", "videos"),
+    ("build-gallery.html", "build-gallery", "Pics &amp; Vids", [
+        ("Builds", "builds"),
+        ("Events", "events"),
+        ("Tech Tips", "tech-tips"),
+        ("Reviews", "reviews"),
     ]),
     ("brands.html", "brands", "Brands We Endorse", [
         ("Brands We Stand By", "brands-we-stand-by"),
@@ -853,6 +854,7 @@ def mailto_button_script(btn_id, field_ids, subject_js, var_prefix):
 # ---------------------------------------------------------------------------
 import image_assets
 import render_dynamic
+import pics_vids
 import parse_content
 
 # Collects one CSS rule block per named hero/banner location (desktop rule
@@ -1265,55 +1267,9 @@ STORE_BODY = f"""<section class="page-banner">
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: BUILD GALLERY
 # ---------------------------------------------------------------------------
-GALLERY_HERO_IMG, GALLERY_HERO_CLASS = _hero("Build Gallery Hero", GAL1)
-GALLERY_BODY = f"""<section class="page-banner">
-  <img class="{GALLERY_HERO_CLASS}" src="{GALLERY_HERO_IMG}" alt="Custom gel blaster build aimed down the field">
-  <div class="page-banner-content">
-    <span class="kicker">Build gallery</span>
-    <h1>Builds in the field</h1>
-    <p>Not studio shots — builds doing the job they were made for.</p>
-  </div>
-</section>
-
-<section id="the-builds">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">The builds</span>
-      <h2>Builds &amp; events</h2>
-      <p>Photos and video highlights, side by side. Click anything to see the full story, products used, and related brands.</p>
-    </div>
-  </div>
-  <div class="wrap">
-    {render_dynamic.gallery_grid_html(CONTENT['portfolio'])}
-  </div>
-</section>
-
-<section id="in-play" style="border-bottom:none;">
-  <div class="wrap">
-    <div class="section-head">
-      <span class="kicker">In play</span>
-      <h2>On the field</h2>
-      <p>Photographed at Donnybrook Gel Ballers, Queensland.</p>
-    </div>
-  </div>
-  <div class="gallery-grid">
-    <div class="gallery-item">
-      <img src="{HERO}" alt="Ghillie-wrapped custom build moving through pine forest">
-      <div class="gallery-cap">Ghillie-wrapped build, moving through cover</div>
-    </div>
-    <div class="gallery-item">
-      <img src="{GAL1}" alt="Custom gel blaster build aimed down the field, forest game day">
-      <div class="gallery-cap">On the line — suppressor cover</div>
-    </div>
-    <div class="gallery-item">
-      <img src="{GAL2}" alt="Close-up on custom build red dot and suppressor from cover">
-      <div class="gallery-cap">Holding position, red dot up</div>
-    </div>
-  </div>
-  <div class="wrap">
-    <p class="gallery-credit">Photography: Solutions Photography, at Donnybrook Gel Ballers, Queensland.</p>
-  </div>
-</section>"""
+_hdr_img, _hdr_cls = _hero("Pics & Vids Hero", GAL1)
+_sec_heroes = [_hero(loc, GAL1)[0:2] for _s, _l, loc, _b in pics_vids.SECTIONS]
+GALLERY_BODY = pics_vids.body_html(CONTENT['portfolio'], (_hdr_img, _hdr_cls), _sec_heroes)
 
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: BRANDS WE ENDORSE
@@ -1357,7 +1313,7 @@ TERMS_BODY = f"""<section class="page-banner" style="min-height:180px;">
 # All hero/banner locations have now been resolved above, so their CSS
 # rule blocks are appended to the shared stylesheet once, here — before
 # any page() call embeds CSS into an actual HTML page.
-CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + signup_form.CSS
+CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + signup_form.CSS + "\n" + pics_vids.CSS
 
 # ---------------------------------------------------------------------------
 # WRITE FILES
@@ -1378,10 +1334,10 @@ pages = {
     "store.html": page("Store — Bitchin' Blasters",
                         "Gel balls and hop-ups, spare part deals, and used blasters.",
                         "store", STORE_BODY),
-    "build-gallery.html": page("Build Gallery — Bitchin' Blasters",
-                                "Custom gel blaster builds, in-play action shots, and videos.",
+    "build-gallery.html": page("Pics & Vids — Bitchin' Blasters",
+                                "Photos and videos: builds, events, tech tips and reviews.",
                                 "build-gallery", GALLERY_BODY,
-                                render_dynamic.GALLERY_FILTER_SCRIPT + render_dynamic.VIDEO_SYSTEM_SCRIPT),
+                                pics_vids.SCRIPT + render_dynamic.VIDEO_SYSTEM_SCRIPT),
     "brands.html": page("Brands We Endorse — Bitchin' Blasters",
                          "Recommended parts, trusted suppliers, and the brands behind the builds.",
                          "brands", BRANDS_BODY),

@@ -298,8 +298,34 @@ def resolve_product_examples(product, portfolio):
     return matches
 
 
+TYPE_TO_CATEGORY = {
+    "build": "builds", "builds": "builds",
+    "event": "events", "events": "events",
+    "tech tip": "tech-tips", "tech tips": "tech-tips", "tech-tip": "tech-tips", "tech-tips": "tech-tips", "techtips": "tech-tips",
+    "review": "reviews", "reviews": "reviews",
+}
+
+
+def category_for(type_text):
+    return TYPE_TO_CATEGORY.get(re.sub(r"\s+", " ", (type_text or "").strip().lower()))
+
+
+def assign_categories(portfolio):
+    """Keep only entries whose Type matches Builds / Events / Tech Tips / Reviews."""
+    kept = []
+    for e in portfolio:
+        cat = category_for(e["type"])
+        if cat is None:
+            print(f"  ! Not posted: '{e['raw_name']}' has Type '{e['type']}' "
+                  f"(use Build, Event, Tech Tip or Review)")
+            continue
+        e["category"] = cat
+        kept.append(e)
+    return kept
+
+
 def load_all():
-    portfolio = parse_portfolio()
+    portfolio = assign_categories(parse_portfolio())
     products = parse_products()
     brands = parse_brands()
     kw_index = build_keyword_index(products)

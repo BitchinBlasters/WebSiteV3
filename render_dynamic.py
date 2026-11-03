@@ -252,7 +252,7 @@ def detail_page_body(entry, kw_index, brand_lookup):
     )
 
     kw_buttons = keyword_buttons_html(entry, kw_index)
-    brand_section = brand_section_html(entry, kw_index, brand_lookup) if entry["type"] == "Build" else ""
+    brand_section = brand_section_html(entry, kw_index, brand_lookup) if entry.get("category") == "builds" else ""
 
     return f'''<section class="page-banner" style="min-height:180px;">
   <div class="page-banner-content">
@@ -270,7 +270,7 @@ def detail_page_body(entry, kw_index, brand_lookup):
     <div id="products-used">{kw_buttons}</div>
     {gallery_imgs and f'<div class="gallery-grid" style="margin-top:32px;">{gallery_imgs}</div>'}
     {brand_section}
-    <p style="margin-top:40px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
+    <p style="margin-top:40px;"><a href="../build-gallery.html" class="btn">&larr; Back to Pics &amp; Vids</a></p>
   </div>
 </section>'''
 
