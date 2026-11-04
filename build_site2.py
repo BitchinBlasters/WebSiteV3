@@ -953,7 +953,7 @@ INDEX_BODY = f"""<section class="hero" id="top">
 # PAGE CONTENT: HOW WE ARE
 # ---------------------------------------------------------------------------
 WHO_WE_ARE_HERO_IMG, WHO_WE_ARE_HERO_CLASS = _hero("Who We Are Hero", HERO)
-HOW_WE_ARE_BODY = f"""<section class="page-banner" style="--ph:289px">
+HOW_WE_ARE_BODY = f"""<section class="page-banner" style="--ph:245px">
   <img class="{WHO_WE_ARE_HERO_CLASS}" src="{WHO_WE_ARE_HERO_IMG}" alt="Ghillie-wrapped custom build in the field">
   <div class="page-banner-content">
     <span class="kicker">Who we are</span>
@@ -1014,7 +1014,7 @@ HOW_WE_ARE_BODY = f"""<section class="page-banner" style="--ph:289px">
 # PAGE CONTENT: YOUR BUILD
 # ---------------------------------------------------------------------------
 YOUR_BUILD_HERO_IMG, YOUR_BUILD_HERO_CLASS = _hero("Your Build Hero", SIG)
-YOUR_BUILD_BODY = f"""<section class="page-banner" style="--ph:363px">
+YOUR_BUILD_BODY = f"""<section class="page-banner" style="--ph:245px">
   <img class="{YOUR_BUILD_HERO_CLASS}" src="{YOUR_BUILD_HERO_IMG}" alt="Custom gel blaster build">
   <div class="page-banner-content">
     <span class="kicker">Your build</span>
@@ -1238,7 +1238,7 @@ PRINTING_BODY = f"""<section class="page-banner" style="--ph:245px">
 # PAGE CONTENT: STORE
 # ---------------------------------------------------------------------------
 STORE_HERO_IMG, STORE_HERO_CLASS = _hero("Store Hero", GAL2)
-STORE_BODY = f"""<section class="page-banner" style="--ph:272px">
+STORE_BODY = f"""<section class="page-banner" style="--ph:245px">
   <img class="{STORE_HERO_CLASS}" src="{STORE_HERO_IMG}" alt="Field-ready custom build">
   <div class="page-banner-content">
     <span class="kicker">Store</span>
@@ -1293,7 +1293,7 @@ GALLERY_BODY = pics_vids.body_html(CONTENT['portfolio'], (_hdr_img, _hdr_cls), _
 # PAGE CONTENT: BRANDS WE ENDORSE
 # ---------------------------------------------------------------------------
 BRANDS_HERO_IMG, BRANDS_HERO_CLASS = _hero("Brands Hero", GAL1)
-BRANDS_BODY = f"""<section class="page-banner" style="--ph:254px">
+BRANDS_BODY = f"""<section class="page-banner" style="--ph:245px">
   <img class="{BRANDS_HERO_CLASS}" src="{BRANDS_HERO_IMG}" alt="Custom build detail">
   <div class="page-banner-content">
     <span class="kicker">Brands we endorse</span>
