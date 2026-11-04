@@ -15,7 +15,7 @@ import re
 
 ROOT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "User Input", "sale-banner")
 
-KEYS = ("Enabled", "Title", "Description", "Button", "Link", "Delay")
+KEYS = ("Enabled", "Popup", "Title", "Description", "Button", "Link", "Delay")
 
 
 def load():
@@ -48,6 +48,7 @@ def load():
         "button": fields.get("Button", "") or "View the Sale",
         "link": link,
         "delay": delay,
+        "popup": fields.get("Popup", "yes").lower() in ("yes", "y", "true", "on", "1"),
     }
 
 
@@ -60,7 +61,7 @@ def _button(sale, extra_class="btn primary", close_popup=False):
 
 
 def popup_html(sale):
-    if not sale:
+    if not sale or not sale.get("popup", True):
         return ""
     desc = f'<p>{html.escape(sale["description"])}</p>' if sale["description"] else ""
     return f'''<div class="sale-popup" id="sale-popup" role="dialog" aria-modal="true" aria-labelledby="sale-popup-title">
@@ -77,7 +78,7 @@ def popup_html(sale):
 
 
 def popup_script(sale):
-    if not sale:
+    if not sale or not sale.get("popup", True):
         return ""
     return """
   // ---- Sale pop-up: opens once per visit, after the delay set in sale-banner.txt ----

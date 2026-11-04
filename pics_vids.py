@@ -12,6 +12,7 @@ render_dynamic.gallery_card() makes each card, so hover previews and detail-page
 """
 
 import html
+import re
 
 import render_dynamic
 
@@ -63,8 +64,14 @@ def _slide(entry):
     kind = "video" if entry["youtube"] else "photo"
     kws = " ".join(k["kw"] for k in entry["keywords"])
     search = html.escape(f'{entry["title"]} {entry["description"]} {kws} {entry["type"]}'.lower(), quote=True)
+    card = render_dynamic.gallery_card(entry)
+    m = re.search(r'\s*<div class="gallery-cap">(.*?)</div>', card, re.S)
+    cap = m.group(1) if m else ""
+    card = card.replace(m.group(0), "") if m else card
+    cap = cap.replace("<br>", "</strong><span>", 1) + "</span>" if "<br>" in cap else cap
+    cap = cap.replace("</strong></strong>", "</strong>")
     return (f'<div class="pv-slide" data-kind="{kind}" data-search="{search}">\n'
-            f'{render_dynamic.gallery_card(entry)}\n</div>')
+            f'{card}\n<a class="pv-cap" href="builds/{entry["slug"]}.html">{cap}</a>\n</div>')
 
 
 def _filter_buttons(aria):
@@ -200,6 +207,10 @@ CSS = """
   .pv-track::-webkit-scrollbar{ display:none; }
   .pv-slide{ flex:0 0 calc((100% - 3 * 14px) / 4); scroll-snap-align:start; min-width:0; }
   .pv-slide .gallery-item{ aspect-ratio:4/3; display:block; }
+  .pv-cap{ display:block; padding:10px 2px 0; color:var(--text); text-decoration:none; }
+  .pv-cap strong{ display:block; font-size:14px; line-height:1.3; font-weight:700; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .pv-cap span{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin-top:4px; font-size:12.5px; line-height:1.45; color:var(--text-dim); }
+  .pv-cap:hover strong{ color:var(--lime); }
   .pv-arrow{ display:none; }
   .pv-counter{ display:none; }
   .pv-bar{ display:flex; align-items:center; gap:8px; margin-top:14px; }
@@ -265,6 +276,8 @@ CSS = """
     .pv-counter{ display:block; text-align:center; margin-top:10px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }
     .pv-empty{ margin:0 12px; }
     .pv-searchbar input{ max-width:none; }
+    .pv-cap span{ display:none; }
+    .pv-cap{ padding:8px 2px 0; }
     .pv-section.pv-grid .pv-wrap{ padding-left:10px; padding-right:10px; }
     .pv-section.pv-grid .pv-track{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; scroll-snap-type:none; }
   }
