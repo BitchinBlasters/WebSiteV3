@@ -716,6 +716,10 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-track::-webkit-scrollbar{ display:none; }
   .pv-slide{ flex:0 0 calc((100% - 3 * 14px) / 4); scroll-snap-align:start; min-width:0; }
   .pv-slide .gallery-item{ aspect-ratio:4/3; display:block; }
+  .pv-cap{ display:block; padding:10px 2px 0; color:var(--text); text-decoration:none; }
+  .pv-cap strong{ display:block; font-size:14px; line-height:1.3; font-weight:700; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .pv-cap span{ display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; margin-top:4px; font-size:12.5px; line-height:1.45; color:var(--text-dim); }
+  .pv-cap:hover strong{ color:var(--lime); }
   .pv-arrow{ display:none; }
   .pv-counter{ display:none; }
   .pv-bar{ display:flex; align-items:center; gap:8px; margin-top:14px; }
@@ -781,6 +785,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     .pv-counter{ display:block; text-align:center; margin-top:10px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }
     .pv-empty{ margin:0 12px; }
     .pv-searchbar input{ max-width:none; }
+    .pv-cap span{ display:none; }
+    .pv-cap{ padding:8px 2px 0; }
     .pv-section.pv-grid .pv-wrap{ padding-left:10px; padding-right:10px; }
     .pv-section.pv-grid .pv-track{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; scroll-snap-type:none; }
   }
@@ -952,8 +958,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <img src="https://i.ytimg.com/vi/qIVIuajEr24/maxresdefault.jpg" alt="Gold Rush Milsim, June | Donnybrook Gel Ballers" onerror="this.onerror=null;this.src=this.src.replace('maxresdefault','hqdefault')">
       <span class="gallery-type-badge">Event &middot; Video</span>
       <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-      <div class="gallery-cap"><strong>Gold Rush Milsim, June | Donnybrook Gel Ballers</strong><br>Tactical stealth gameplay at the June Gold Rush milsim, running with the Regulators.</div>
     </a>
+<a class="pv-cap" href="builds/gold-rush-june.html"><strong>Gold Rush Milsim, June | Donnybrook Gel Ballers</strong><span>Tactical stealth gameplay at the June Gold Rush milsim, running with the Regulators.</span></a>
 </div>
 <div class="pv-slide" data-kind="video" data-search="back for the gold with 3d printed cap grenades | gold rush milsim the september gold rush at donnybrook gel ballers, with 3d printed cap grenades getting their first real field test. gold-rush donnybrook regulators cap-grenade 3d-printed scylla-hpa event">
     <a class="gallery-item gallery-video-card" href="builds/gold-rush-september.html"
@@ -961,8 +967,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <img src="https://i.ytimg.com/vi/_LEwwSREXlU/maxresdefault.jpg" alt="Back for the Gold with 3D Printed Cap Grenades | Gold Rush Milsim" onerror="this.onerror=null;this.src=this.src.replace('maxresdefault','hqdefault')">
       <span class="gallery-type-badge">Event &middot; Video</span>
       <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-      <div class="gallery-cap"><strong>Back for the Gold with 3D Printed Cap Grenades | Gold Rush Milsim</strong><br>The September Gold Rush at Donnybrook Gel Ballers, with 3D printed cap grenades getting their first real field test.</div>
     </a>
+<a class="pv-cap" href="builds/gold-rush-september.html"><strong>Back for the Gold with 3D Printed Cap Grenades | Gold Rush Milsim</strong><span>The September Gold Rush at Donnybrook Gel Ballers, with 3D printed cap grenades getting their first real field test.</span></a>
 </div>
 <div class="pv-slide" data-kind="video" data-search="did they regret having me back? | 1 hpa vs 10 aeg&#x27;s round two at a private no-hit-calling field, the only hpa player up against about ten aegs. scylla-hpa polarstar-f2 hpa no-hit-calling event">
     <a class="gallery-item gallery-video-card" href="builds/did-they-regret-having-me-back.html"
@@ -970,8 +976,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <img src="https://i.ytimg.com/vi/87hUNrG0Ckc/maxresdefault.jpg" alt="Did They Regret Having Me Back? | 1 HPA vs 10 AEG's" onerror="this.onerror=null;this.src=this.src.replace('maxresdefault','hqdefault')">
       <span class="gallery-type-badge">Event &middot; Video</span>
       <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-      <div class="gallery-cap"><strong>Did They Regret Having Me Back? | 1 HPA vs 10 AEG's</strong><br>Round two at a private no-hit-calling field, the only HPA player up against about ten AEGs.</div>
     </a>
+<a class="pv-cap" href="builds/did-they-regret-having-me-back.html"><strong>Did They Regret Having Me Back? | 1 HPA vs 10 AEG's</strong><span>Round two at a private no-hit-calling field, the only HPA player up against about ten AEGs.</span></a>
 </div>
       </div>
       <button type="button" class="btn pv-arrow pv-next" aria-label="Next"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 4 L18 12 L7 20 Z" fill="currentColor"/></svg></button>
@@ -1032,8 +1038,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <img src="https://i.ytimg.com/vi/IdKfuwCc444/maxresdefault.jpg" alt="First Look @ Scylla HPA" onerror="this.onerror=null;this.src=this.src.replace('maxresdefault','hqdefault')">
       <span class="gallery-type-badge">Review &middot; Video</span>
       <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-      <div class="gallery-cap"><strong>First Look @ Scylla HPA</strong><br>Unboxing and installing the first Jefftron Scylla HPA FCU in a gel blaster in Australia.</div>
     </a>
+<a class="pv-cap" href="builds/scylla-first-look.html"><strong>First Look @ Scylla HPA</strong><span>Unboxing and installing the first Jefftron Scylla HPA FCU in a gel blaster in Australia.</span></a>
 </div>
 <div class="pv-slide" data-kind="video" data-search="scylla hpa fcu review: separate rof on each selector thoughts after 30,000+ shots with the jefftron scylla hpa fcu. bought with my own money, not sponsored. scylla-hpa jefftron polarstar-f2 hpa review">
     <a class="gallery-item gallery-video-card" href="builds/scylla-fcu-review.html"
@@ -1041,8 +1047,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <img src="https://i.ytimg.com/vi/RziDZ5HsYOU/maxresdefault.jpg" alt="Scylla HPA FCU Review: Separate ROF on Each Selector" onerror="this.onerror=null;this.src=this.src.replace('maxresdefault','hqdefault')">
       <span class="gallery-type-badge">Review &middot; Video</span>
       <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24" width="28" height="28" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>
-      <div class="gallery-cap"><strong>Scylla HPA FCU Review: Separate ROF on Each Selector</strong><br>Thoughts after 30,000+ shots with the Jefftron Scylla HPA FCU. Bought with my own money, not sponsored.</div>
     </a>
+<a class="pv-cap" href="builds/scylla-fcu-review.html"><strong>Scylla HPA FCU Review: Separate ROF on Each Selector</strong><span>Thoughts after 30,000+ shots with the Jefftron Scylla HPA FCU. Bought with my own money, not sponsored.</span></a>
 </div>
       </div>
       <button type="button" class="btn pv-arrow pv-next" aria-label="Next"><svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 4 L18 12 L7 20 Z" fill="currentColor"/></svg></button>
