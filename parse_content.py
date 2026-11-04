@@ -163,6 +163,11 @@ def parse_portfolio():
                  or re.match(r"^" + re.escape(stem) + r" \d+$", os.path.splitext(f)[0]))
         ]
         images = group_numbered_files(matching_imgs, stem)
+        if not images and fields.get("YouTube"):
+            # No picture supplied: use the video's own YouTube thumbnail
+            ym = re.search(r"(?:v=|youtu\.be/)([A-Za-z0-9_-]{6,})", fields.get("YouTube"))
+            if ym:
+                images = [f"https://i.ytimg.com/vi/{ym.group(1)}/maxresdefault.jpg"]
         entries.append({
             "slug": slugify(stem),
             "raw_name": stem,

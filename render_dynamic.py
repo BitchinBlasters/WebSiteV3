@@ -18,6 +18,8 @@ def img_src(entry_or_folder_rel, filename):
 
 
 def portfolio_img_src(filename):
+    if str(filename).startswith("http"):
+        return filename
     return f"{UI_PATH}/portfolio/{filename}"
 
 
@@ -46,7 +48,7 @@ def gallery_card(entry):
         hover_start_sec = parse_content.timestamp_to_seconds(entry["hover_start"]) or 0
         return f'''    <a class="gallery-item gallery-video-card" href="builds/{entry['slug']}.html"
        data-keywords="{kw_list}" data-yt-id="{yt_id}" data-hover-start="{hover_start_sec}">
-      <img src="{thumb}" alt="{entry['title']}">
+      <img src="{thumb}" alt="{entry['title']}" onerror="this.onerror=null;this.src=this.src.replace('maxresdefault','hqdefault')">
       <span class="gallery-type-badge">{type_badge} &middot; Video</span>
       <span class="play-overlay" aria-hidden="true">{PLAY_SVG_INLINE}</span>
       <div class="gallery-cap"><strong>{entry['title']}</strong><br>{entry['description']}</div>

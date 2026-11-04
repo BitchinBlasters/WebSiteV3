@@ -476,15 +476,20 @@ CSS = """
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
-    /* phone banners: about one third shorter */
-    .hero{ min-height:0; padding:0; align-items:center; }
-    .hero-content{ padding:44px 20px; }
-    .page-banner{ min-height:173px; }
-    .page-banner-content{ padding:24px 20px; }
-    .page-banner-content .kicker{ margin-bottom:8px; }
-    .page-banner-content p{ margin-top:8px; font-size:15px; line-height:1.45; }
+    /* phone banners: compact, content centred up and down */
+    .hero{ min-height:338px; padding:0; align-items:center; }
+    .hero-content{ padding:30px 20px; }
+    .hero-content .kicker{ margin-bottom:10px; font-size:12px; }
+    .hero-content h1{ font-size:36px; }
+    .hero-content .tagline{ margin-top:10px; font-size:15px; line-height:1.45; }
+    .hero-actions{ margin-top:18px; gap:10px; }
+    .page-banner{ min-height:var(--ph, 0px); padding:0; }
+    .page-banner-content{ padding:20px 20px; }
+    .page-banner-content .kicker{ margin-bottom:6px; font-size:11px; }
+    .page-banner-content h1{ font-size:28px; line-height:1.1; }
+    .page-banner-content p{ margin-top:6px; font-size:14px; line-height:1.4; }
     :root{ --nav-h:auto; }
-    header.nav{ position:static; }
+    header.nav{ position:relative; z-index:100; }
     .brand-logo{ height:104px; }
     .nav-wrap{ justify-content:center; padding:16px 20px; }
     .brand{ width:100%; justify-content:center; margin-bottom:6px; }
@@ -738,6 +743,7 @@ BASE_SCRIPT = """
   // ---- Mobile nav-tile dropdown: first tap opens, second tap on the same tile navigates ----
   function isMobileNav(){ return window.matchMedia('(max-width: 900px)').matches; }
 
+  let tilesOpenedAtY = 0;
   function closeAllTiles(){
     document.querySelectorAll('.tile-label.tile-open').forEach(t => t.classList.remove('tile-open'));
     document.querySelectorAll('.tile-sub.tile-sub-open').forEach(s => s.classList.remove('tile-sub-open'));
@@ -763,6 +769,7 @@ BASE_SCRIPT = """
       closeAllTiles();
       label.classList.add('tile-open');
       sub.classList.add('tile-sub-open');
+      tilesOpenedAtY = window.scrollY;
     });
 
     sub.querySelectorAll('a').forEach(a => {
@@ -776,7 +783,7 @@ BASE_SCRIPT = """
   });
 
   // ---- Desktop nav-tile dropdown: opens on hover, then stays locked open ----
-  // (ignores the mouse leaving) until another tile opens or the page is scrolled 25%.
+  // (ignores the mouse leaving) until another tile opens or the page is scrolled 12.5%.
   document.querySelectorAll('.nav-tile').forEach((navTile) => {
     navTile.addEventListener('mouseenter', () => {
       if (isMobileNav()) return;
@@ -787,10 +794,14 @@ BASE_SCRIPT = """
   });
 
   window.addEventListener('scroll', () => {
-    if (isMobileNav()) return;
+    if (isMobileNav()) {
+      // phone: the menu closes as soon as the page is scrolled a short way
+      if (document.querySelector('.tile-label.tile-open') && Math.abs(window.scrollY - tilesOpenedAtY) > 20) closeAllTiles();
+      return;
+    }
     const scrollable = document.documentElement.scrollHeight - window.innerHeight;
     const pct = scrollable > 0 ? (window.scrollY / scrollable) : 0;
-    if (pct >= 0.25) closeAllTiles();
+    if (pct >= 0.125) closeAllTiles();
   });
 """
 
@@ -942,7 +953,7 @@ INDEX_BODY = f"""<section class="hero" id="top">
 # PAGE CONTENT: HOW WE ARE
 # ---------------------------------------------------------------------------
 WHO_WE_ARE_HERO_IMG, WHO_WE_ARE_HERO_CLASS = _hero("Who We Are Hero", HERO)
-HOW_WE_ARE_BODY = f"""<section class="page-banner">
+HOW_WE_ARE_BODY = f"""<section class="page-banner" style="--ph:289px">
   <img class="{WHO_WE_ARE_HERO_CLASS}" src="{WHO_WE_ARE_HERO_IMG}" alt="Ghillie-wrapped custom build in the field">
   <div class="page-banner-content">
     <span class="kicker">Who we are</span>
@@ -1003,7 +1014,7 @@ HOW_WE_ARE_BODY = f"""<section class="page-banner">
 # PAGE CONTENT: YOUR BUILD
 # ---------------------------------------------------------------------------
 YOUR_BUILD_HERO_IMG, YOUR_BUILD_HERO_CLASS = _hero("Your Build Hero", SIG)
-YOUR_BUILD_BODY = f"""<section class="page-banner">
+YOUR_BUILD_BODY = f"""<section class="page-banner" style="--ph:363px">
   <img class="{YOUR_BUILD_HERO_CLASS}" src="{YOUR_BUILD_HERO_IMG}" alt="Custom gel blaster build">
   <div class="page-banner-content">
     <span class="kicker">Your build</span>
@@ -1156,7 +1167,7 @@ YOUR_BUILD_SCRIPT = choice_grid_script() + """
 # PAGE CONTENT: 3D PRINTING
 # ---------------------------------------------------------------------------
 PRINTING_HERO_IMG, PRINTING_HERO_CLASS = _hero("3D Printing Hero", GAL2)
-PRINTING_BODY = f"""<section class="page-banner">
+PRINTING_BODY = f"""<section class="page-banner" style="--ph:245px">
   <img class="{PRINTING_HERO_CLASS}" src="{PRINTING_HERO_IMG}" alt="Custom build detail, close on hardware">
   <div class="page-banner-content">
     <span class="kicker">3D printing</span>
@@ -1227,7 +1238,7 @@ PRINTING_BODY = f"""<section class="page-banner">
 # PAGE CONTENT: STORE
 # ---------------------------------------------------------------------------
 STORE_HERO_IMG, STORE_HERO_CLASS = _hero("Store Hero", GAL2)
-STORE_BODY = f"""<section class="page-banner">
+STORE_BODY = f"""<section class="page-banner" style="--ph:272px">
   <img class="{STORE_HERO_CLASS}" src="{STORE_HERO_IMG}" alt="Field-ready custom build">
   <div class="page-banner-content">
     <span class="kicker">Store</span>
@@ -1282,7 +1293,7 @@ GALLERY_BODY = pics_vids.body_html(CONTENT['portfolio'], (_hdr_img, _hdr_cls), _
 # PAGE CONTENT: BRANDS WE ENDORSE
 # ---------------------------------------------------------------------------
 BRANDS_HERO_IMG, BRANDS_HERO_CLASS = _hero("Brands Hero", GAL1)
-BRANDS_BODY = f"""<section class="page-banner">
+BRANDS_BODY = f"""<section class="page-banner" style="--ph:254px">
   <img class="{BRANDS_HERO_CLASS}" src="{BRANDS_HERO_IMG}" alt="Custom build detail">
   <div class="page-banner-content">
     <span class="kicker">Brands we endorse</span>

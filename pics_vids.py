@@ -226,18 +226,23 @@ CSS = """
     .pv-title h1{ font-size:21px; }
     .pv-title p{ display:none; }
     .pv-controls{ grid-column:1; grid-row:2; justify-self:start; align-self:start; padding-bottom:0; gap:5px; }
-    .pv-fbtn{ height:28px; padding:0 8px; font-size:9.5px; --pc:8px; }
+    .pv-fbtn{ height:26px; padding:0 8px; font-size:9.5px; --pc:7px; }
     .pv-filter{ gap:5px; }
-    .pv-sbtn{ height:28px; width:28px; --pc:7px; }
+    .pv-sbtn{ height:26px; width:26px; --pc:7px; }
     .pv-tip{ display:none; }
-    .pv-jumps{ grid-column:2; grid-row:1 / 3; align-self:center; justify-self:end; padding:0; display:grid; grid-template-columns:repeat(2, 66px); grid-template-rows:repeat(2, 34px); gap:4px; }
-    .pv-jump{ height:34px; padding:0 2px; font-size:9.5px; --pc:8px; }
-    .pv-banner{ height:200px; min-height:200px; }
+    .pv-jumps{ grid-column:2; grid-row:1 / 3; align-self:center; justify-self:end; padding:0; display:grid; grid-template-columns:repeat(2, 66px); grid-template-rows:repeat(2, 26px); gap:4px; }
+    .pv-jump{ height:26px; padding:0 2px; font-size:9.5px; --pc:7px; }
+    .pv-banner{ height:160px; min-height:160px; flex-direction:column; align-items:stretch; justify-content:center; gap:10px; }
+    .pv-banner .page-banner-content{ padding:0 20px; }
+    .pv-banner .page-banner-content h2{ font-size:24px; line-height:1.1; }
+    .pv-banner .page-banner-content p{ margin-top:4px; font-size:13px; }
+    .pv-banner .page-banner-content .kicker{ margin-bottom:4px; }
     .pv-inner-banner{ justify-content:flex-start; }
     .pv-inner-banner{ flex-wrap:wrap; justify-content:flex-start; }
     .pv-banner-search{ flex:1 0 100%; max-width:none; }
-    .pv-banner-search input{ height:28px; }
-    .pv-banner-filters{ bottom:14px; }
+    .pv-banner-search input{ height:26px; }
+    .pv-banner-filters{ position:static; z-index:3; }
+    .pv-inner-banner{ padding:0 20px; }
     .pv-wrap{ padding:18px 0 34px; }
     .pv-wrap.wrap{ padding-left:0; padding-right:0; }
     .pv-track{ gap:0; scroll-snap-type:x mandatory; }
