@@ -31,17 +31,31 @@ TRI_LEFT = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><
 TRI_RIGHT = '<svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M7 4 L18 12 L7 20 Z" fill="currentColor"/></svg>'
 
 
+def _units(entries):
+    """Entries that share a Series stay together as one unit; everything else is a unit of one."""
+    units, seen = [], set()
+    for e in entries:
+        k = (e.get("series") or "").strip().lower()
+        if not k:
+            units.append([e])
+        elif k not in seen:
+            seen.add(k)
+            units.append([x for x in entries if (x.get("series") or "").strip().lower() == k])
+    return units
+
+
 def interleave(entries):
     """photo, video, photo, video ... Order within each kind is whatever came in (already by Priority).
+    Entries sharing a Series name sit side by side, and count as one step in the pattern.
     Leftovers of the longer kind simply continue at the end."""
-    photos = [e for e in entries if not e["youtube"]]
-    videos = [e for e in entries if e["youtube"]]
+    photos = _units([e for e in entries if not e["youtube"]])
+    videos = _units([e for e in entries if e["youtube"]])
     out = []
     for i in range(max(len(photos), len(videos))):
         if i < len(photos):
-            out.append(photos[i])
+            out.extend(photos[i])
         if i < len(videos):
-            out.append(videos[i])
+            out.extend(videos[i])
     return out
 
 

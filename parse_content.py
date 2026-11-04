@@ -51,7 +51,7 @@ def parse_txt(path):
 
 KNOWN_KEYS = {
     "Title", "Description", "Breakdown", "Type", "Location", "Keywords",
-    "YouTube", "Hover Start", "Brand", "Status", "Price", "Supplier Link", "Priority",
+    "YouTube", "Hover Start", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
 }
 
 
@@ -63,6 +63,24 @@ def parse_priority(raw):
         return float(str(raw).strip())
     except ValueError:
         return None
+
+
+def series_key(entry):
+    return (entry.get("series") or "").strip().lower()
+
+
+def group_series(entries):
+    """Keep entries that share a Series name next to each other. The group sits where its first
+    member would have been, and members keep their own order. Entries with no Series are untouched."""
+    out, done = [], set()
+    for e in entries:
+        k = series_key(e)
+        if not k:
+            out.append(e)
+        elif k not in done:
+            done.add(k)
+            out.extend(x for x in entries if series_key(x) == k)
+    return out
 
 
 def priority_sort_key(entry):
@@ -158,8 +176,10 @@ def parse_portfolio():
             "youtube": fields.get("YouTube") or None,
             "hover_start": fields.get("Hover Start") or None,
             "priority": parse_priority(fields.get("Priority")),
+            "series": (fields.get("Series") or "").strip(),
         })
     entries.sort(key=priority_sort_key)
+    entries = group_series(entries)
     return entries
 
 
@@ -197,8 +217,10 @@ def parse_product_folder(section_path, section_name):
             "images": ordered,
             "folder": item_path,
             "priority": parse_priority(fields.get("Priority")),
+            "series": (fields.get("Series") or "").strip(),
         })
     entries.sort(key=priority_sort_key)
+    entries = group_series(entries)
     return entries
 
 
@@ -241,8 +263,10 @@ def parse_brands():
             "supplier_link": fields.get("Supplier Link", ""),
             "logo": images[0] if images else None,
             "priority": parse_priority(fields.get("Priority")),
+            "series": (fields.get("Series") or "").strip(),
         })
     entries.sort(key=priority_sort_key)
+    entries = group_series(entries)
     return entries
 
 
