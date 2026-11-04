@@ -290,7 +290,7 @@ def detail_page_body(entry, kw_index, brand_lookup):
     <div id="products-used">{kw_buttons}</div>
     {gallery_imgs and f'<div class="gallery-grid" style="margin-top:32px;">{gallery_imgs}</div>'}
     {brand_section}
-    <p style="margin-top:40px;"><a href="../build-gallery.html" class="btn">&larr; Back to Pics &amp; Vids</a></p>
+    <p style="margin-top:40px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
   </div>
 </section>'''
 

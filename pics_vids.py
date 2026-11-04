@@ -124,7 +124,7 @@ def body_html(portfolio, header_hero, section_heroes):
     return f'''<div class="pv-header" id="pv-header">
   <div class="pv-inner pv-header-inner">
     <div class="pv-main">
-      <div class="pv-title"><h1>Pics &amp; Vids</h1><p>Builds, events, tech tips and reviews.</p></div>
+      <div class="pv-title"><h1>Gallery</h1><p>Builds, events, tech tips and reviews.</p></div>
       <nav class="pv-jumps" aria-label="Jump to a section">{jumps}</nav>
       <div class="pv-controls">
         {_filter_buttons("Show everywhere")}

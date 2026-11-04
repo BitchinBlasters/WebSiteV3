@@ -426,6 +426,10 @@ CSS = """
   .step-label .n{ color:var(--lime); font-family:'Big Shoulders Display'; font-weight:800; font-size:22px; }
   .step-label h4{ font-size:14px; letter-spacing:.05em; text-transform:uppercase; color:var(--text); font-weight:700; }
 
+
+  /* ---------- COMPACT SECTIONS (Your Build + 3D Printing) ---------- */
+  #dream-build, #level-up, #other-enquiries, #in-stock, #print-to-order, #custom-designs, #request-a-print{ padding:64px 0; }
+  .choice{ line-height:1.25; }
   /* ---------- SHOP / GENERIC BANNER ---------- */
   .promo-banner{ border:1px solid var(--line); background:var(--panel); padding:48px;
     display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;
@@ -521,6 +525,17 @@ CSS = """
     .card-row.cols-2, .card-row.cols-3{ grid-template-columns:1fr; }
     .stl-links{ grid-template-columns:1fr 1fr; }
     section{ padding:70px 0; }
+    #dream-build, #level-up, #other-enquiries, #in-stock, #print-to-order, #custom-designs, #request-a-print{ padding:30px 0; }
+    #dream-build .form-panel, #level-up .form-panel, #other-enquiries .form-panel{ padding:16px; }
+    .choice{ padding:7px 12px; font-size:13.5px; }
+    .choice-grid{ gap:6px; }
+    .step{ margin-bottom:18px; }
+    .step-label{ margin-bottom:8px; }
+    .field{ margin-bottom:12px; }
+    .field label{ margin-bottom:5px; }
+    .field textarea{ min-height:84px; }
+    #dream-build .section-head, #level-up .section-head, #other-enquiries .section-head, #in-stock .section-head, #print-to-order .section-head, #custom-designs .section-head, #request-a-print .section-head{ margin-bottom:20px; }
+    #dream-build .section-head p, #level-up .section-head p, #other-enquiries .section-head p, #in-stock .section-head p, #print-to-order .section-head p, #custom-designs .section-head p, #request-a-print .section-head p{ margin-top:8px; font-size:15px; }
     .form-panel{ padding:26px; }
     .promo-banner{ padding:32px; }
 
@@ -663,7 +678,7 @@ NAV_SECTIONS = [
         ("Spare Deals", "spare-deals"),
         ("Used Blasters", "used-blasters"),
     ]),
-    ("build-gallery.html", "build-gallery", "Pics &amp; Vids", [
+    ("build-gallery.html", "build-gallery", "Gallery", [
         ("Builds", "builds"),
         ("Events", "events"),
         ("Tech Tips", "tech-tips"),
@@ -1354,7 +1369,7 @@ pages = {
     "store.html": page("Store — Bitchin' Blasters",
                         "Gel balls and hop-ups, spare part deals, and used blasters.",
                         "store", STORE_BODY),
-    "build-gallery.html": page("Pics & Vids — Bitchin' Blasters",
+    "build-gallery.html": page("Gallery — Bitchin' Blasters",
                                 "Photos and videos: builds, events, tech tips and reviews.",
                                 "build-gallery", GALLERY_BODY,
                                 pics_vids.SCRIPT + render_dynamic.VIDEO_SYSTEM_SCRIPT),
