@@ -459,6 +459,13 @@
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
+    /* phone banners: about one third shorter */
+    .hero{ min-height:0; padding:0; align-items:center; }
+    .hero-content{ padding:44px 20px; }
+    .page-banner{ min-height:173px; }
+    .page-banner-content{ padding:24px 20px; }
+    .page-banner-content .kicker{ margin-bottom:8px; }
+    .page-banner-content p{ margin-top:8px; font-size:15px; line-height:1.45; }
     :root{ --nav-h:auto; }
     header.nav{ position:static; }
     .brand-logo{ height:104px; }
@@ -603,7 +610,7 @@
   }
 
 img.hero-photo-homepage-hero{ object-fit:cover; object-position:left top; transform-origin:0% 0%; }
-@media (max-width: 900px){ img.hero-photo-homepage-hero{ object-fit:cover; object-position:center top; transform-origin:50% 0%; transform:translate(0px, -20px) scale(0.8); } }
+@media (max-width: 900px){ img.hero-photo-homepage-hero{ object-fit:cover; object-position:center center; transform-origin:50% 50%; transform:scale(1.1); } }
 
 img.hero-photo-who-we-are-hero{ object-fit:cover; object-position:center center; transform-origin:50% 50%; }
 
@@ -655,19 +662,26 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-title p{ margin-top:6px; font-size:14px; color:var(--text-dim); }
   .pv-jumps{ grid-column:2; grid-row:1; display:flex; gap:8px; justify-self:end; align-self:end; padding-bottom:7px; }
   .pv-controls{ grid-column:2; grid-row:2; display:flex; gap:8px; justify-self:end; align-items:center; }
-  .pv-jump{ display:inline-flex; align-items:center; justify-content:center; height:30px; padding:0 14px; font-size:11px; font-weight:800;
-    letter-spacing:.05em; text-transform:uppercase; color:#08110a; background:var(--lime); border:1px solid var(--lime); white-space:nowrap; }
-  .pv-jump:hover{ background:#fff; border-color:#fff; }
-  .pv-filter{ display:flex; gap:6px; }
-  .pv-fbtn, .pv-sbtn{ height:36px; font:inherit; font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; cursor:pointer;
-    color:var(--text); background:rgba(8,12,8,.85); border:1px solid var(--lime); }
-  .pv-fbtn{ padding:0 15px; }
-  .pv-fbtn:hover, .pv-sbtn:hover{ background:rgba(42,255,0,.18); }
-  .pv-fbtn.on{ background:var(--lime); color:#08110a; }
-  .pv-sbtn{ position:relative; width:36px; display:inline-flex; align-items:center; justify-content:center; padding:0; flex:none; }
-  .pv-sbtn[data-tip]::after{ content:attr(data-tip); position:absolute; top:calc(100% + 8px); right:0; padding:5px 9px; font-size:11px; font-weight:800;
-    letter-spacing:.05em; text-transform:uppercase; color:#08110a; background:var(--lime); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s ease; }
-  .pv-sbtn[data-tip]:hover::after{ opacity:1; }
+  /* All Pics & Vids buttons are the site's .btn (clipped corners, glow, bolding text). These tweak size only. */
+  .pv-jump, .pv-fbtn, .pv-sbtn, .pv-bar-btn, .pv-arrow{ --pc:11px; font-family:inherit; }
+  .pv-jump::before, .pv-fbtn::before, .pv-sbtn::before, .pv-bar-btn::before, .pv-arrow::before{
+    clip-path:polygon(var(--pc) 0, 100% 0, 100% calc(100% - var(--pc)), calc(100% - var(--pc)) 100%, 0 100%, 0 var(--pc)); }
+  .pv-jump::after, .pv-fbtn::after, .pv-sbtn::after, .pv-bar-btn::after, .pv-arrow::after{
+    clip-path:polygon(calc(var(--pc) * .916) 0, 100% 0, 100% calc(100% - var(--pc) * .916), calc(100% - var(--pc) * .916) 100%, 0 100%, 0 calc(var(--pc) * .916)); }
+  .pv-jump{ height:30px; padding:0 14px; font-size:11px; justify-content:center; white-space:nowrap; --pc:9px; }
+  .pv-filter{ display:flex; gap:8px; }
+  .pv-fbtn{ height:36px; padding:0 15px; font-size:11.5px; }
+  .pv-sbtn{ width:36px; height:36px; padding:0; justify-content:center; flex:none; --pc:9px; }
+  .pv-fbtn.on, .pv-sbtn.on{ color:#08110a; font-weight:900; }
+  .pv-fbtn.on::before{ background:var(--lime); }
+  .pv-fbtn.on::after{
+    background-image:
+      radial-gradient(ellipse at center, rgba(42,255,0,1) 0%, rgba(42,255,0,0.65) 45%, rgba(42,255,0,0.25) 75%, rgba(42,255,0,0) 100%),
+      repeating-linear-gradient(0deg, rgba(42,255,0,.055) 0px, rgba(42,255,0,.055) 1px, transparent 1px, transparent 3px); }
+  .pv-tip{ position:absolute; top:calc(100% + 8px); right:0; padding:5px 9px; font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase;
+    color:#08110a; background:var(--lime); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:5;
+    clip-path:polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+  .pv-sbtn:hover .pv-tip{ opacity:1; }
   .pv-header.hide-filters .pv-controls{ display:none; }
   .pv-searchbar{ display:none; height:100%; align-items:center; gap:8px; }
   .pv-searchbar input{ flex:1; max-width:560px; height:40px; padding:0 14px; font-size:16px; color:var(--text); background:rgba(5,8,5,.9); border:1px solid var(--lime); border-radius:0; }
@@ -700,8 +714,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-counter{ display:none; }
   .pv-bar{ display:flex; align-items:center; gap:8px; margin-top:14px; }
   .pv-bar.inactive{ visibility:hidden; }
-  .pv-bar-btn{ width:26px; height:22px; display:inline-flex; align-items:center; justify-content:center; color:var(--lime); background:transparent; border:1px solid var(--line); cursor:pointer; padding:0; flex:none; }
-  .pv-bar-btn:hover:not(:disabled){ border-color:var(--lime); background:rgba(42,255,0,.12); }
+  .pv-bar-btn{ width:30px; height:24px; padding:0; justify-content:center; flex:none; color:var(--lime); --pc:7px; }
+  .pv-bar-btn:hover:not(:disabled){ color:#08110a; }
   .pv-bar-btn:disabled{ opacity:.3; cursor:default; }
   .pv-bar-track{ position:relative; flex:1; height:10px; background:var(--panel); border:1px solid var(--line); cursor:pointer; }
   .pv-bar-thumb{ position:absolute; left:0; top:0; bottom:0; background:var(--lime); opacity:.85; cursor:grab; touch-action:none; }
@@ -718,12 +732,13 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     .pv-title h1{ font-size:21px; }
     .pv-title p{ display:none; }
     .pv-controls{ grid-column:1; grid-row:2; justify-self:start; align-self:start; padding-bottom:0; gap:5px; }
-    .pv-fbtn{ height:28px; padding:0 8px; font-size:9.5px; }
-    .pv-sbtn{ height:28px; width:28px; }
-    .pv-sbtn[data-tip]::after{ display:none; }
+    .pv-fbtn{ height:28px; padding:0 8px; font-size:9.5px; --pc:8px; }
+    .pv-filter{ gap:5px; }
+    .pv-sbtn{ height:28px; width:28px; --pc:7px; }
+    .pv-tip{ display:none; }
     .pv-jumps{ grid-column:2; grid-row:1 / 3; align-self:center; justify-self:end; padding:0; display:grid; grid-template-columns:repeat(2, 66px); grid-template-rows:repeat(2, 34px); gap:4px; }
-    .pv-jump{ height:34px; padding:0 2px; font-size:9.5px; }
-    .pv-banner{ height:300px; }
+    .pv-jump{ height:34px; padding:0 2px; font-size:9.5px; --pc:8px; }
+    .pv-banner{ height:200px; min-height:200px; }
     .pv-inner-banner{ justify-content:flex-start; }
     .pv-inner-banner{ flex-wrap:wrap; justify-content:flex-start; }
     .pv-banner-search{ flex:1 0 100%; max-width:none; }
@@ -735,8 +750,9 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     .pv-slide{ flex:0 0 100%; }
     .pv-slide .gallery-item{ aspect-ratio:4/3; }
     .pv-bar{ display:none; }
-    .pv-arrow{ display:flex; position:absolute; top:calc(50% - 22px); z-index:4; width:34px; height:46px; align-items:center; justify-content:center;
-      color:var(--lime); background:rgba(5,8,5,.7); border:1px solid var(--lime); padding:0; cursor:pointer; }
+    .pv-arrow{ display:flex; position:absolute; top:calc(50% - 22px); z-index:4; width:34px; height:46px; justify-content:center;
+      color:var(--lime); padding:0; --pc:9px; }
+    .pv-arrow:hover:not(:disabled){ color:#08110a; }
     .pv-prev{ left:6px; } .pv-next{ right:6px; }
     .pv-arrow:disabled{ opacity:.25; }
     .pv-counter{ display:block; text-align:center; margin-top:10px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }
