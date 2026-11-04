@@ -414,6 +414,7 @@ SCRIPT = r"""
       catBtns.forEach(function(b){ b.classList.toggle('on', b.dataset.cat === state.cat); b.setAttribute('aria-pressed', b.classList.contains('on') ? 'true' : 'false'); });
       header.querySelectorAll('.pv-controls .pv-fbtn').forEach(function(b){ b.classList.toggle('on', b.dataset.kind === state.kind); });
       layout();
+      try { history.replaceState(null, '', state.cat ? '#' + state.cat : window.location.pathname + window.location.search); } catch (e) {}
     }
 
     function scrollToTop(){
@@ -454,6 +455,17 @@ SCRIPT = r"""
     // links from product pages (?keyword=xxx) open with that word searched
     const kw = (new URLSearchParams(window.location.search).get('keyword') || '').toLowerCase();
     if (kw) { qBox.value = kw; state.q = kw; header.classList.add('searching'); }
+
+    // menu links (build-gallery.html#builds etc.) behave exactly like pressing that category button
+    const ids = sections.map(function(s){ return s.dataset.section; });
+    function fromHash(){
+      const h = decodeURIComponent(window.location.hash.slice(1));
+      if (ids.indexOf(h) === -1) return false;
+      state.cat = h; apply(); scrollToTop(); return true;
+    }
+    window.addEventListener('hashchange', fromHash);
+    if (ids.indexOf(decodeURIComponent(window.location.hash.slice(1))) !== -1) state.cat = decodeURIComponent(window.location.hash.slice(1));
     apply();
+    if (state.cat) { scrollToTop(); window.addEventListener('load', scrollToTop); }
   })();
 """
