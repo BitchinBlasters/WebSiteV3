@@ -1,4 +1,5 @@
 Enabled: yes
+Popup: no
 Title: Jefftron Sale On Now
 Description:
 Button: View the Sale
