@@ -47,3 +47,17 @@ Priority: 1
 - Two entries with the same number are put in A-Z order by title.
 - Gaps are fine (1, 5, 10) so you can slot something in later. Decimals work too (`1.5`).
 - If the number is not a plain number (for example `top`), it is ignored and the entry is treated as having no Priority.
+
+## Series (optional — keep related entries side by side)
+
+Give two or more entries the same `Series:` line and they are kept next to each other, in their Priority order:
+
+```
+Series: Scylla HPA
+```
+
+- Use exactly the same words on every part (capitals do not matter).
+- On Pics & Vids a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
+- Everything else about each part stays the same: its own thumbnail, preview and page.
+- Works in every folder: portfolio, products, brands.
+- Give the parts the same Type so they land in the same section.
