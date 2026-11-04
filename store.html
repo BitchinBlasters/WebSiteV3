@@ -409,6 +409,10 @@
   .step-label .n{ color:var(--lime); font-family:'Big Shoulders Display'; font-weight:800; font-size:22px; }
   .step-label h4{ font-size:14px; letter-spacing:.05em; text-transform:uppercase; color:var(--text); font-weight:700; }
 
+
+  /* ---------- COMPACT SECTIONS (Your Build + 3D Printing) ---------- */
+  #dream-build, #level-up, #other-enquiries, #in-stock, #print-to-order, #custom-designs, #request-a-print{ padding:64px 0; }
+  .choice{ line-height:1.25; }
   /* ---------- SHOP / GENERIC BANNER ---------- */
   .promo-banner{ border:1px solid var(--line); background:var(--panel); padding:48px;
     display:flex; justify-content:space-between; align-items:center; gap:32px; flex-wrap:wrap;
@@ -504,6 +508,17 @@
     .card-row.cols-2, .card-row.cols-3{ grid-template-columns:1fr; }
     .stl-links{ grid-template-columns:1fr 1fr; }
     section{ padding:70px 0; }
+    #dream-build, #level-up, #other-enquiries, #in-stock, #print-to-order, #custom-designs, #request-a-print{ padding:30px 0; }
+    #dream-build .form-panel, #level-up .form-panel, #other-enquiries .form-panel{ padding:16px; }
+    .choice{ padding:7px 12px; font-size:13.5px; }
+    .choice-grid{ gap:6px; }
+    .step{ margin-bottom:18px; }
+    .step-label{ margin-bottom:8px; }
+    .field{ margin-bottom:12px; }
+    .field label{ margin-bottom:5px; }
+    .field textarea{ min-height:84px; }
+    #dream-build .section-head, #level-up .section-head, #other-enquiries .section-head, #in-stock .section-head, #print-to-order .section-head, #custom-designs .section-head, #request-a-print .section-head{ margin-bottom:20px; }
+    #dream-build .section-head p, #level-up .section-head p, #other-enquiries .section-head p, #in-stock .section-head p, #print-to-order .section-head p, #custom-designs .section-head p, #request-a-print .section-head p{ margin-top:8px; font-size:15px; }
     .form-panel{ padding:26px; }
     .promo-banner{ padding:32px; }
 
@@ -867,7 +882,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <span class="tile-border"></span>
       <span class="tile-inner"><span class="tile-gradient"></span></span>
       <span class="tile-glow"></span>
-      <span class="tile-text">Pics &amp; Vids</span>
+      <span class="tile-text">Gallery</span>
     </a>
     <div class="tile-sub">
       <span class="tile-sub-border"></span>
@@ -908,14 +923,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 
 <section id="online-store">
   <div class="wrap">
-    <div class="promo-banner sale-store-banner">
-      <div>
-        <span class="kicker">Sale on now</span>
-        <h3>Jefftron Sale On Now</h3>
-        
-      </div>
-      <a href="https://bitchinblasters.com.au/JefftronSale" target="_blank" rel="noopener" class="btn primary">View the Sale</a>
-    </div>
+    
     <div class="promo-banner construction-banner">
       <div>
         <span class="kicker">Online store</span>
