@@ -1,7 +1,7 @@
-Enabled: yes
+Enabled: no
 Popup: no
-Title: Jefftron Sale On Now
+Title:
 Description:
 Button: View the Sale
-Link: bitchinblasters.com.au/JefftronSale
+Link:
 Delay: 60
