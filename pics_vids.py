@@ -69,9 +69,9 @@ def _slide(entry):
 
 def _filter_buttons(aria):
     return (f'<div class="pv-filter" role="group" aria-label="{aria}">'
-            '<button type="button" class="pv-fbtn on" data-kind="all">All</button>'
-            '<button type="button" class="pv-fbtn" data-kind="photo">Photos</button>'
-            '<button type="button" class="pv-fbtn" data-kind="video">Videos</button>'
+            '<button type="button" class="btn pv-fbtn on" data-kind="all">All</button>'
+            '<button type="button" class="btn pv-fbtn" data-kind="photo">Photos</button>'
+            '<button type="button" class="btn pv-fbtn" data-kind="video">Videos</button>'
             '</div>')
 
 
@@ -89,22 +89,22 @@ def _section(sec, entries, hero):
       <p>{blurb}</p>
     </div>
     <div class="pv-banner-filters"><div class="pv-inner pv-inner-banner">
-      <div class="pv-banner-controls">{_filter_buttons(f"Show in {label}")}<button type="button" class="pv-sbtn pv-sec-open" aria-label="Search {label}" data-tip="Search">{SEARCH_SVG}</button></div>
-      <div class="pv-banner-search"><input type="search" class="pv-sec-q" placeholder="Search {label.lower()}" autocomplete="off" aria-label="Search {label}"><button type="button" class="pv-sbtn pv-sec-close" aria-label="Close search">{CLOSE_SVG}</button></div>
+      <div class="pv-banner-controls">{_filter_buttons(f"Show in {label}")}<button type="button" class="btn pv-sbtn pv-sec-open" aria-label="Search {label}">{SEARCH_SVG}<span class="pv-tip">Search</span></button></div>
+      <div class="pv-banner-search"><input type="search" class="pv-sec-q" placeholder="Search {label.lower()}" autocomplete="off" aria-label="Search {label}"><button type="button" class="btn pv-sbtn pv-sec-close" aria-label="Close search">{CLOSE_SVG}</button></div>
     </div></div>
   </div>
   <div class="wrap pv-wrap">
     <div class="pv-carousel"{' hidden' if not mine else ''}>
-      <button type="button" class="pv-arrow pv-prev" aria-label="Previous">{TRI_LEFT}</button>
+      <button type="button" class="btn pv-arrow pv-prev" aria-label="Previous">{TRI_LEFT}</button>
       <div class="pv-track" tabindex="0">
 {slides}
       </div>
-      <button type="button" class="pv-arrow pv-next" aria-label="Next">{TRI_RIGHT}</button>
+      <button type="button" class="btn pv-arrow pv-next" aria-label="Next">{TRI_RIGHT}</button>
       <div class="pv-counter" aria-live="polite"></div>
       <div class="pv-bar">
-        <button type="button" class="pv-bar-btn pv-bar-prev" aria-label="Scroll left">{TRI_LEFT}</button>
+        <button type="button" class="btn pv-bar-btn pv-bar-prev" aria-label="Scroll left">{TRI_LEFT}</button>
         <div class="pv-bar-track"><div class="pv-bar-thumb"></div></div>
-        <button type="button" class="pv-bar-btn pv-bar-next" aria-label="Scroll right">{TRI_RIGHT}</button>
+        <button type="button" class="btn pv-bar-btn pv-bar-next" aria-label="Scroll right">{TRI_RIGHT}</button>
       </div>
     </div>
     <p class="pv-empty"{'' if not mine else ' hidden'}>Content coming soon</p>
@@ -115,7 +115,7 @@ def _section(sec, entries, hero):
 def body_html(portfolio, header_hero, section_heroes):
     """header_hero: (img_path, css_class); section_heroes: list of (img_path, css_class), one per SECTIONS entry."""
     hp, hc = header_hero
-    jumps = "".join(f'<a class="pv-jump" href="#{sid}">{label}</a>' for sid, label, _l, _b in SECTIONS)
+    jumps = "".join(f'<a class="btn primary pv-jump" href="#{sid}">{label}</a>' for sid, label, _l, _b in SECTIONS)
     sections = "\n\n".join(_section(s, portfolio, h) for s, h in zip(SECTIONS, section_heroes))
     return f'''<div class="pv-header" id="pv-header">
   <img class="{hc}" src="{hp}" alt="">
@@ -125,12 +125,12 @@ def body_html(portfolio, header_hero, section_heroes):
       <nav class="pv-jumps" aria-label="Jump to a section">{jumps}</nav>
       <div class="pv-controls">
         {_filter_buttons("Show everywhere")}
-        <button type="button" class="pv-sbtn" id="pv-search-open" aria-label="Search" data-tip="Search">{SEARCH_SVG}</button>
+        <button type="button" class="btn pv-sbtn" id="pv-search-open" aria-label="Search">{SEARCH_SVG}<span class="pv-tip">Search</span></button>
       </div>
     </div>
     <div class="pv-searchbar">
       <input type="search" id="pv-q" placeholder="Search pics &amp; vids" autocomplete="off" aria-label="Search pics and vids">
-      <button type="button" class="pv-sbtn" id="pv-search-close" aria-label="Close search">{CLOSE_SVG}</button>
+      <button type="button" class="btn pv-sbtn" id="pv-search-close" aria-label="Close search">{CLOSE_SVG}</button>
     </div>
   </div>
 </div>
@@ -156,19 +156,26 @@ CSS = """
   .pv-title p{ margin-top:6px; font-size:14px; color:var(--text-dim); }
   .pv-jumps{ grid-column:2; grid-row:1; display:flex; gap:8px; justify-self:end; align-self:end; padding-bottom:7px; }
   .pv-controls{ grid-column:2; grid-row:2; display:flex; gap:8px; justify-self:end; align-items:center; }
-  .pv-jump{ display:inline-flex; align-items:center; justify-content:center; height:30px; padding:0 14px; font-size:11px; font-weight:800;
-    letter-spacing:.05em; text-transform:uppercase; color:#08110a; background:var(--lime); border:1px solid var(--lime); white-space:nowrap; }
-  .pv-jump:hover{ background:#fff; border-color:#fff; }
-  .pv-filter{ display:flex; gap:6px; }
-  .pv-fbtn, .pv-sbtn{ height:36px; font:inherit; font-size:11.5px; font-weight:800; letter-spacing:.05em; text-transform:uppercase; cursor:pointer;
-    color:var(--text); background:rgba(8,12,8,.85); border:1px solid var(--lime); }
-  .pv-fbtn{ padding:0 15px; }
-  .pv-fbtn:hover, .pv-sbtn:hover{ background:rgba(42,255,0,.18); }
-  .pv-fbtn.on{ background:var(--lime); color:#08110a; }
-  .pv-sbtn{ position:relative; width:36px; display:inline-flex; align-items:center; justify-content:center; padding:0; flex:none; }
-  .pv-sbtn[data-tip]::after{ content:attr(data-tip); position:absolute; top:calc(100% + 8px); right:0; padding:5px 9px; font-size:11px; font-weight:800;
-    letter-spacing:.05em; text-transform:uppercase; color:#08110a; background:var(--lime); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s ease; }
-  .pv-sbtn[data-tip]:hover::after{ opacity:1; }
+  /* All Pics & Vids buttons are the site's .btn (clipped corners, glow, bolding text). These tweak size only. */
+  .pv-jump, .pv-fbtn, .pv-sbtn, .pv-bar-btn, .pv-arrow{ --pc:11px; font-family:inherit; }
+  .pv-jump::before, .pv-fbtn::before, .pv-sbtn::before, .pv-bar-btn::before, .pv-arrow::before{
+    clip-path:polygon(var(--pc) 0, 100% 0, 100% calc(100% - var(--pc)), calc(100% - var(--pc)) 100%, 0 100%, 0 var(--pc)); }
+  .pv-jump::after, .pv-fbtn::after, .pv-sbtn::after, .pv-bar-btn::after, .pv-arrow::after{
+    clip-path:polygon(calc(var(--pc) * .916) 0, 100% 0, 100% calc(100% - var(--pc) * .916), calc(100% - var(--pc) * .916) 100%, 0 100%, 0 calc(var(--pc) * .916)); }
+  .pv-jump{ height:30px; padding:0 14px; font-size:11px; justify-content:center; white-space:nowrap; --pc:9px; }
+  .pv-filter{ display:flex; gap:8px; }
+  .pv-fbtn{ height:36px; padding:0 15px; font-size:11.5px; }
+  .pv-sbtn{ width:36px; height:36px; padding:0; justify-content:center; flex:none; --pc:9px; }
+  .pv-fbtn.on, .pv-sbtn.on{ color:#08110a; font-weight:900; }
+  .pv-fbtn.on::before{ background:var(--lime); }
+  .pv-fbtn.on::after{
+    background-image:
+      radial-gradient(ellipse at center, rgba(42,255,0,1) 0%, rgba(42,255,0,0.65) 45%, rgba(42,255,0,0.25) 75%, rgba(42,255,0,0) 100%),
+      repeating-linear-gradient(0deg, rgba(42,255,0,.055) 0px, rgba(42,255,0,.055) 1px, transparent 1px, transparent 3px); }
+  .pv-tip{ position:absolute; top:calc(100% + 8px); right:0; padding:5px 9px; font-size:11px; font-weight:800; letter-spacing:.05em; text-transform:uppercase;
+    color:#08110a; background:var(--lime); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:5;
+    clip-path:polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
+  .pv-sbtn:hover .pv-tip{ opacity:1; }
   .pv-header.hide-filters .pv-controls{ display:none; }
   .pv-searchbar{ display:none; height:100%; align-items:center; gap:8px; }
   .pv-searchbar input{ flex:1; max-width:560px; height:40px; padding:0 14px; font-size:16px; color:var(--text); background:rgba(5,8,5,.9); border:1px solid var(--lime); border-radius:0; }
@@ -201,8 +208,8 @@ CSS = """
   .pv-counter{ display:none; }
   .pv-bar{ display:flex; align-items:center; gap:8px; margin-top:14px; }
   .pv-bar.inactive{ visibility:hidden; }
-  .pv-bar-btn{ width:26px; height:22px; display:inline-flex; align-items:center; justify-content:center; color:var(--lime); background:transparent; border:1px solid var(--line); cursor:pointer; padding:0; flex:none; }
-  .pv-bar-btn:hover:not(:disabled){ border-color:var(--lime); background:rgba(42,255,0,.12); }
+  .pv-bar-btn{ width:30px; height:24px; padding:0; justify-content:center; flex:none; color:var(--lime); --pc:7px; }
+  .pv-bar-btn:hover:not(:disabled){ color:#08110a; }
   .pv-bar-btn:disabled{ opacity:.3; cursor:default; }
   .pv-bar-track{ position:relative; flex:1; height:10px; background:var(--panel); border:1px solid var(--line); cursor:pointer; }
   .pv-bar-thumb{ position:absolute; left:0; top:0; bottom:0; background:var(--lime); opacity:.85; cursor:grab; touch-action:none; }
@@ -219,12 +226,13 @@ CSS = """
     .pv-title h1{ font-size:21px; }
     .pv-title p{ display:none; }
     .pv-controls{ grid-column:1; grid-row:2; justify-self:start; align-self:start; padding-bottom:0; gap:5px; }
-    .pv-fbtn{ height:28px; padding:0 8px; font-size:9.5px; }
-    .pv-sbtn{ height:28px; width:28px; }
-    .pv-sbtn[data-tip]::after{ display:none; }
+    .pv-fbtn{ height:28px; padding:0 8px; font-size:9.5px; --pc:8px; }
+    .pv-filter{ gap:5px; }
+    .pv-sbtn{ height:28px; width:28px; --pc:7px; }
+    .pv-tip{ display:none; }
     .pv-jumps{ grid-column:2; grid-row:1 / 3; align-self:center; justify-self:end; padding:0; display:grid; grid-template-columns:repeat(2, 66px); grid-template-rows:repeat(2, 34px); gap:4px; }
-    .pv-jump{ height:34px; padding:0 2px; font-size:9.5px; }
-    .pv-banner{ height:300px; }
+    .pv-jump{ height:34px; padding:0 2px; font-size:9.5px; --pc:8px; }
+    .pv-banner{ height:200px; min-height:200px; }
     .pv-inner-banner{ justify-content:flex-start; }
     .pv-inner-banner{ flex-wrap:wrap; justify-content:flex-start; }
     .pv-banner-search{ flex:1 0 100%; max-width:none; }
@@ -236,8 +244,9 @@ CSS = """
     .pv-slide{ flex:0 0 100%; }
     .pv-slide .gallery-item{ aspect-ratio:4/3; }
     .pv-bar{ display:none; }
-    .pv-arrow{ display:flex; position:absolute; top:calc(50% - 22px); z-index:4; width:34px; height:46px; align-items:center; justify-content:center;
-      color:var(--lime); background:rgba(5,8,5,.7); border:1px solid var(--lime); padding:0; cursor:pointer; }
+    .pv-arrow{ display:flex; position:absolute; top:calc(50% - 22px); z-index:4; width:34px; height:46px; justify-content:center;
+      color:var(--lime); padding:0; --pc:9px; }
+    .pv-arrow:hover:not(:disabled){ color:#08110a; }
     .pv-prev{ left:6px; } .pv-next{ right:6px; }
     .pv-arrow:disabled{ opacity:.25; }
     .pv-counter{ display:block; text-align:center; margin-top:10px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }

@@ -476,6 +476,13 @@ CSS = """
 
   /* ---------- RESPONSIVE ---------- */
   @media (max-width: 900px){
+    /* phone banners: about one third shorter */
+    .hero{ min-height:0; padding:0; align-items:center; }
+    .hero-content{ padding:44px 20px; }
+    .page-banner{ min-height:173px; }
+    .page-banner-content{ padding:24px 20px; }
+    .page-banner-content .kicker{ margin-bottom:8px; }
+    .page-banner-content p{ margin-top:8px; font-size:15px; line-height:1.45; }
     :root{ --nav-h:auto; }
     header.nav{ position:static; }
     .brand-logo{ height:104px; }
@@ -899,7 +906,7 @@ INDEX_BODY = f"""<section class="hero" id="top">
   <div class="hero-content">
     <span class="kicker">Queensland &middot; Custom builds &amp; upgrades</span>
     <h1>Bitchin' Blasters</h1>
-    <p class="tagline">Built to how you play — not to how I think you should. Every build is a one-off, shaped around your loadout and your game.</p>
+    <p class="tagline">Built to how you play — not to how I think you should. Every build is a one-off, shaped around your loadout and your game style.</p>
     <div class="hero-actions">
       <a href="your-build.html#dream-build" class="btn primary">Start a Build</a>
       <a href="build-gallery.html" class="btn">See Work</a>
