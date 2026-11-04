@@ -109,3 +109,9 @@ Series: Scylla HPA
 - Everything else about each part stays the same: its own thumbnail, preview and page.
 - Works in every folder: portfolio, products, brands.
 - Give the parts the same Type so they land in the same section.
+
+
+## YouTube entries need no picture
+
+For an entry with a `YouTube:` line you can leave out the thumbnail picture. The site uses the video's own YouTube
+thumbnail. If you do add a picture with the same name as the txt file, that picture is used instead.
