@@ -100,8 +100,13 @@ def script(contact_email):
       if (!picks.length) { say('Please pick at least one thing you want to hear about.', true); return; }
       if (ENDPOINT) {
         say('Sending...');
-        const data = new URLSearchParams({ name: name, email: email, interests: picks.join(', ') });
-        fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: data })
+        const fields = { name: name, email: email, interests: picks.join(', '), _subject: 'News sign-up: ' + name };
+        const isFormspree = ENDPOINT.indexOf('formspree.io') !== -1;
+        const req = isFormspree
+          ? fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' }, body: JSON.stringify(fields) })
+              .then(function(r){ if (!r.ok) throw new Error('bad'); })
+          : fetch(ENDPOINT, { method: 'POST', mode: 'no-cors', body: new URLSearchParams(fields) });
+        req
           .then(function(){ form.reset(); say('Thanks! You are on the list. We will be in touch.'); })
           .catch(function(){ say('Something went wrong. Please email %s instead.', true); });
       } else {
