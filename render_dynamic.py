@@ -7,6 +7,7 @@ brand cards) into its existing pages, and to write the individual
 build/event detail pages as separate files.
 """
 
+import re
 import os
 import parse_content
 
@@ -37,6 +38,23 @@ def brand_img_src(filename):
 # ---------------------------------------------------------------------------
 # GALLERY GRID (build-gallery.html)
 # ---------------------------------------------------------------------------
+
+def breakdown_html(text):
+    """Blank lines in the Breakdown become paragraphs, single line breaks stay line breaks.
+    A short first line with no full stop (like "What's next") becomes a sub-heading."""
+    parts = [p.strip() for p in re.split(r"\n\s*\n", (text or "").strip()) if p.strip()]
+    out = []
+    for p in parts:
+        lines = [l.strip() for l in p.split("\n") if l.strip()]
+        if len(lines) > 1 and len(lines[0]) <= 40 and not re.search(r"[.!?:]$", lines[0]):
+            out.append(f"<h3>{lines[0]}</h3>")
+            lines = lines[1:]
+        elif len(lines) == 1 and len(lines[0]) <= 40 and not re.search(r"[.!?]$", lines[0]):
+            out.append(f"<h3>{lines[0]}</h3>")
+            continue
+        out.append("<p>" + "<br>".join(lines) + "</p>")
+    return "\n      ".join(out)
+
 
 def gallery_card(entry):
     kw_list = ",".join(k["kw"].lower() for k in entry["keywords"])
@@ -267,7 +285,7 @@ def detail_page_body(entry, kw_index, brand_lookup):
   <div class="wrap">
     <div class="detail-hero">{hero_media}</div>
     <div class="detail-breakdown">
-      <p>{entry['breakdown'] or entry['description']}</p>
+      {breakdown_html(entry['breakdown'] or entry['description'])}
     </div>
     <div id="products-used">{kw_buttons}</div>
     {gallery_imgs and f'<div class="gallery-grid" style="margin-top:32px;">{gallery_imgs}</div>'}

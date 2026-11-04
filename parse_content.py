@@ -36,14 +36,20 @@ def parse_txt(path):
         return fields
     with open(path, "r", encoding="utf-8") as f:
         for raw_line in f:
-            line = raw_line.rstrip("\n")
+            line = raw_line.rstrip("\r\n")
             if not line.strip():
+                # a blank line inside a Breakdown is a paragraph break
+                if last_key == "Breakdown" and not fields[last_key].endswith("\n\n"):
+                    fields[last_key] = fields[last_key].rstrip("\n") + "\n\n"
                 continue
             m = re.match(r"^([A-Za-z][A-Za-z0-9 ]*):\s*(.*)$", line)
             if m and m.group(1).strip() in KNOWN_KEYS:
                 key = m.group(1).strip()
                 fields[key] = m.group(2).strip()
                 last_key = key
+            elif last_key == "Breakdown":
+                cur = fields[last_key]
+                fields[last_key] = cur + (line.strip() if cur.endswith("\n\n") else "\n" + line.strip())
             elif last_key:
                 fields[last_key] += " " + line.strip()
     return fields
