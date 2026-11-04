@@ -651,21 +651,21 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 
 
   /* ---------- PICS & VIDS PAGE ---------- */
-  .pv-header [hidden], .pv-section [hidden]{ display:none !important; }
+  .pv-header [hidden], .pv-section [hidden], .pv-section[hidden]{ display:none !important; }
   .pv-inner{ max-width:var(--wrap); margin:0 auto; padding:0 24px; width:100%; }
   .pv-header{
     position:sticky; top:var(--pv-nav, 0px); z-index:90;
-    height:150px; background:#050805; border-bottom:2px solid var(--lime);
+    height:98px; background:linear-gradient(100deg,#0a110a,#050805); border-bottom:2px solid var(--lime);
     box-shadow:0 6px 20px rgba(0,0,0,.5);
   }
   .pv-header > img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; filter:saturate(.8); }
   .pv-header::after{ content:""; position:absolute; inset:0; background:linear-gradient(100deg, rgba(5,8,5,.94) 8%, rgba(5,8,5,.72) 60%, rgba(5,8,5,.6) 100%); }
   .pv-header-inner{ position:relative; z-index:2; height:100%; }
-  .pv-main{ height:100%; display:grid; grid-template-columns:1fr auto; grid-template-rows:1fr auto 1fr; column-gap:24px; align-items:center; }
-  .pv-title{ grid-column:1; grid-row:1 / 4; align-self:center; }
+  .pv-main{ height:100%; display:grid; grid-template-columns:1fr auto; grid-template-rows:auto auto; row-gap:8px; align-content:center; column-gap:24px; align-items:center; }
+  .pv-title{ grid-column:1; grid-row:1 / 3; align-self:center; }
   .pv-title h1{ font-size:clamp(30px,4.2vw,48px); line-height:1.05; }
   .pv-title p{ margin-top:6px; font-size:14px; color:var(--text-dim); }
-  .pv-jumps{ grid-column:2; grid-row:1; display:flex; gap:8px; justify-self:end; align-self:end; padding-bottom:7px; }
+  .pv-jumps{ grid-column:2; grid-row:1; display:flex; gap:8px; justify-self:end; align-self:center; }
   .pv-controls{ grid-column:2; grid-row:2; display:flex; gap:8px; justify-self:end; align-items:center; }
   /* All Pics & Vids buttons are the site's .btn (clipped corners, glow, bolding text). These tweak size only. */
   .pv-jump, .pv-fbtn, .pv-sbtn, .pv-bar-btn, .pv-arrow{ --pc:11px; font-family:inherit; }
@@ -677,9 +677,9 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-filter{ display:flex; gap:8px; }
   .pv-fbtn{ height:36px; padding:0 15px; font-size:11.5px; }
   .pv-sbtn{ width:36px; height:36px; padding:0; justify-content:center; flex:none; --pc:9px; }
-  .pv-fbtn.on, .pv-sbtn.on{ color:#08110a; font-weight:900; }
-  .pv-fbtn.on::before{ background:var(--lime); }
-  .pv-fbtn.on::after{
+  .pv-fbtn.on, .pv-sbtn.on, .pv-jump.on{ color:#08110a; font-weight:900; }
+  .pv-fbtn.on::before, .pv-jump.on::before{ background:var(--lime); }
+  .pv-fbtn.on::after, .pv-jump.on::after{
     background-image:
       radial-gradient(ellipse at center, rgba(42,255,0,1) 0%, rgba(42,255,0,0.65) 45%, rgba(42,255,0,0.25) 75%, rgba(42,255,0,0) 100%),
       repeating-linear-gradient(0deg, rgba(42,255,0,.055) 0px, rgba(42,255,0,.055) 1px, transparent 1px, transparent 3px); }
@@ -687,7 +687,6 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     color:#08110a; background:var(--lime); white-space:nowrap; opacity:0; pointer-events:none; transition:opacity .15s ease; z-index:5;
     clip-path:polygon(6px 0, 100% 0, 100% calc(100% - 6px), calc(100% - 6px) 100%, 0 100%, 0 6px); }
   .pv-sbtn:hover .pv-tip{ opacity:1; }
-  .pv-header.hide-filters .pv-controls{ display:none; }
   .pv-searchbar{ display:none; height:100%; align-items:center; gap:8px; }
   .pv-searchbar input{ flex:1; max-width:560px; height:40px; padding:0 14px; font-size:16px; color:var(--text); background:rgba(5,8,5,.9); border:1px solid var(--lime); border-radius:0; }
   .pv-searchbar input:focus{ outline:2px solid var(--lime); }
@@ -695,9 +694,12 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-header.searching .pv-searchbar{ display:flex; }
 
   .pv-section{ padding:0; border-bottom:none; scroll-margin-top:var(--pv-stack, 150px); }
-  .pv-banner{ height:300px; min-height:300px; }
+  .pv-banner{ height:104px; min-height:104px; }
+  .pv-title-btn{ font:inherit; color:inherit; letter-spacing:inherit; text-transform:inherit; background:none; border:0; padding:0; cursor:pointer; text-align:left; }
+  .pv-title-btn:hover, .pv-title-btn:focus-visible{ color:var(--lime); text-shadow:0 0 14px rgba(42,255,0,.55); }
+  .pv-banner-x{ position:absolute; top:10px; right:max(14px, calc((100% - var(--wrap)) / 2 + 24px)); z-index:4; width:32px; height:32px; padding:0; justify-content:center; --pc:8px; }
   .pv-banner .page-banner-content{ padding:24px; }
-  .pv-banner-filters{ position:absolute; left:0; right:0; bottom:18px; z-index:3; }
+  .pv-banner-filters{ position:absolute; left:0; right:0; top:50%; transform:translateY(-50%); z-index:3; }
   .pv-inner-banner{ display:flex; justify-content:flex-end; }
   .pv-banner-controls{ display:flex; gap:8px; align-items:center; }
   .pv-banner-search{ display:none; align-items:center; gap:8px; width:100%; max-width:420px; }
@@ -707,13 +709,12 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-banner-filters.searching .pv-banner-search{ display:flex; }
   .pv-inner-banner{ align-items:center; gap:8px; }
   .pv-banner-search{ order:-1; width:auto; flex:0 1 300px; }
-  body.pv-master-on .pv-banner-filters{ display:none; }
 
   .pv-wrap{ padding-top:26px; padding-bottom:46px; }
   .pv-carousel{ position:relative; }
   .pv-track{ display:flex; gap:14px; overflow-x:auto; scroll-snap-type:x proximity; scrollbar-width:none; -webkit-overflow-scrolling:touch; }
   .pv-track::-webkit-scrollbar{ display:none; }
-  .pv-slide{ flex:0 0 calc((100% - 3 * 14px) / 3.4); scroll-snap-align:start; min-width:0; }
+  .pv-slide{ flex:0 0 calc((100% - 3 * 14px) / 4); scroll-snap-align:start; min-width:0; }
   .pv-slide .gallery-item{ aspect-ratio:4/3; display:block; }
   .pv-arrow{ display:none; }
   .pv-counter{ display:none; }
@@ -725,14 +726,26 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   .pv-bar-track{ position:relative; flex:1; height:10px; background:var(--panel); border:1px solid var(--line); cursor:pointer; }
   .pv-bar-thumb{ position:absolute; left:0; top:0; bottom:0; background:var(--lime); opacity:.85; cursor:grab; touch-action:none; }
   .pv-bar-thumb:active{ cursor:grabbing; }
+
+  /* one category showing: vertical tile grid instead of a carousel */
+  .pv-section.pv-grid .pv-track{ display:grid; grid-template-columns:repeat(4, minmax(0,1fr)); gap:14px; overflow:visible; scroll-snap-type:none; }
+  .pv-section.pv-grid .pv-slide{ flex:none; width:auto; }
+  .pv-section.pv-grid .pv-bar, .pv-section.pv-grid .pv-arrow, .pv-section.pv-grid .pv-counter{ display:none !important; }
   .pv-empty{ padding:46px 0; text-align:center; font-size:15px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); border:1px dashed var(--line); }
 
   @media (hover:none){ .pv-slide .gallery-cap{ opacity:1; } }
+  /* touch screens keep :hover after a tap, so un-selected buttons must not stay lit */
+  @media (hover:none){
+    .pv-jump:not(.on):hover, .pv-fbtn:not(.on):hover, .pv-sbtn:not(.on):hover{ transform:none; font-weight:700; color:var(--text); }
+    .pv-jump:not(.on):hover::before, .pv-fbtn:not(.on):hover::before, .pv-sbtn:not(.on):hover::before{ background:rgba(42,255,0,.4); }
+    .pv-jump:not(.on):hover::after, .pv-fbtn:not(.on):hover::after, .pv-sbtn:not(.on):hover::after{
+      background-image:repeating-linear-gradient(0deg, rgba(42,255,0,.055) 0px, rgba(42,255,0,.055) 1px, transparent 1px, transparent 3px); }
+  }
 
   @media (max-width: 900px){
-    .pv-header{ top:0; height:90px; overflow:hidden; }
+    .pv-header{ top:0; height:72px; overflow:hidden; }
     .pv-inner{ padding:0 12px; }
-    .pv-main{ grid-template-columns:1fr auto; grid-template-rows:1fr auto; column-gap:10px; row-gap:0; }
+    .pv-main{ grid-template-columns:1fr auto; grid-template-rows:auto auto; align-content:center; column-gap:10px; row-gap:0; }
     .pv-title{ grid-column:1; grid-row:1; align-self:end; padding-bottom:5px; }
     .pv-title h1{ font-size:21px; }
     .pv-title p{ display:none; }
@@ -743,7 +756,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     .pv-tip{ display:none; }
     .pv-jumps{ grid-column:2; grid-row:1 / 3; align-self:center; justify-self:end; padding:0; display:grid; grid-template-columns:repeat(2, 66px); grid-template-rows:repeat(2, 26px); gap:4px; }
     .pv-jump{ height:26px; padding:0 2px; font-size:9.5px; --pc:7px; }
-    .pv-banner{ height:160px; min-height:160px; flex-direction:column; align-items:stretch; justify-content:center; gap:10px; }
+    .pv-banner{ height:auto; min-height:70px; padding:12px 0; flex-direction:column; align-items:stretch; justify-content:center; gap:10px; }
     .pv-banner .page-banner-content{ padding:0 20px; }
     .pv-banner .page-banner-content h2{ font-size:24px; line-height:1.1; }
     .pv-banner .page-banner-content p{ margin-top:4px; font-size:13px; }
@@ -752,12 +765,12 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     .pv-inner-banner{ flex-wrap:wrap; justify-content:flex-start; }
     .pv-banner-search{ flex:1 0 100%; max-width:none; }
     .pv-banner-search input{ height:26px; }
-    .pv-banner-filters{ position:static; z-index:3; }
+    .pv-banner-x{ top:8px; right:12px; width:28px; height:28px; --pc:7px; }
     .pv-inner-banner{ padding:0 20px; }
     .pv-wrap{ padding:18px 0 34px; }
     .pv-wrap.wrap{ padding-left:0; padding-right:0; }
-    .pv-track{ gap:0; scroll-snap-type:x mandatory; }
-    .pv-slide{ flex:0 0 100%; }
+    .pv-track{ gap:8px; padding:0 10px; scroll-padding:0 10px; scroll-snap-type:x mandatory; }
+    .pv-slide{ flex:0 0 calc((100% - 8px - 20px) / 2); }
     .pv-slide .gallery-item{ aspect-ratio:4/3; }
     .pv-bar{ display:none; }
     .pv-arrow{ display:flex; position:absolute; top:calc(50% - 22px); z-index:4; width:34px; height:46px; justify-content:center;
@@ -768,6 +781,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     .pv-counter{ display:block; text-align:center; margin-top:10px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--text-dim); }
     .pv-empty{ margin:0 12px; }
     .pv-searchbar input{ max-width:none; }
+    .pv-section.pv-grid .pv-wrap{ padding-left:10px; padding-right:10px; }
+    .pv-section.pv-grid .pv-track{ grid-template-columns:repeat(2, minmax(0,1fr)); gap:8px; scroll-snap-type:none; }
   }
 </style>
 </head>
@@ -874,7 +889,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   </div>
 </header>
 <main>
-<section class="page-banner" style="--ph:254px">
+<section class="page-banner" style="--ph:245px">
   <img class="hero-photo-brands-hero" src="images/gallery-1.jpg" alt="Custom build detail">
   <div class="page-banner-content">
     <span class="kicker">Brands we endorse</span>
