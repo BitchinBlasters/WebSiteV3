@@ -68,6 +68,7 @@ def _slide(entry):
     m = re.search(r'\s*<div class="gallery-cap">(.*?)</div>', card, re.S)
     cap = m.group(1) if m else ""
     card = card.replace(m.group(0), "") if m else card
+    card = re.sub(r'\s*<span class="gallery-type-badge">.*?</span>', '', card, flags=re.S)
     cap = cap.replace("<br>", "</strong><span>", 1) + "</span>" if "<br>" in cap else cap
     cap = cap.replace("</strong></strong>", "</strong>")
     return (f'<div class="pv-slide" data-kind="{kind}" data-search="{search}">\n'
