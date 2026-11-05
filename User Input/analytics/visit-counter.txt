@@ -1,1 +1,1 @@
-Endpoint: https://script.google.com/macros/s/AKfycbyoxs0S8l9h7yvOAG9-ixo1ajWvoeTsfU-qWrfoWiOpnziSlodigOqN7zeZsH2FEJc/exec
+Endpoint: https://script.google.com/macros/s/AKfycbyoKYWM77omHqiNPdr3SmHC3bTO4zoH5TucLSeBG_9mLlBPSNCNI1MJc7fZ_VY1SaeCBA/exec
