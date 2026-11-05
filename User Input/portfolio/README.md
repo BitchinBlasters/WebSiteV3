@@ -1,6 +1,6 @@
-# /portfolio/ — Build Gallery
+# /portfolio/ — Gallery
 
-Feeds the **Build Gallery** page. Two kinds of entry: a **Build** (a finished
+Feeds the **Gallery** page. Two kinds of entry: a **Build** (a finished
 blaster you made) or an **Event** (a skirmish day, meetup, etc). Photos and
 video-highlight entries both live here, side by side.
 
@@ -61,6 +61,31 @@ Keywords: flash-bang (1:32), 3d-printed (0:45), cqb-loadout (2:10)
   always plays for exactly 20 seconds and then pauses. This is fixed
   site-wide, not something you set per video.
 
+## Writing the Breakdown (paragraphs and sub-headings)
+
+```
+Breakdown: The first paragraph of the story.
+It can run over several lines and stays one paragraph.
+
+Parts List
+Next paragraph, with a short heading line above it.
+
+Final paragraph.
+```
+
+- A **blank line** starts a new paragraph.
+- A single line break inside a paragraph stays a line break.
+- A **short line on its own** (40 characters or fewer, not ending in a full stop, comma or similar) becomes a **sub-heading**.
+- `Description` is different: one line, shown under the tile on the Gallery.
+
+## How the Gallery shows entries
+
+- Under every tile: the **Title** (bold) and the **Description** (small, tan, two lines at most, then `...`).
+- All categories showing: each category is a sideways carousel (4 tiles wide on a computer, 2 on a phone).
+- One category open: a grid of tiles (4 wide on a computer, 2 on a phone).
+- Header buttons: pick a category (click again to return to all); filter **Photos** or **Videos** (click again to return to All); search.
+- Each category banner's title is a button, with an X in the corner to return to all categories.
+
 ## Required fields
 
 `Title`, `Type` are always required. `Breakdown` is required for the full
@@ -89,10 +114,10 @@ Priority: 1
 - If the number is not a plain number (for example `top`), it is ignored and the entry is treated as having no Priority.
 
 
-## Type decides which Pics & Vids section it appears in
+## Type decides which Gallery category it appears in
 
 `Type:` must be one of **Build**, **Event**, **Tech Tip** or **Review**. Each goes into the matching
-section of the Pics & Vids page. An entry with any other Type is not posted (the rebuild log says so).
+category of the Gallery page. An entry with any other Type is not posted (the rebuild log says so).
 Photos and videos alternate within each section, ordered by `Priority:`. A section with nothing in it
 shows "Content coming soon".
 
@@ -105,7 +130,7 @@ Series: Scylla HPA
 ```
 
 - Use exactly the same words on every part (capitals do not matter).
-- On Pics & Vids a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
+- On the Gallery a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
 - Everything else about each part stays the same: its own thumbnail, preview and page.
 - Works in every folder: portfolio, products, brands.
 - Give the parts the same Type so they land in the same section.
