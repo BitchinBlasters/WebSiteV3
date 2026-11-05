@@ -57,8 +57,25 @@ def parse_txt(path):
 
 KNOWN_KEYS = {
     "Title", "Description", "Breakdown", "Type", "Location", "Keywords",
-    "YouTube", "Hover Start", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
+    "YouTube", "Hover Start", "Highlight Length", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
 }
+
+
+def parse_length(raw, default=20):
+    """Highlight Length: "60", "60s", "1:00" -> seconds. Blank/invalid -> default (20)."""
+    raw = (raw or "").strip().lower().rstrip("s").strip()
+    if not raw:
+        return default
+    try:
+        if ":" in raw:
+            sec = 0
+            for x in raw.split(":"):
+                sec = sec * 60 + int(x)
+        else:
+            sec = int(float(raw))
+    except ValueError:
+        return default
+    return min(max(sec, 5), 600)
 
 
 def parse_priority(raw):
@@ -186,6 +203,7 @@ def parse_portfolio():
             "images": images,
             "youtube": fields.get("YouTube") or None,
             "hover_start": fields.get("Hover Start") or None,
+            "highlight_length": parse_length(fields.get("Highlight Length")),
             "priority": parse_priority(fields.get("Priority")),
             "series": (fields.get("Series") or "").strip(),
         })

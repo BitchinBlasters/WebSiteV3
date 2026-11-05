@@ -39,10 +39,57 @@ def brand_img_src(filename):
 # GALLERY GRID (build-gallery.html)
 # ---------------------------------------------------------------------------
 
-def breakdown_html(text):
+_TS = r"\d{1,2}:\d{2}(?::\d{2})?"
+
+
+def _ts_secs(ts):
+    n = [int(x) for x in ts.split(":")]
+    sec = 0
+    for x in n:
+        sec = sec * 60 + x
+    return sec
+
+
+def _chapters_html(items, has_video):
+    rows = []
+    for ts, label in items:
+        if has_video:
+            t = f'<button type="button" class="chapter-ts" data-seek="{_ts_secs(ts)}">{ts}</button>'
+        else:
+            t = f'<span class="chapter-ts">{ts}</span>'
+        rows.append(f"<li>{t}<span class=\"chapter-label\">{label}</span></li>")
+    return '<h3>Chapters</h3>\n      <ul class="chapters">' + "".join(rows) + "</ul>"
+
+
+def _split_long(text, limit=260):
+    """Break one long run of text into short paragraphs at sentence ends."""
+    sents = re.split(r'(?<=[.!?])\s+(?=[A-Z"\u201c(])', text.strip())
+    paras, cur = [], ""
+    for s in sents:
+        if cur and len(cur) + len(s) > limit:
+            paras.append(cur)
+            cur = s
+        else:
+            cur = (cur + " " + s).strip()
+    if cur:
+        paras.append(cur)
+    return paras
+
+
+def breakdown_html(text, has_video=False):
     """Blank lines in the Breakdown become paragraphs, single line breaks stay line breaks.
-    A short first line with no full stop (like "What's next") becomes a sub-heading."""
-    parts = [p.strip() for p in re.split(r"\n\s*\n", (text or "").strip()) if p.strip()]
+    A short first line with no full stop (like "What's next") becomes a sub-heading.
+    A "Chapters:" list (inline or one per line) becomes a timestamp list, and
+    long unbroken text is split into readable paragraphs."""
+    text = (text or "").strip()
+    chapters = []
+    m = re.search(r"(?:^|\s)Chapters?\s*:\s*", text, re.I)
+    if m:
+        tail = text[m.end():]
+        text = text[:m.start()].strip()
+        for cm in re.finditer(rf"({_TS})\s*[-\u2013:]?\s*(.+?)(?=[,;\n]\s*{_TS}\b|\s*$)", tail, re.S):
+            chapters.append((cm.group(1), cm.group(2).strip().rstrip(",;. ").replace("\n", " ")))
+    parts = [p.strip() for p in re.split(r"\n\s*\n", text) if p.strip()]
     out = []
     for p in parts:
         lines = [l.strip() for l in p.split("\n") if l.strip()]
@@ -52,7 +99,12 @@ def breakdown_html(text):
         elif len(lines) == 1 and len(lines[0]) <= 40 and not re.search(r"[.!?]$", lines[0]):
             out.append(f"<h3>{lines[0]}</h3>")
             continue
-        out.append("<p>" + "<br>".join(lines) + "</p>")
+        if len(lines) == 1 and len(lines[0]) > 300:
+            out.extend("<p>" + x + "</p>" for x in _split_long(lines[0]))
+        else:
+            out.append("<p>" + "<br>".join(lines) + "</p>")
+    if chapters:
+        out.append(_chapters_html(chapters, has_video))
     return "\n      ".join(out)
 
 
@@ -225,10 +277,11 @@ def brand_section_html(entry, kw_index, brand_lookup):
     </div>'''
 
 
-def video_block_html(entry):
+def video_block_html(entry, kw_index=None, portfolio=None):
     if not entry["youtube"]:
         return ""
     yt_id = extract_youtube_id(entry["youtube"])
+    related_html = related_tiles_html(entry, kw_index or {}, portfolio)
     hover_start_sec = parse_content.timestamp_to_seconds(entry["hover_start"]) or 0
     kw_timestamps = [
         {"label": k["kw"], "sec": parse_content.timestamp_to_seconds(k["ts"])}
@@ -238,19 +291,38 @@ def video_block_html(entry):
         f'<button class="btn small keyword-jump-btn" data-seek="{kt["sec"]}">{kt["label"]} ({entry["hover_start"] if False else ""}{_fmt_ts(kt["sec"])})</button>'
         for kt in kw_timestamps
     )
-    return f'''<div class="video-highlight-player" data-yt-id="{yt_id}" data-start="{hover_start_sec}" id="detail-video">
+    return f'''<div class="video-highlight-player" data-yt-id="{yt_id}" data-start="{hover_start_sec}" data-duration="{entry.get('highlight_length') or 20}" id="detail-video">
       <div class="video-highlight-frame"></div>
       <div class="video-pause-overlay" hidden>
-        <div class="video-pause-buttons">
-          <a class="btn primary" href="https://youtube.com/watch?v={yt_id}" target="_blank" rel="noopener">Watch in Full</a>
-          <a class="btn" href="#products-used">Buy Products</a>
+        <div class="vpo-left">
+          <a class="btn primary video-full-btn" href="https://youtube.com/watch?v={yt_id}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span>Watch In Full</span>
+          </a>
         </div>
-        <a class="video-channel-link" href="{{CHANNEL_URL}}" target="_blank" rel="noopener">
-          <span class="video-channel-name">{{CHANNEL_NAME}}</span>
-        </a>
+        <div class="vpo-right">{related_html}</div>
       </div>
     </div>
     <div class="video-jump-row">{jump_buttons}</div>'''
+
+
+def related_tiles_html(entry, kw_index, portfolio):
+    """Thin tiles for every product and other build/video sharing this entry's keywords."""
+    tiles, seen = [], set()
+    for k in entry["keywords"]:
+        for pr in kw_index.get(k["kw"].lower(), []):
+            key = ("p", pr["section"], pr["slug"])
+            if key in seen:
+                continue
+            seen.add(key)
+            tiles.append(f'<a class="vpo-tile" href="{_product_link(pr)}"><span class="vpo-tag">Product</span><span class="vpo-name">{pr["title"]}</span></a>')
+    mine = {k["kw"].lower() for k in entry["keywords"]}
+    for o in portfolio or []:
+        if o["slug"] == entry["slug"] or o.get("category") != "builds":
+            continue
+        if mine & {k["kw"].lower() for k in o["keywords"]}:
+            tiles.append(f'<a class="vpo-tile" href="../builds/{o["slug"]}.html"><span class="vpo-tag">Build</span><span class="vpo-name">{o["title"]}</span></a>')
+    return "".join(tiles) or '<span class="vpo-empty">More from Bitchin\' Blasters in the Gallery</span>'
 
 
 def _fmt_ts(seconds):
@@ -260,13 +332,13 @@ def _fmt_ts(seconds):
     return f"{m}:{s:02d}"
 
 
-def detail_page_body(entry, kw_index, brand_lookup):
+def detail_page_body(entry, kw_index, brand_lookup, portfolio=None):
     gallery_imgs = "\n".join(
         f'<div class="gallery-item"><img src="{portfolio_img_src(img)}" alt="{entry["title"]}"></div>'
         for img in entry["images"][1:]  # first image already shown as hero/video
     )
     location_line = f'<p class="kicker">{entry["location"]}</p>' if entry.get("location") else ""
-    hero_media = video_block_html(entry) if entry["youtube"] else (
+    hero_media = video_block_html(entry, kw_index, portfolio) if entry["youtube"] else (
         f'<img src="{portfolio_img_src(entry["images"][0])}" alt="{entry["title"]}" class="detail-hero-img">'
         if entry["images"] else ""
     )
@@ -274,9 +346,8 @@ def detail_page_body(entry, kw_index, brand_lookup):
     kw_buttons = keyword_buttons_html(entry, kw_index)
     brand_section = brand_section_html(entry, kw_index, brand_lookup) if entry.get("category") == "builds" else ""
 
-    return f'''<section class="page-banner" style="min-height:180px;">
+    return f'''<section class="page-banner detail-banner">
   <div class="page-banner-content">
-    <span class="kicker">{entry['type']}</span>
     <h1>{entry['title']}</h1>
     {location_line}
   </div>
@@ -285,7 +356,7 @@ def detail_page_body(entry, kw_index, brand_lookup):
   <div class="wrap">
     <div class="detail-hero">{hero_media}</div>
     <div class="detail-breakdown">
-      {breakdown_html(entry['breakdown'] or entry['description'])}
+      {breakdown_html(entry['breakdown'] or entry['description'], bool(entry['youtube']))}
     </div>
     <div id="products-used">{kw_buttons}</div>
     {gallery_imgs and f'<div class="gallery-grid" style="margin-top:32px;">{gallery_imgs}</div>'}
@@ -306,7 +377,7 @@ def write_detail_pages(output_dir, page_fn, data):
         if old_page.endswith(".html"):
             os.remove(os.path.join(builds_dir, old_page))
     for entry in data["portfolio"]:
-        body = detail_page_body(entry, data["kw_index"], data["brand_lookup"])
+        body = detail_page_body(entry, data["kw_index"], data["brand_lookup"], data["portfolio"])
         # detail pages live one level deeper (builds/), so relative asset
         # paths need "../" — patch that in for nav/logo/footer links.
         html = page_fn(f"{entry['title']} — Bitchin' Blasters", entry["description"],
@@ -331,7 +402,7 @@ GALLERY_FILTER_SCRIPT = """
 
 VIDEO_SYSTEM_SCRIPT = """
   // ---- Shared YouTube highlight-clip system ----
-  const HIGHLIGHT_DURATION = 20; // seconds, fixed site-wide, not configurable per video
+  const HIGHLIGHT_DURATION = 20; // default seconds; a video page can override with Highlight Length in its txt
 
   let ytAPIReady = false;
   let ytAPIQueue = [];
@@ -362,7 +433,7 @@ VIDEO_SYSTEM_SCRIPT = """
       capTimer = setTimeout(() => {
         if (player && player.pauseVideo) player.pauseVideo();
         if (options.onCap) options.onCap();
-      }, HIGHLIGHT_DURATION * 1000);
+      }, (options.duration || HIGHLIGHT_DURATION) * 1000);
     }
 
     function create(muted) {
@@ -441,6 +512,7 @@ VIDEO_SYSTEM_SCRIPT = """
     const overlay = playerBlock.querySelector('.video-pause-overlay');
 
     const ctrl = attachHighlightPlayer(frame, ytId, startSec, {
+      duration: parseInt(playerBlock.dataset.duration || '20', 10),
       onCap: () => { if (overlay) overlay.hidden = false; },
       onResume: () => { if (overlay) overlay.hidden = true; },
       onUnmutedReady: (player) => {
@@ -449,7 +521,7 @@ VIDEO_SYSTEM_SCRIPT = """
         // satisfies autoplay-with-sound policies).
         const btn = document.createElement('button');
         btn.className = 'btn primary';
-        btn.style.cssText = 'position:absolute;inset:0;margin:auto;width:180px;height:52px;z-index:4;';
+        btn.className = 'btn primary video-play-btn';
         btn.textContent = 'Play';
         frame.appendChild(btn);
         btn.addEventListener('click', () => {
@@ -461,6 +533,12 @@ VIDEO_SYSTEM_SCRIPT = """
     });
     loadYouTubeAPI(() => ctrl.create(false));
 
+    document.querySelectorAll('.chapter-ts[data-seek]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ctrl.seekTo(parseInt(btn.dataset.seek, 10));
+        playerBlock.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    });
     playerBlock.parentElement.querySelectorAll('.keyword-jump-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const sec = parseInt(btn.dataset.seek, 10);
