@@ -18,13 +18,14 @@ examples" link back to every build/event tagged with `flash-bang`.
 
 | Folder | Feeds into | Pairing style |
 |---|---|---|
-| `/portfolio/` | Build Gallery page | Flat: `name.jpg` + `name.txt` (numbered extras: `name 2.jpg`) |
+| `/portfolio/` | Gallery page | Flat: `name.jpg` + `name.txt` (numbered extras: `name 2.jpg`) |
 | `/products/store/spare-deals/` | Store page | One subfolder per item |
 | `/products/store/used-blasters/` | Store page | One subfolder per item |
 | `/products/3d-printed/` | 3D Printing page | One subfolder per item |
 | `/brands/` | Brands We Endorse page | Flat: `name.png` + `name.txt` |
 | `/your-build/` | (reserved — not active yet) | — |
 | `/image-assets/` | Hero/background images site-wide | One shared `assets.txt` |
+| `/analytics/` | Visit counter (page views into the sign-ups sheet) | `visit-counter.txt` + receiver script |
 
 Every folder above (except `/image-assets/` and `/your-build/`) has its own
 `README.md` with the exact `.txt` template and image-naming example for that
@@ -60,10 +61,10 @@ whatever exists gets shown, in order, with no error.
 ## Automation
 
 A GitHub Action rebuilds the site automatically:
-- Every night at midnight (Brisbane time)
+- Every Sunday at midnight (Brisbane time)
 - Or any time, on demand, via the "Run workflow" button in the repo's
   **Actions** tab — use this if you only added one thing and don't want to
-  wait for the nightly run.
+  wait for the weekly run.
 
 You never need to run anything locally. Add your files, commit, push (or
 just upload through GitHub's web UI), and the rebuild handles the rest.
@@ -91,7 +92,7 @@ Series: Scylla HPA
 ```
 
 - Use exactly the same words on every part (capitals do not matter).
-- On Pics & Vids a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
+- On the Gallery a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
 - Everything else about each part stays the same: its own thumbnail, preview and page.
 - Works in every folder: portfolio, products, brands.
 - Give the parts the same Type so they land in the same section.
