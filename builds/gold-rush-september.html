@@ -579,6 +579,11 @@
 
   .detail-hero{ margin-top:32px; }
   .detail-hero-img{ width:100%; max-height:520px; object-fit:cover; }
+  /* detail-page banner: top/bottom space = the gap under the Questions button on Your Build (21px) */
+  .page-banner.detail-banner{ min-height:0; padding:0; }
+  .page-banner.detail-banner .page-banner-content{ padding:21px 24px; }
+  .page-banner.detail-banner .page-banner-content h1{ font-size:clamp(28.3px,5vw,50px); }
+  @media (max-width:900px){ .page-banner.detail-banner .page-banner-content h1{ font-size:23.3px; } .page-banner.detail-banner{ min-height:0; } .page-banner.detail-banner .page-banner-content{ padding:21px 20px; } }
   .detail-breakdown{ margin-top:24px; max-width:70ch; }
   .detail-breakdown p{ color:var(--text-dim); font-size:16px; line-height:1.7; }
   .detail-breakdown p + p{ margin-top:16px; }
@@ -589,7 +594,28 @@
   .video-highlight-frame iframe{ width:100%; height:100%; border:0; }
   .video-pause-overlay{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
     background:rgba(8,10,6,.55); backdrop-filter:blur(6px); }
-  .video-pause-buttons{ display:flex; gap:14px; }
+  .video-pause-overlay[hidden]{ display:none; }
+  .video-pause-overlay{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; justify-content:stretch; gap:0; background:rgba(8,10,6,.82); }
+  .video-pause-overlay[hidden]{ display:none; }
+  .vpo-left{ display:flex; align-items:center; justify-content:center; padding:10px; }
+  .btn.video-full-btn{ opacity:.6; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; width:min(100%, 78%, 58cqh); aspect-ratio:1; height:auto; max-height:92%; padding:8px; text-align:center; line-height:1.15; font-size:13px; transition:opacity .2s; }
+  .btn.video-full-btn:hover, .btn.video-full-btn:focus-visible{ opacity:1; }
+  .btn.video-full-btn svg{ width:34%; height:auto; }
+  .vpo-right{ display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 4px; overflow-y:auto; justify-content:flex-start; }
+  .vpo-tile{ opacity:.6; transition:opacity .2s; flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(20,26,16,.9); border:1px solid var(--line-soft); border-left:3px solid var(--lime); color:var(--text); font-size:13px; line-height:1.25; }
+  .vpo-tile:hover, .vpo-tile:focus-visible{ opacity:1; background:var(--lime); color:#08110a; }
+  .vpo-tag{ flex:0 0 auto; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lime); }
+  .vpo-tile:hover .vpo-tag{ color:#08110a; }
+  .vpo-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .vpo-empty{ margin:auto 0; color:var(--text-dim); font-size:13px; }
+  .video-highlight-player{ container-type:size; }
+  .video-play-btn{ padding:11px 20px; font-size:13px; position:absolute; inset:0; margin:auto; width:max-content; height:max-content; z-index:4; }
+  .detail-breakdown ul.chapters{ list-style:none; margin:0; padding:0; border-top:1px solid var(--line-soft); }
+  .detail-breakdown ul.chapters li{ display:flex; gap:14px; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--line-soft); color:var(--text-dim); font-size:15px; line-height:1.5; }
+  .chapter-ts{ flex:0 0 auto; min-width:52px; font-size:13px; font-weight:600; font-family:inherit; line-height:1; color:var(--lime); background:none; border:0; padding:0; text-align:left; letter-spacing:.04em; }
+  button.chapter-ts{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
+  button.chapter-ts:hover{ color:#fff; }
+  @media (max-width:600px){ .btn.video-full-btn{ font-size:10.5px; gap:5px; } .vpo-tile{ padding:6px 8px; font-size:11.5px; gap:7px; } .vpo-tag{ font-size:9px; } }
   .video-channel-link{ display:flex; align-items:center; gap:10px; color:var(--text); }
   .video-channel-name{ font-size:13px; font-weight:600; }
   .video-jump-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
@@ -931,30 +957,31 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   </div>
 </header>
 <main>
-<section class="page-banner" style="min-height:180px;">
+<section class="page-banner detail-banner">
   <div class="page-banner-content">
-    <span class="kicker">Event</span>
     <h1>Back for the Gold with 3D Printed Cap Grenades | Gold Rush Milsim</h1>
     <p class="kicker">Donnybrook Gel Ballers, QLD</p>
   </div>
 </section>
 <section>
   <div class="wrap">
-    <div class="detail-hero"><div class="video-highlight-player" data-yt-id="_LEwwSREXlU" data-start="0" id="detail-video">
+    <div class="detail-hero"><div class="video-highlight-player" data-yt-id="_LEwwSREXlU" data-start="0" data-duration="20" id="detail-video">
       <div class="video-highlight-frame"></div>
       <div class="video-pause-overlay" hidden>
-        <div class="video-pause-buttons">
-          <a class="btn primary" href="https://youtube.com/watch?v=_LEwwSREXlU" target="_blank" rel="noopener">Watch in Full</a>
-          <a class="btn" href="#products-used">Buy Products</a>
+        <div class="vpo-left">
+          <a class="btn primary video-full-btn" href="https://youtube.com/watch?v=_LEwwSREXlU" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+            <span>Watch In Full</span>
+          </a>
         </div>
-        <a class="video-channel-link" href="../{CHANNEL_URL}" target="_blank" rel="noopener">
-          <span class="video-channel-name">{CHANNEL_NAME}</span>
-        </a>
+        <div class="vpo-right"><span class="vpo-empty">More from Bitchin' Blasters in the Gallery</span></div>
       </div>
     </div>
     <div class="video-jump-row"></div></div>
     <div class="detail-breakdown">
-      <p>Back at Donnybrook Gelballers for the September "Gold Rush" milsim, running under the Regulators once again. This time with 3D printed cap grenades for their first real field test. Pushing through the scrub, popping up from windows on unsuspecting enemies, and putting the grenades to work in the fight for the gold. Run on an All Meta custom CQB M4 with a Jefftron Scylla HPA V2, Polarstar F2 and Eshooter Flare Smoky, with an Atomic Armoury 2011 as the secondary.</p>
+      <p>Back at Donnybrook Gelballers for the September "Gold Rush" milsim, running under the Regulators once again. This time with 3D printed cap grenades for their first real field test.</p>
+      <p>Pushing through the scrub, popping up from windows on unsuspecting enemies, and putting the grenades to work in the fight for the gold.</p>
+      <p>Run on an All Meta custom CQB M4 with a Jefftron Scylla HPA V2, Polarstar F2 and Eshooter Flare Smoky, with an Atomic Armoury 2011 as the secondary.</p>
     </div>
     <div id="products-used"></div>
     
@@ -1064,7 +1091,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 
 
   // ---- Shared YouTube highlight-clip system ----
-  const HIGHLIGHT_DURATION = 20; // seconds, fixed site-wide, not configurable per video
+  const HIGHLIGHT_DURATION = 20; // default seconds; a video page can override with Highlight Length in its txt
 
   let ytAPIReady = false;
   let ytAPIQueue = [];
@@ -1095,7 +1122,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       capTimer = setTimeout(() => {
         if (player && player.pauseVideo) player.pauseVideo();
         if (options.onCap) options.onCap();
-      }, HIGHLIGHT_DURATION * 1000);
+      }, (options.duration || HIGHLIGHT_DURATION) * 1000);
     }
 
     function create(muted) {
@@ -1174,6 +1201,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     const overlay = playerBlock.querySelector('.video-pause-overlay');
 
     const ctrl = attachHighlightPlayer(frame, ytId, startSec, {
+      duration: parseInt(playerBlock.dataset.duration || '20', 10),
       onCap: () => { if (overlay) overlay.hidden = false; },
       onResume: () => { if (overlay) overlay.hidden = true; },
       onUnmutedReady: (player) => {
@@ -1182,7 +1210,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
         // satisfies autoplay-with-sound policies).
         const btn = document.createElement('button');
         btn.className = 'btn primary';
-        btn.style.cssText = 'position:absolute;inset:0;margin:auto;width:180px;height:52px;z-index:4;';
+        btn.className = 'btn primary video-play-btn';
         btn.textContent = 'Play';
         frame.appendChild(btn);
         btn.addEventListener('click', () => {
@@ -1194,6 +1222,12 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     });
     loadYouTubeAPI(() => ctrl.create(false));
 
+    document.querySelectorAll('.chapter-ts[data-seek]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        ctrl.seekTo(parseInt(btn.dataset.seek, 10));
+        playerBlock.scrollIntoView({behavior:'smooth', block:'center'});
+      });
+    });
     playerBlock.parentElement.querySelectorAll('.keyword-jump-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const sec = parseInt(btn.dataset.seek, 10);
