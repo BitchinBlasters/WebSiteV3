@@ -582,7 +582,9 @@
   .brand-submenu a{ font-size:13px; color:var(--text-dim); padding:6px 8px; }
   .brand-submenu a:hover{ color:var(--lime); background:rgba(42,255,0,.06); }
 
-  .detail-hero{ margin-top:32px; }
+  .detail-section{ padding-top:28px; }
+  @media (max-width:900px){ .detail-section{ padding-top:24px; } }
+  .detail-hero{ margin-top:0; }
   .detail-hero-img{ width:100%; max-height:520px; object-fit:cover; }
   /* detail-page banner: top/bottom space = the gap under the Questions button on Your Build (21px) */
   .page-banner.detail-banner{ min-height:0; padding:0; }
@@ -606,7 +608,10 @@
   .btn.video-full-btn{ opacity:.6; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; width:min(100%, 78%, 58cqh); aspect-ratio:1; height:auto; max-height:92%; padding:8px; text-align:center; line-height:1.15; font-size:13px; transition:opacity .2s; }
   .btn.video-full-btn:hover, .btn.video-full-btn:focus-visible{ opacity:1; }
   .btn.video-full-btn svg{ width:34%; height:auto; }
-  .vpo-right{ display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 4px; overflow-y:auto; justify-content:flex-start; }
+  .vpo-right{ display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 4px; min-height:0; }
+  .vpo-list{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:6px; overflow-y:auto; }
+  .vpo-tile.vpo-next{ flex:0 0 auto; background:var(--lime); color:#08110a; border-color:var(--lime); font-weight:600; }
+  .vpo-tile.vpo-next .vpo-tag{ color:#08110a; }
   .vpo-tile{ opacity:.6; transition:opacity .2s; flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(20,26,16,.9); border:1px solid var(--line-soft); border-left:3px solid var(--lime); color:var(--text); font-size:13px; line-height:1.25; }
   .vpo-tile:hover, .vpo-tile:focus-visible{ opacity:1; background:var(--lime); color:#08110a; }
   .vpo-tag{ flex:0 0 auto; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lime); }
@@ -968,7 +973,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     <p class="kicker">Donnybrook Gel Ballers, QLD</p>
   </div>
 </section>
-<section>
+<section class="detail-section">
   <div class="wrap">
     <div class="detail-hero"><div class="video-highlight-player" data-yt-id="_LEwwSREXlU" data-start="0" data-duration="20" id="detail-video">
       <div class="video-highlight-frame"></div>
@@ -979,7 +984,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
             <span>Watch In Full</span>
           </a>
         </div>
-        <div class="vpo-right"><span class="vpo-empty">More from Bitchin' Blasters in the Gallery</span></div>
+        <div class="vpo-right"><div class="vpo-list"><span class="vpo-empty">More from Bitchin' Blasters in the Gallery</span></div><a class="vpo-tile vpo-next" href="../builds/gold-rush-june.html"><span class="vpo-tag">Next video</span><span class="vpo-name">Gold Rush Milsim, June | Donnybrook Gel Ballers</span></a></div>
       </div>
     </div>
     <div class="video-jump-row"></div></div>
@@ -1122,9 +1127,15 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 
     function clearCap() { if (capTimer) { clearTimeout(capTimer); capTimer = null; } }
 
+    let capped = false;
     function armCap() {
       clearCap();
+      capped = false;
       capTimer = setTimeout(() => {
+        capped = true;
+        capTimer = null;
+        const pb = mountEl.querySelector('.video-play-btn');
+        if (pb) pb.remove();
         if (player && player.pauseVideo) player.pauseVideo();
         if (options.onCap) options.onCap();
       }, (options.duration || HIGHLIGHT_DURATION) * 1000);
@@ -1140,10 +1151,18 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
           modestbranding: 1, rel: 0, playsinline: 1
         },
         events: {
+          // The clip timer starts when the video really starts playing, not when
+          // the page loads (phones block autoplay with sound until you tap Play).
+          onStateChange: (e) => {
+            if (e.data === 1) {
+              const pb = mountEl.querySelector('.video-play-btn');
+              if (pb) pb.remove();
+              if (!capTimer && !capped) armCap();
+            }
+          },
           onReady: (e) => {
             if (muted) { e.target.mute(); } else { e.target.unMute(); }
             e.target.playVideo();
-            armCap();
             if (!muted && options.onUnmutedReady) {
               // Detect blocked autoplay: if still paused shortly after play(),
               // the browser blocked unmuted autoplay and needs a real click.

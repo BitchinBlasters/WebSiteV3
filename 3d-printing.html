@@ -582,7 +582,9 @@
   .brand-submenu a{ font-size:13px; color:var(--text-dim); padding:6px 8px; }
   .brand-submenu a:hover{ color:var(--lime); background:rgba(42,255,0,.06); }
 
-  .detail-hero{ margin-top:32px; }
+  .detail-section{ padding-top:28px; }
+  @media (max-width:900px){ .detail-section{ padding-top:24px; } }
+  .detail-hero{ margin-top:0; }
   .detail-hero-img{ width:100%; max-height:520px; object-fit:cover; }
   /* detail-page banner: top/bottom space = the gap under the Questions button on Your Build (21px) */
   .page-banner.detail-banner{ min-height:0; padding:0; }
@@ -606,7 +608,10 @@
   .btn.video-full-btn{ opacity:.6; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; width:min(100%, 78%, 58cqh); aspect-ratio:1; height:auto; max-height:92%; padding:8px; text-align:center; line-height:1.15; font-size:13px; transition:opacity .2s; }
   .btn.video-full-btn:hover, .btn.video-full-btn:focus-visible{ opacity:1; }
   .btn.video-full-btn svg{ width:34%; height:auto; }
-  .vpo-right{ display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 4px; overflow-y:auto; justify-content:flex-start; }
+  .vpo-right{ display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 4px; min-height:0; }
+  .vpo-list{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:6px; overflow-y:auto; }
+  .vpo-tile.vpo-next{ flex:0 0 auto; background:var(--lime); color:#08110a; border-color:var(--lime); font-weight:600; }
+  .vpo-tile.vpo-next .vpo-tag{ color:#08110a; }
   .vpo-tile{ opacity:.6; transition:opacity .2s; flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(20,26,16,.9); border:1px solid var(--line-soft); border-left:3px solid var(--lime); color:var(--text); font-size:13px; line-height:1.25; }
   .vpo-tile:hover, .vpo-tile:focus-visible{ opacity:1; background:var(--lime); color:#08110a; }
   .vpo-tag{ flex:0 0 auto; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lime); }
