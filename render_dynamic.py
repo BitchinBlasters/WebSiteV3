@@ -306,6 +306,25 @@ def video_block_html(entry, kw_index=None, portfolio=None):
     <div class="video-jump-row">{jump_buttons}</div>'''
 
 
+def _next_video(entry, portfolio):
+    """The closest related other video: most shared keywords, then same series,
+    then whichever comes next in the gallery order."""
+    vids = [o for o in (portfolio or []) if o.get("youtube")]
+    others = [o for o in vids if o["slug"] != entry["slug"]]
+    if not others:
+        return None
+    mine = {k["kw"].lower() for k in entry["keywords"]}
+    order = [o["slug"] for o in vids]
+    here = order.index(entry["slug"]) if entry["slug"] in order else -1
+
+    def score(o):
+        shared = len(mine & {k["kw"].lower() for k in o["keywords"]})
+        series = 1 if entry.get("series") and o.get("series") == entry.get("series") else 0
+        dist = (order.index(o["slug"]) - here) % len(order)   # 1 = the very next one
+        return (-shared, -series, dist)
+    return sorted(others, key=score)[0]
+
+
 def related_tiles_html(entry, kw_index, portfolio):
     """Thin tiles for every product and other build/video sharing this entry's keywords."""
     tiles, seen = [], set()
@@ -322,7 +341,13 @@ def related_tiles_html(entry, kw_index, portfolio):
             continue
         if mine & {k["kw"].lower() for k in o["keywords"]}:
             tiles.append(f'<a class="vpo-tile" href="../builds/{o["slug"]}.html"><span class="vpo-tag">Build</span><span class="vpo-name">{o["title"]}</span></a>')
-    return "".join(tiles) or '<span class="vpo-empty">More from Bitchin\' Blasters in the Gallery</span>'
+    nxt = _next_video(entry, portfolio)
+    nxt_html = ""
+    if nxt:
+        nxt_html = (f'<a class="vpo-tile vpo-next" href="../builds/{nxt["slug"]}.html">'
+                    f'<span class="vpo-tag">Next video</span><span class="vpo-name">{nxt["title"]}</span></a>')
+    lst = "".join(tiles) or '<span class="vpo-empty">More from Bitchin\' Blasters in the Gallery</span>'
+    return f'<div class="vpo-list">{lst}</div>{nxt_html}'
 
 
 def _fmt_ts(seconds):
@@ -352,7 +377,7 @@ def detail_page_body(entry, kw_index, brand_lookup, portfolio=None):
     {location_line}
   </div>
 </section>
-<section>
+<section class="detail-section">
   <div class="wrap">
     <div class="detail-hero">{hero_media}</div>
     <div class="detail-breakdown">
@@ -428,9 +453,15 @@ VIDEO_SYSTEM_SCRIPT = """
 
     function clearCap() { if (capTimer) { clearTimeout(capTimer); capTimer = null; } }
 
+    let capped = false;
     function armCap() {
       clearCap();
+      capped = false;
       capTimer = setTimeout(() => {
+        capped = true;
+        capTimer = null;
+        const pb = mountEl.querySelector('.video-play-btn');
+        if (pb) pb.remove();
         if (player && player.pauseVideo) player.pauseVideo();
         if (options.onCap) options.onCap();
       }, (options.duration || HIGHLIGHT_DURATION) * 1000);
@@ -446,10 +477,18 @@ VIDEO_SYSTEM_SCRIPT = """
           modestbranding: 1, rel: 0, playsinline: 1
         },
         events: {
+          // The clip timer starts when the video really starts playing, not when
+          // the page loads (phones block autoplay with sound until you tap Play).
+          onStateChange: (e) => {
+            if (e.data === 1) {
+              const pb = mountEl.querySelector('.video-play-btn');
+              if (pb) pb.remove();
+              if (!capTimer && !capped) armCap();
+            }
+          },
           onReady: (e) => {
             if (muted) { e.target.mute(); } else { e.target.unMute(); }
             e.target.playVideo();
-            armCap();
             if (!muted && options.onUnmutedReady) {
               // Detect blocked autoplay: if still paused shortly after play(),
               // the browser blocked unmuted autoplay and needs a real click.
