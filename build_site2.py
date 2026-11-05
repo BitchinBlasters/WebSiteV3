@@ -448,16 +448,16 @@ CSS = """
   }
   footer > .wrap{ position:relative; z-index:1; }
 
-  .foot-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:32px; padding:0 40px; }
+  .foot-row{ display:flex; align-items:center; justify-content:space-between; gap:32px; padding:0 40px; }
 
   .foot-left{ display:flex; flex-direction:column; align-items:center; text-align:center; }
   .foot-brand-logo{ height:56px; width:auto; }
   .foot-est{ margin-top:8px; font-size:12px; color:var(--text-dim); }
 
-  .foot-mid{ display:flex; flex-direction:column; align-items:flex-start; }
+  .foot-mid{ display:flex; flex-direction:column; align-items:center; }
   .foot-follow-label{
     font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:.06em; font-weight:600;
-    margin-bottom:8px;
+    margin-bottom:8px; padding-left:.06em;
   }
   .foot-social{ display:flex; gap:14px; }
   .foot-social a{ width:44px; height:44px; border:1px solid var(--line); display:flex; align-items:center; justify-content:center; }
@@ -540,16 +540,20 @@ CSS = """
     .promo-banner{ padding:32px; }
 
     /* ---------- FOOTER (mobile) ---------- */
+    footer{ padding-top:15px; }
     .foot-row{ position:relative; flex-wrap:wrap; align-items:flex-start; justify-content:space-between; gap:19px 0; text-align:left; padding:0; }
-    .foot-left{ display:flex; flex-direction:column; align-items:center; text-align:center; position:absolute; left:0; top:16px; }
-    .foot-mid{ position:absolute; top:-3px; right:0; align-items:flex-start; text-align:left; }
+    .foot-left{ display:flex; flex-direction:column; align-items:center; text-align:center; position:absolute; left:-13px; top:36.5px; }
+    .foot-brand-logo{ height:42px; }
+    .foot-mid{ position:absolute; top:17.5px; right:-8px; align-items:center; text-align:center; }
+    .foot-follow-label{ font-size:10.8px; margin-bottom:8px; }
+    .foot-signup{ position:absolute; left:47%; top:42.5px; transform:translateX(-50%); gap:5px; }
     .foot-right{ align-self:auto; flex-basis:100%; align-items:center; text-align:center; order:3; margin-top:116px; }
     .foot-email{ margin-top:4px; }
     .foot-social{
       display:grid;
       grid-template-columns:repeat(2, 44px);
       grid-template-rows:repeat(2, 44px);
-      gap:14px;
+      gap:8px;
     }
     .foot-social a:nth-child(1){ grid-column:1; grid-row:1; }
     .foot-social a:nth-child(2){ grid-column:2; grid-row:1; }
@@ -622,8 +626,21 @@ CSS = """
 
   /* ---------- FOOTER SIGN-UP ---------- */
   .foot-mid-row{ display:flex; align-items:center; gap:22px; }
-  .foot-signup .btn{ white-space:nowrap; }
-  .signup-tile{ display:none; }
+  .foot-signup{ display:flex; flex-direction:column; align-items:center; gap:7px; align-self:center; }
+  .foot-signup-glow{ display:inline-block; filter:drop-shadow(0 0 7px rgba(42,255,0,.6)); transition:filter .2s ease; }
+  .foot-signup-glow:hover{ filter:drop-shadow(0 0 12px rgba(42,255,0,.95)); }
+  .foot-signup-btn{
+    position:relative; isolation:isolate; display:inline-block; padding:12px 30px; white-space:nowrap;
+    background:var(--lime); color:var(--lime);
+    font-weight:700; font-size:14px; letter-spacing:.06em; text-transform:uppercase; text-indent:.06em;
+    text-shadow:0 0 8px rgba(42,255,0,.75);
+    clip-path:polygon(11px 0,100% 0,100% calc(100% - 11px),calc(100% - 11px) 100%,0 100%,0 11px);
+  }
+  .foot-signup-btn::before{
+    content:""; position:absolute; inset:2px; z-index:-1; background:#050805;
+    clip-path:polygon(9.83px 0,100% 0,100% calc(100% - 9.83px),calc(100% - 9.83px) 100%,0 100%,0 9.83px);
+  }
+  .foot-signup-sub{ font-size:11px; color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; padding-left:.08em; }
 
   /* ---------- SALE POP-UP ---------- */
   .sale-popup{ position:fixed; inset:0; z-index:200; display:none; align-items:center; justify-content:center; padding:20px; background:rgba(5,8,5,.82); }
@@ -643,8 +660,10 @@ CSS = """
 
   @media (max-width: 900px){
     .foot-mid-row{ display:block; }
-    .foot-signup{ display:none; }
-    .signup-tile{ display:block; }
+    .foot-signup-btn{ padding:7.6px 13.3px; font-size:11.4px;
+      clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px); }
+    .foot-signup-btn::before{ inset:1.5px; clip-path:polygon(6.9px 0,100% 0,100% calc(100% - 6.9px),calc(100% - 6.9px) 100%,0 100%,0 6.9px); }
+    .foot-signup-sub{ font-size:9px; }
     .sale-popup-panel{ padding:60px 22px 32px; }
   }
 """.replace("__CARBON__", CARBON).replace("__GRAIN__", GRAIN).replace("__FOOTER_TEXTURE__", FOOTER_TEXTURE)
@@ -741,8 +760,11 @@ def footer():
             <a href="{YOUTUBE_URL}" target="_blank" rel="noopener" aria-label="YouTube">{YT_ICON}</a>
             <a href="{FACEBOOK_URL}" target="_blank" rel="noopener" aria-label="Facebook">{FB_ICON}</a>
           </div>
-          <div class="foot-signup">{BTN_SIGNUP}</div>
         </div>
+      </div>
+      <div class="foot-signup">
+        <span class="foot-signup-glow"><a href="signup.html" class="foot-signup-btn">Sign Up</a></span>
+        <span class="foot-signup-sub">News &amp; Updates</span>
       </div>
       <div class="foot-right">
         <div class="foot-terms"><a href="terms.html">Terms &amp; Conditions</a></div>
@@ -844,6 +866,7 @@ def page(title, description, active, body, extra_script=""):
 {BASE_SCRIPT}
 {extra_script}
 </script>
+{visit_counter.script_html()}
 </body>
 </html>"""
 
@@ -907,6 +930,7 @@ def _hero(location_name, default_file, default_alignment="center"):
 import sale_banner
 import terms_content
 import signup_form
+import visit_counter
 SALE = sale_banner.load()
 
 
@@ -947,18 +971,6 @@ INDEX_BODY = f"""<section class="hero" id="top">
     <div class="section-head">
       <h2>No template.<br>No house style.</h2>
       <p>Every build starts with how you actually play — your role, your field, your habits — not with a spec sheet I think looks impressive. Bring your own blaster for an upgrade, or start from nothing. One-off and bespoke means exactly that: no two builds leave the bench the same.</p>
-    </div>
-  </div>
-</section>
-
-<section class="signup-tile">
-  <div class="wrap">
-    <div class="promo-banner">
-      <div>
-        <span class="kicker">Stay in the loop</span>
-        <h3>News &amp; updates</h3>
-      </div>
-      {BTN_SIGNUP_TILE}
     </div>
   </div>
 </section>
