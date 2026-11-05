@@ -694,7 +694,12 @@ CSS = """
   }
 """.replace("__CARBON__", CARBON).replace("__GRAIN__", GRAIN).replace("__FOOTER_TEXTURE__", FOOTER_TEXTURE)
 
-HEAD_LINKS = """<link rel="preconnect" href="https://fonts.googleapis.com">
+SITE_URL = "https://bitchinblasters.com.au"
+HEAD_LINKS = """<link rel="icon" href="https://bitchinblasters.com.au/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="48x48" href="https://bitchinblasters.com.au/favicon-48x48.png">
+<link rel="icon" type="image/png" sizes="192x192" href="https://bitchinblasters.com.au/icon-192.png">
+<link rel="apple-touch-icon" href="https://bitchinblasters.com.au/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">"""
 
@@ -870,6 +875,9 @@ BASE_SCRIPT = """
   });
 """
 
+ORG_JSONLD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Bitchin' Blasters","url":"https://bitchinblasters.com.au/","logo":"https://bitchinblasters.com.au/icon-512.png","description":"One-off custom gel blaster builds and upgrades, built to how you play. Queensland-based.","email":"b1tch1nblasters@gmail.com","telephone":"+61468320050","areaServed":{"@type":"AdministrativeArea","name":"Queensland, Australia"},"sameAs":["https://www.instagram.com/bitchinblasters","https://www.youtube.com/@BitchinBlasters","https://www.facebook.com/b1tch1nblasters"]}</script>"""
+
+
 def page(title, description, active, body, extra_script=""):
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -879,6 +887,7 @@ def page(title, description, active, body, extra_script=""):
 <title>{title}</title>
 <meta name="description" content="{description}">
 {HEAD_LINKS}
+{ORG_JSONLD if active == "home" else ""}
 <style>{CSS}</style>
 </head>
 <body>
@@ -1427,11 +1436,26 @@ for fname, content in pages.items():
         f.write(content)
     print(fname, len(content))
 
+def _write_search_files():
+    top = ["", "who-we-are.html", "your-build.html", "3d-printing.html", "store.html", "build-gallery.html", "brands.html"]
+    urls = [SITE_URL + "/" + t for t in top]
+    bdir = os.path.join(BASE, "builds")
+    if os.path.isdir(bdir):
+        urls += [SITE_URL + "/builds/" + f for f in sorted(os.listdir(bdir)) if f.endswith(".html")]
+    xml = '<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    xml += "".join(f"  <url><loc>{u}</loc></url>\n" for u in urls) + "</urlset>\n"
+    with open(os.path.join(BASE, "sitemap.xml"), "w", encoding="utf-8") as f:
+        f.write(xml)
+    with open(os.path.join(BASE, "robots.txt"), "w", encoding="utf-8") as f:
+        f.write(f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n")
+
+
 render_dynamic.write_detail_pages(
     BASE,
     lambda title, desc, active, body: page(title, desc, active, body, render_dynamic.VIDEO_SYSTEM_SCRIPT),
     CONTENT
 )
 print(f"detail pages: {len(CONTENT['portfolio'])}")
+_write_search_files()
 
 print("DONE")
