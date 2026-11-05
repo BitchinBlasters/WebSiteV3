@@ -293,6 +293,7 @@ def video_block_html(entry, kw_index=None, portfolio=None):
     )
     return f'''<div class="video-highlight-player" data-yt-id="{yt_id}" data-start="{hover_start_sec}" data-duration="{entry.get('highlight_length') or 20}" id="detail-video">
       <div class="video-highlight-frame"></div>
+      <div class="video-shield"></div>
       <div class="video-pause-overlay" hidden>
         <div class="vpo-left">
           <a class="btn primary video-full-btn" href="https://youtube.com/watch?v={yt_id}" target="_blank" rel="noopener">
@@ -473,8 +474,9 @@ VIDEO_SYSTEM_SCRIPT = """
       player = new YT.Player(div, {
         videoId: ytId,
         playerVars: {
-          start: startSec, autoplay: 1, controls: muted ? 0 : 1,
-          modestbranding: 1, rel: 0, playsinline: 1
+          start: startSec, autoplay: 1, controls: (muted || options.clean) ? 0 : 1,
+          modestbranding: 1, rel: 0, playsinline: 1,
+          ...(options.clean ? { disablekb: 1, iv_load_policy: 3, fs: 0 } : {})
         },
         events: {
           // The clip timer starts when the video really starts playing, not when
@@ -493,10 +495,10 @@ VIDEO_SYSTEM_SCRIPT = """
               // Detect blocked autoplay: if still paused shortly after play(),
               // the browser blocked unmuted autoplay and needs a real click.
               setTimeout(() => {
-                if (player.getPlayerState && player.getPlayerState() !== 1) {
+                if (player.getPlayerState && player.getPlayerState() !== 1 && player.getPlayerState() !== 3) {
                   options.onUnmutedReady(player);
                 }
-              }, 600);
+              }, 1000);
             }
           }
         }
@@ -550,24 +552,18 @@ VIDEO_SYSTEM_SCRIPT = """
     const frame = playerBlock.querySelector('.video-highlight-frame');
     const overlay = playerBlock.querySelector('.video-pause-overlay');
 
+    const shield = playerBlock.querySelector('.video-shield');
     const ctrl = attachHighlightPlayer(frame, ytId, startSec, {
       duration: parseInt(playerBlock.dataset.duration || '20', 10),
+      clean: true,
       onCap: () => { if (overlay) overlay.hidden = false; },
       onResume: () => { if (overlay) overlay.hidden = true; },
       onUnmutedReady: (player) => {
-        // Autoplay-with-sound was blocked by the browser — show a simple
-        // click-to-play button in place of the frame (a real click always
-        // satisfies autoplay-with-sound policies).
-        const btn = document.createElement('button');
-        btn.className = 'btn primary';
-        btn.className = 'btn primary video-play-btn';
-        btn.textContent = 'Play';
-        frame.appendChild(btn);
-        btn.addEventListener('click', () => {
-          player.unMute();
-          player.playVideo();
-          btn.remove();
-        });
+        // The browser blocked autoplay with sound. Start it muted instead (always
+        // allowed) and let the first tap anywhere on the video turn the sound on.
+        player.mute();
+        player.playVideo();
+        if (shield) shield.addEventListener('click', () => { player.unMute(); }, { once: true });
       }
     });
     loadYouTubeAPI(() => ctrl.create(false));
