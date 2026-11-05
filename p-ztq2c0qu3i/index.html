@@ -484,9 +484,11 @@ async function boot() {
     const r = await fetch(API + (API.includes('?') ? '&' : '?') + 'v=' + Date.now());
     DATA = await r.json();
     if (!DATA.ok) throw new Error(DATA.error || 'bad data');
-    { const o = 1793851320000, c = 1793894520000, n = Date.now();
-      DATA.opens = o; DATA.closesAt = DATA.closes = c; DATA.now = n; DATA.state = n < o ? 'before' : (n < c ? 'open' : 'closed'); DATA.open = DATA.state === 'open';
-      DATA.paydue = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(c + 864e5)).replace(',', '') + ', 12 noon'; }
+    { const d = DATA.demo || {}, n = Date.now(); DATA.now = n; /* PREVIEW: on/off + timing from Sale Settings */
+      if (!d.on) { DATA.state = 'off'; DATA.opens = 0; DATA.closesAt = DATA.closes = 0; }
+      else { DATA.closesAt = DATA.closes = d.closes; DATA.state = n < d.closes ? 'open' : 'closed'; DATA.opens = DATA.state === 'open' ? d.opens : 0;
+        DATA.paydue = new Intl.DateTimeFormat('en-AU', { timeZone: 'Australia/Brisbane', weekday: 'long', day: 'numeric', month: 'long' }).format(new Date(d.closes + 864e5)).replace(',', '') + ', 12 noon'; }
+      DATA.open = DATA.state === 'open'; }
   } catch (e) { $('#skel').innerHTML = `<div class="closed"><h2>The order form is taking a nap</h2><p>Please try again in a minute, or DM us on Instagram to order.</p></div>`; return; }
   $('#skel').remove();
   $('#tiers').innerHTML = DATA.tiers.map((x, i) => `<div class="tier"><b>${pc(x.pct)}%</b><span>${i === 0 ? 'any order' : 'at ' + money(x.min).replace('.00', '') + '+ RRP'}</span></div>`).join('');
@@ -502,6 +504,7 @@ async function boot() {
     tick(); setInterval(tick, 30000);
     $('#app').innerHTML = `<div class="closed"><h2>The sale opens ${esc(fmt(DATA.opens))}</h2><p>Come back then to place your order.</p></div>`; return;
   }
+  if (DATA.state === 'off') { $('#facts').innerHTML = ''; $('#app').innerHTML = `<div class="closed"><h2>This preview is switched off</h2><p>Check back soon, or DM us on Instagram.</p></div>`; return; }
   if (DATA.state !== 'open') { $('#app').innerHTML = `<div class="closed"><h2>This flash sale has closed</h2><p>Thanks for the support. DM us on Instagram for current pricing.</p></div>`; return; }
   { const hard = !!DATA.closesAt, ct = DATA.closesAt || Date.parse('2026-11-04T12:00:00+10:00'); const tick = () => { const ms = ct - (Date.now() + skew); if (ms <= 0) { if (hard) location.reload(); else $('#count').hidden = true; return; } $('#count').hidden = false; $('#count').classList.toggle('warn', ms < 86400000); $('#count').textContent = 'Orders close in ' + left(ms); }; tick(); setInterval(tick, 30000); }
   DATA.products.forEach(p => { const v = OVR[p.code]; if (v) { if (v.name) p.name = v.name; if (v.g) p.g = v.g; if (v.note) p.note = v.note; if (v.to) p.to = v.to; } if (/^3DHT-/.test(p.code)) { p.note = 'For Leviathan only'; p.to = 'JT-LEV-V3'; }
