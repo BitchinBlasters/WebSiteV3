@@ -57,7 +57,7 @@ Series: Scylla HPA
 ```
 
 - Use exactly the same words on every part (capitals do not matter).
-- On Pics & Vids a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
+- On the Gallery a series counts as one step in the photo, video, photo, video pattern, so part 1 and part 2 are never split by a photo.
 - Everything else about each part stays the same: its own thumbnail, preview and page.
 - Works in every folder: portfolio, products, brands.
 - Give the parts the same Type so they land in the same section.
