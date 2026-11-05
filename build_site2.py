@@ -487,7 +487,7 @@ CSS = """
     .hero-content h1{ font-size:36px; }
     .hero-content .tagline{ margin-top:10px; font-size:15px; line-height:1.45; }
     .hero-actions{ margin-top:18px; gap:10px; }
-    .page-banner{ min-height:var(--ph, 0px); padding:0; }
+    .page-banner{ min-height:0; padding:0; }
     .page-banner-content{ padding:20px 20px; }
     .page-banner-content .kicker{ margin-bottom:6px; font-size:11px; }
     .page-banner-content h1{ font-size:28px; line-height:1.1; }
@@ -1371,7 +1371,7 @@ BRANDS_BODY = f"""<section class="page-banner" style="--ph:245px">
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: TERMS (footer link only, not in nav)
 # ---------------------------------------------------------------------------
-TERMS_BODY = f"""<section class="page-banner" style="min-height:180px;">
+TERMS_BODY = f"""<section class="page-banner">
   <div class="page-banner-content">
     <h1>Terms &amp; Conditions</h1>
   </div>

@@ -35,7 +35,7 @@ def body_html():
     boxes = "\n".join(
         f'        <label class="chk"><input type="checkbox" name="int" value="{v}"><span>{label}</span></label>'
         for v, label in CATEGORIES)
-    return f"""<section class="page-banner" style="min-height:180px;">
+    return f"""<section class="page-banner">
   <div class="page-banner-content">
     <h1>Stay Up-To-Date</h1>
   </div>
