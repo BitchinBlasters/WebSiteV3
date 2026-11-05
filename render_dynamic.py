@@ -329,24 +329,28 @@ def _next_video(entry, portfolio):
 def related_tiles_html(entry, kw_index, portfolio):
     """Thin tiles for every product and other build/video sharing this entry's keywords."""
     tiles, seen = [], set()
+    prod_done = False
     for k in entry["keywords"]:
         for pr in kw_index.get(k["kw"].lower(), []):
             key = ("p", pr["section"], pr["slug"])
-            if key in seen:
+            if key in seen or prod_done:
                 continue
             seen.add(key)
+            prod_done = True
             tiles.append(f'<a class="vpo-tile" href="{_product_link(pr)}"><span class="vpo-tag">Product</span><span class="vpo-name">{pr["title"]}</span></a>')
     mine = {k["kw"].lower() for k in entry["keywords"]}
     for o in portfolio or []:
         if o["slug"] == entry["slug"] or o.get("category") != "builds":
             continue
         if mine & {k["kw"].lower() for k in o["keywords"]}:
+            if any('<span class="vpo-tag">Build</span>' in t for t in tiles):
+                break
             tiles.append(f'<a class="vpo-tile" href="../builds/{o["slug"]}.html"><span class="vpo-tag">Build</span><span class="vpo-name">{o["title"]}</span></a>')
     nxt = _next_video(entry, portfolio)
     nxt_html = ""
     if nxt:
         nxt_html = (f'<a class="vpo-tile vpo-next" href="../builds/{nxt["slug"]}.html">'
-                    f'<span class="vpo-tag">Next video</span><span class="vpo-name">{nxt["title"]}</span></a>')
+                    f'<span class="vpo-tag">Next:</span><span class="vpo-name">{nxt["title"]}</span></a>')
     lst = "".join(tiles) or '<span class="vpo-empty">More from Bitchin\' Blasters in the Gallery</span>'
     return f'<div class="vpo-list">{lst}</div>{nxt_html}'
 
