@@ -604,21 +604,22 @@
   .video-pause-overlay{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
     background:rgba(8,10,6,.55); backdrop-filter:blur(6px); }
   .video-pause-overlay[hidden]{ display:none; }
-  .video-pause-overlay{ display:grid; grid-template-columns:1fr 1fr; align-items:stretch; justify-content:stretch; gap:0; background:rgba(8,10,6,.82); }
+  .video-pause-overlay{ display:grid; grid-template-columns:1fr 3fr; align-items:stretch; justify-content:stretch; gap:0; background:rgba(8,10,6,.82); }
   .video-pause-overlay[hidden]{ display:none; }
   .vpo-left{ display:flex; align-items:center; justify-content:center; padding:10px; }
-  .btn.video-full-btn{ opacity:.6; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; width:min(100%, 78%, 58cqh); aspect-ratio:1; height:auto; max-height:92%; padding:8px; text-align:center; line-height:1.15; font-size:13px; transition:opacity .2s; }
+  .btn.video-full-btn{ opacity:.6; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:8px; width:min(100%, 92%, 80cqh); aspect-ratio:1; height:auto; max-height:92%; padding:6px; text-align:center; line-height:1.15; font-size:clamp(10px,1.9cqw,22px); transition:opacity .2s; }
   .btn.video-full-btn:hover, .btn.video-full-btn:focus-visible{ opacity:1; }
   .btn.video-full-btn svg{ width:34%; height:auto; }
-  .vpo-right{ display:flex; flex-direction:column; gap:6px; padding:10px 12px 10px 4px; min-height:0; }
+  .vpo-right{ display:flex; flex-direction:column; gap:clamp(6px,1.5cqw,18px); padding:clamp(8px,1.6cqw,22px) clamp(10px,2cqw,26px) clamp(8px,1.6cqw,22px) 4px; min-height:0; }
   .vpo-list{ flex:1 1 auto; min-height:0; display:flex; flex-direction:column; gap:6px; overflow-y:auto; }
   .vpo-tile.vpo-next{ flex:0 0 auto; background:var(--lime); color:#08110a; border-color:var(--lime); font-weight:600; }
   .vpo-tile.vpo-next .vpo-tag{ color:#08110a; }
-  .vpo-tile{ opacity:.6; transition:opacity .2s; flex:0 0 auto; display:flex; align-items:center; gap:10px; padding:8px 12px; background:rgba(20,26,16,.9); border:1px solid var(--line-soft); border-left:3px solid var(--lime); color:var(--text); font-size:13px; line-height:1.25; }
+  .vpo-tile{ opacity:.6; transition:opacity .2s; flex:0 0 auto; display:flex; align-items:center; gap:clamp(8px,1.9cqw,22px); padding:clamp(7px,2.1cqw,28px) clamp(10px,2.6cqw,34px); background:rgba(20,26,16,.9); border:1px solid var(--line-soft); border-left:4px solid var(--lime); color:var(--text); font-size:clamp(11.5px,2.9cqw,32px); line-height:1.25; }
   .vpo-tile:hover, .vpo-tile:focus-visible{ opacity:1; background:var(--lime); color:#08110a; }
-  .vpo-tag{ flex:0 0 auto; font-size:10px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lime); }
+  .vpo-tag{ flex:0 0 auto; font-size:clamp(9px,1.7cqw,19px); font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--lime); }
   .vpo-tile:hover .vpo-tag{ color:#08110a; }
-  .vpo-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .vpo-name{ min-width:0; overflow:hidden; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; line-clamp:2; word-break:break-word; }
+  .vpo-tile{ min-width:0; box-sizing:border-box; width:100%; }
   .vpo-empty{ margin:auto 0; color:var(--text-dim); font-size:13px; }
   .video-highlight-player{ container-type:size; }
   .detail-breakdown ul.chapters{ list-style:none; margin:0; padding:0; border-top:1px solid var(--line-soft); }
@@ -626,7 +627,7 @@
   .chapter-ts{ flex:0 0 auto; min-width:52px; font-size:13px; font-weight:600; font-family:inherit; line-height:1; color:var(--lime); background:none; border:0; padding:0; text-align:left; letter-spacing:.04em; }
   button.chapter-ts{ cursor:pointer; text-decoration:underline; text-underline-offset:3px; }
   button.chapter-ts:hover{ color:#fff; }
-  @media (max-width:600px){ .btn.video-full-btn{ font-size:10.5px; gap:5px; } .vpo-tile{ padding:6px 8px; font-size:11.5px; gap:7px; } .vpo-tag{ font-size:9px; } }
+  @media (max-width:600px){ .btn.video-full-btn{ font-size:9.5px; gap:4px; letter-spacing:.02em; padding:4px; } .vpo-tile{ padding:6px 8px; font-size:11.5px; gap:7px; } .vpo-tag{ font-size:9px; } }
   .video-channel-link{ display:flex; align-items:center; gap:10px; color:var(--text); }
   .video-channel-name{ font-size:13px; font-weight:600; }
   .video-jump-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:14px; }
@@ -986,7 +987,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
             <span>Watch In Full</span>
           </a>
         </div>
-        <div class="vpo-right"><div class="vpo-list"><span class="vpo-empty">More from Bitchin' Blasters in the Gallery</span></div><a class="vpo-tile vpo-next" href="../builds/gold-rush-june.html"><span class="vpo-tag">Next video</span><span class="vpo-name">Gold Rush Milsim, June | Donnybrook Gel Ballers</span></a></div>
+        <div class="vpo-right"><div class="vpo-list"><span class="vpo-empty">More from Bitchin' Blasters in the Gallery</span></div><a class="vpo-tile vpo-next" href="../builds/gold-rush-june.html"><span class="vpo-tag">Next:</span><span class="vpo-name">Gold Rush Milsim, June | Donnybrook Gel Ballers</span></a></div>
       </div>
     </div>
     <div class="video-jump-row"></div></div>
