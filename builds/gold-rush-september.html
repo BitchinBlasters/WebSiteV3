@@ -598,7 +598,9 @@
 
   .video-highlight-player{ position:relative; width:100%; aspect-ratio:16/9; background:#000; overflow:hidden; }
   .video-highlight-frame{ position:absolute; inset:0; }
-  .video-highlight-frame iframe{ width:100%; height:100%; border:0; }
+  /* iframe is 70px taller top and bottom, so YouTube's title bar and control bar sit outside the visible window; the 16:9 picture stays exactly in view */
+  .video-highlight-frame iframe{ position:absolute; left:0; top:-70px; width:100%; height:calc(100% + 140px); border:0; }
+  .video-shield{ position:absolute; inset:0; z-index:2; }
   .video-pause-overlay{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
     background:rgba(8,10,6,.55); backdrop-filter:blur(6px); }
   .video-pause-overlay[hidden]{ display:none; }
@@ -619,7 +621,6 @@
   .vpo-name{ overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
   .vpo-empty{ margin:auto 0; color:var(--text-dim); font-size:13px; }
   .video-highlight-player{ container-type:size; }
-  .video-play-btn{ padding:11px 20px; font-size:13px; position:absolute; inset:0; margin:auto; width:max-content; height:max-content; z-index:4; }
   .detail-breakdown ul.chapters{ list-style:none; margin:0; padding:0; border-top:1px solid var(--line-soft); }
   .detail-breakdown ul.chapters li{ display:flex; gap:14px; align-items:baseline; padding:10px 0; border-bottom:1px solid var(--line-soft); color:var(--text-dim); font-size:15px; line-height:1.5; }
   .chapter-ts{ flex:0 0 auto; min-width:52px; font-size:13px; font-weight:600; font-family:inherit; line-height:1; color:var(--lime); background:none; border:0; padding:0; text-align:left; letter-spacing:.04em; }
@@ -977,6 +978,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   <div class="wrap">
     <div class="detail-hero"><div class="video-highlight-player" data-yt-id="_LEwwSREXlU" data-start="0" data-duration="20" id="detail-video">
       <div class="video-highlight-frame"></div>
+      <div class="video-shield"></div>
       <div class="video-pause-overlay" hidden>
         <div class="vpo-left">
           <a class="btn primary video-full-btn" href="https://youtube.com/watch?v=_LEwwSREXlU" target="_blank" rel="noopener">
@@ -1147,8 +1149,9 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       player = new YT.Player(div, {
         videoId: ytId,
         playerVars: {
-          start: startSec, autoplay: 1, controls: muted ? 0 : 1,
-          modestbranding: 1, rel: 0, playsinline: 1
+          start: startSec, autoplay: 1, controls: (muted || options.clean) ? 0 : 1,
+          modestbranding: 1, rel: 0, playsinline: 1,
+          ...(options.clean ? { disablekb: 1, iv_load_policy: 3, fs: 0 } : {})
         },
         events: {
           // The clip timer starts when the video really starts playing, not when
@@ -1167,10 +1170,10 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
               // Detect blocked autoplay: if still paused shortly after play(),
               // the browser blocked unmuted autoplay and needs a real click.
               setTimeout(() => {
-                if (player.getPlayerState && player.getPlayerState() !== 1) {
+                if (player.getPlayerState && player.getPlayerState() !== 1 && player.getPlayerState() !== 3) {
                   options.onUnmutedReady(player);
                 }
-              }, 600);
+              }, 1000);
             }
           }
         }
@@ -1224,24 +1227,18 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     const frame = playerBlock.querySelector('.video-highlight-frame');
     const overlay = playerBlock.querySelector('.video-pause-overlay');
 
+    const shield = playerBlock.querySelector('.video-shield');
     const ctrl = attachHighlightPlayer(frame, ytId, startSec, {
       duration: parseInt(playerBlock.dataset.duration || '20', 10),
+      clean: true,
       onCap: () => { if (overlay) overlay.hidden = false; },
       onResume: () => { if (overlay) overlay.hidden = true; },
       onUnmutedReady: (player) => {
-        // Autoplay-with-sound was blocked by the browser — show a simple
-        // click-to-play button in place of the frame (a real click always
-        // satisfies autoplay-with-sound policies).
-        const btn = document.createElement('button');
-        btn.className = 'btn primary';
-        btn.className = 'btn primary video-play-btn';
-        btn.textContent = 'Play';
-        frame.appendChild(btn);
-        btn.addEventListener('click', () => {
-          player.unMute();
-          player.playVideo();
-          btn.remove();
-        });
+        // The browser blocked autoplay with sound. Start it muted instead (always
+        // allowed) and let the first tap anywhere on the video turn the sound on.
+        player.mute();
+        player.playVideo();
+        if (shield) shield.addEventListener('click', () => { player.unMute(); }, { once: true });
       }
     });
     loadYouTubeAPI(() => ctrl.create(false));
