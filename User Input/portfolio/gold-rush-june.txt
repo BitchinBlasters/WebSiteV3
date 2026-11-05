@@ -5,6 +5,7 @@ Type: Event
 Location: Donnybrook Gel Ballers, QLD
 YouTube: https://www.youtube.com/watch?v=qIVIuajEr24
 Hover Start: 0:25
+Highlight Length: 60
 Keywords: gold-rush, donnybrook, regulators
 Series: Gold Rush Milsim
 Priority: 1

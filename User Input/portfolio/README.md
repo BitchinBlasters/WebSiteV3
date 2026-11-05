@@ -54,6 +54,7 @@ Keywords: flash-bang (1:32), 3d-printed (0:45), cqb-loadout (2:10)
 ```
 
 - `Hover Start` — where the preview starts when someone hovers the thumbnail.
+- `Highlight Length` — (optional, videos) how many seconds the clip plays on the video page before the Watch In Full screen appears, e.g. `Highlight Length: 60`. Blank = 20 seconds.
 - The `(mm:ss)` next to a keyword is where THAT specific thing appears in the
   video — used for the keyword jump-buttons under the full player. Optional
   per keyword; leave it off a keyword that isn't tied to a specific moment.
