@@ -875,7 +875,8 @@ BASE_SCRIPT = """
   });
 """
 
-ORG_JSONLD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Bitchin' Blasters","url":"https://bitchinblasters.com.au/","logo":"https://bitchinblasters.com.au/icon-512.png","description":"One-off custom gel blaster builds and upgrades, built to how you play. Queensland-based.","email":"b1tch1nblasters@gmail.com","telephone":"+61468320050","areaServed":{"@type":"AdministrativeArea","name":"Queensland, Australia"},"sameAs":["https://www.instagram.com/bitchinblasters","https://www.youtube.com/@BitchinBlasters","https://www.facebook.com/b1tch1nblasters"]}</script>"""
+ORG_JSONLD = """<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Bitchin' Blasters","url":"https://bitchinblasters.com.au/","logo":"https://bitchinblasters.com.au/icon-512.png","description":"Gel blaster builds, repairs and upgrades. Parts, advice, news and education. Built to how you play, not how I think you should. Caboolture, Queensland.","email":"b1tch1nblasters@gmail.com","telephone":"+61468320050","areaServed":{"@type":"AdministrativeArea","name":"Queensland, Australia"},"sameAs":["https://www.instagram.com/bitchinblasters","https://www.youtube.com/@BitchinBlasters","https://www.facebook.com/b1tch1nblasters"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Bitchin' Blasters","alternateName":["Bitchin Blasters","Bitchin' Blasters Caboolture"],"url":"https://bitchinblasters.com.au/"}</script>"""
 
 
 def page(title, description, active, body, extra_script=""):
@@ -1401,8 +1402,8 @@ CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + signup_form.CSS + "\n" +
 # WRITE FILES
 # ---------------------------------------------------------------------------
 pages = {
-    "index.html": page("Bitchin' Blasters — Custom Gel Blaster Builds, Queensland",
-                        "One-off custom gel blaster builds and upgrades, built to how you play. Queensland-based.",
+    "index.html": page("Gel Blaster Builds, Repairs, Upgrades, Parts & more",
+                        "Gel blaster builds, repairs and upgrades. Parts, advice, news and education. Built to how you play, not how I think you should. Caboolture, Queensland.",
                         "home", INDEX_BODY, sale_banner.popup_script(SALE)),
     "who-we-are.html": page("Who We Are — Bitchin' Blasters",
                              "Why we build, our background, and what you can count on with every Bitchin' Blasters build.",
