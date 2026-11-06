@@ -59,7 +59,7 @@ def parse_txt(path):
 
 KNOWN_KEYS = {
     "Title", "Description", "Breakdown", "Type", "Location", "Keywords",
-    "YouTube", "Hover Start", "Highlight Length", "Captions", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
+    "YouTube", "Hover Start", "Highlight Length", "Captions", "Ask About", "Ask Prefill", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
 }
 
 
@@ -224,6 +224,8 @@ def parse_portfolio():
             "keywords": parse_keywords_field(fields.get("Keywords", "")),
             "images": images,
             "captions": parse_captions(fields.get("Captions", "")),
+            "ask_about": (fields.get("Ask About") or "").strip(),
+            "ask_prefill": (fields.get("Ask Prefill") or "").strip(),
             "youtube": fields.get("YouTube") or None,
             "hover_start": fields.get("Hover Start") or None,
             "highlight_length": parse_length(fields.get("Highlight Length")),

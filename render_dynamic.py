@@ -376,19 +376,21 @@ def _image_numbers(images):
     return [n if n is not None else (0 if has_one else 1) for n in nums]
 
 
-CATEGORY_WORDS = {  # category -> (word used in the question, word on the button)
-    "builds": ("Builds", "Build"),
-    "events": ("Events", "Event"),
-    "tech-tips": ("Tech-Tips", "Tech Tip"),
-    "reviews": ("Reviews", "Review"),
+CATEGORY_WORDS = {  # category -> (default prefill word, default button word)
+    "builds": ("Builds", "build"),
+    "events": ("Events", "event"),
+    "tech-tips": ("Tech-Tips", "tip"),
+    "reviews": ("Reviews", "product"),
 }
 
 
 def ask_about_html(entry):
-    plural, single = CATEGORY_WORDS.get(entry.get("category"), ("Gallery", "Post"))
-    msg = f"I have a question about {plural}, looking at {entry['title']}"
+    plural, single = CATEGORY_WORDS.get(entry.get("category"), ("Gallery", "post"))
+    word = entry.get("ask_about") or single
+    about = entry.get("ask_prefill") or plural
+    msg = f"I have a question about {about}, looking at {entry['title']}"
     href = "../your-build.html?msg=" + urllib.parse.quote(msg) + "#other-enquiries"
-    return f'<p style="margin-top:32px;"><a href="{href}" class="btn primary">Ask about this {single}</a></p>'
+    return f'<p style="margin-top:32px;"><a href="{href}" class="btn primary">Ask about this {html.escape(word)}</a></p>'
 
 
 def cap_img_html(entry, i, nums, extra_class="", hero=False):
