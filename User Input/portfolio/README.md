@@ -155,3 +155,12 @@ Add a `Captions:` field, one caption per line, starting with the image number:
 - On PC, hovering an image doubles it and slides the caption up; clicking opens a large viewer with the caption along the bottom.
 - On phones, tapping opens the viewer with the caption under the image.
 - Every gallery page also gets an "Ask about this ..." button that opens the question form pre-filled.
+
+## "Ask about this..." button (optional overrides)
+By default the button wording follows the Type: Build → "Ask about this build", Event → "event", Tech Tip → "tip", Review → "product". Override per post:
+
+    Ask About: field
+    Ask Prefill: the field
+
+- `Ask About:` is the word on the button ("Ask about this field").
+- `Ask Prefill:` is what goes in the question box after "I have a question about" (the box then reads "I have a question about the field, looking at <post title>"). If left out it uses the category name (Builds, Events, Tech-Tips, Reviews).
