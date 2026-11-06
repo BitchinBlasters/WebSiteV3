@@ -141,3 +141,17 @@ Series: Scylla HPA
 
 For an entry with a `YouTube:` line you can leave out the thumbnail picture. The site uses the video's own YouTube
 thumbnail. If you do add a picture with the same name as the txt file, that picture is used instead.
+
+## Image captions (gallery pages)
+Add a `Captions:` field, one caption per line, starting with the image number:
+
+    Captions:
+    1: Front view of the finished build
+    2: Close-up of the hop-up
+    3: Rear sight detail
+
+- `image 1.jpg` and `image_1.jpg` are both image number 1 (space or underscore both work).
+- The main image (no number) counts as number 1.
+- On PC, hovering an image doubles it and slides the caption up; clicking opens a large viewer with the caption along the bottom.
+- On phones, tapping opens the viewer with the caption under the image.
+- Every gallery page also gets an "Ask about this ..." button that opens the question form pre-filled.
