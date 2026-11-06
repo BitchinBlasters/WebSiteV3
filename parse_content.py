@@ -153,7 +153,7 @@ def group_numbered_files(files, base_stem):
         if stem == base_stem:
             exact = f
         else:
-            m = re.match(r"^" + re.escape(base_stem) + r" (\d+)$", stem)
+            m = re.match(r"^" + re.escape(base_stem) + r"[ _](\d+)$", stem)
             if m:
                 numbered.append((int(m.group(1)), f))
     numbered.sort(key=lambda t: t[0])
@@ -183,7 +183,7 @@ def parse_portfolio():
             f for f in all_files
             if os.path.splitext(f)[1].lower() in IMG_EXTS
             and (os.path.splitext(f)[0] == stem
-                 or re.match(r"^" + re.escape(stem) + r" \d+$", os.path.splitext(f)[0]))
+                 or re.match(r"^" + re.escape(stem) + r"[ _]\d+$", os.path.splitext(f)[0]))
         ]
         images = group_numbered_files(matching_imgs, stem)
         if not images and fields.get("YouTube"):
@@ -280,7 +280,7 @@ def parse_brands():
             f for f in all_files
             if os.path.splitext(f)[1].lower() in IMG_EXTS
             and (os.path.splitext(f)[0] == stem
-                 or re.match(r"^" + re.escape(stem) + r" \d+$", os.path.splitext(f)[0]))
+                 or re.match(r"^" + re.escape(stem) + r"[ _]\d+$", os.path.splitext(f)[0]))
         ]
         images = group_numbered_files(matching_imgs, stem)
         entries.append({
