@@ -1,6 +1,10 @@
 Title: First Look @ Scylla HPA
 Description: Unboxing and installing the first Jefftron Scylla HPA FCU in a gel blaster in Australia.
-Breakdown: Unboxing and installing the first Jefftron Scylla HPA FCU in a gel blaster in Australia. If you run a Polarstar F2 engine and want to swap the bulky, wire-tethered Polarstar FCU for a Bluetooth app interface, this drop-in wireless unit is a big step up. The video walks through the straightforward V2 gearbox install, the Jefftron app's user interface, and finishes on the chronograph, with a spreadsheet comparing shot-to-shot FPS consistency between the stock Polarstar FCU and the Scylla.
+Breakdown: Unboxing and installing the FIRST Jefftron Scylla HPA FCU inside a gel blaster in Australia! If you are running an HPA engine and want to ditch a bulky, old-school wire-tethered FCU for a flawless Bluetooth app interface, this drop-in wireless unit is a game changer.
+
+In this video, I walk you through the incredibly straightforward V2 gearbox installation, dive into the ultra-smooth user interface of the Jefftron app, and wrap things up on the chronograph. I've put together a complete spreadsheet breakdown of the shot-to-shot FPS consistency and variation between the stock Polarstar FCU and the new Jefftron Scylla.
+
+Let me know in the comments if you're planning to upgrade your HPA gel blaster.
 Type: Review
 YouTube: https://www.youtube.com/watch?v=IdKfuwCc444
 Keywords: scylla-hpa, jefftron, polarstar-f2, hpa

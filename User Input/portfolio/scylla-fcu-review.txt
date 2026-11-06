@@ -1,6 +1,15 @@
 Title: Scylla HPA FCU Review: Separate ROF on Each Selector
 Description: Thoughts after 30,000+ shots with the Jefftron Scylla HPA FCU. Bought with my own money, not sponsored.
-Breakdown: The Jefftron Scylla HPA FCU lets you set the rate of fire and all engine settings independently on each selector position, adjust everything over Bluetooth from your phone, and save profiles for different fields. This is an honest review after more than 30,000 shots on the field. It was bought with my own money and is not sponsored. Covers the settings on each selector position, the fully Bluetooth app, saving and recalling profiles to suit each field's rules, the fast ROF change, and final thoughts. Filmed at Donnybrook Gel Ballers, QLD.
+Breakdown: The Jefftron Scylla HPA FCU lets you set the rate of fire and all engine settings independently on each selector position, adjust it all over Bluetooth from your phone, and save profiles for different fields. Here's my review after running it in my HPA gel blaster for a while, over 30,000 shots.
+
+I bought the Scylla with my own money. This isn't sponsored, just my honest thoughts after using it on the field.
+
+What I cover
+Different settings and rate of fire on each selector position. Fully Bluetooth: change everything from the app on your phone. Saving and recalling profiles, so you can switch setups to suit each field's rules.
+
+Filmed at Donnybrook Gel Ballers, QLD. Thanks for having me.
+
+Chapters: 0:30 What the Scylla is, 2:10 The Bluetooth app, 2:45 Settings on each selector position, 4:08 Fast ROF change, 5:10 Final thoughts
 Type: Review
 YouTube: https://www.youtube.com/watch?v=RziDZ5HsYOU
 Hover Start: 0:30
