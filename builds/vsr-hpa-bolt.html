@@ -367,6 +367,36 @@
     background:linear-gradient(0deg, rgba(0,0,0,0.75), transparent); font-size:13px; color:var(--text-dim);
     opacity:0; transition:opacity .25s ease; }
   .gallery-item:hover .gallery-cap{ opacity:1; }
+
+  /* ---- Detail-page photos: hover zoom (PC) + full-screen viewer ---- */
+  .cap-img{ position:relative; margin:0; cursor:zoom-in; }
+  .gallery-item.cap-img{ overflow:visible; }
+  .cap-img.zoomed{ z-index:40; }
+  .cap-zoom{ position:relative; width:100%; height:100%; overflow:hidden; background:#000; transition:transform .25s ease, box-shadow .25s ease; --z:1; }
+  .cap-img.zoomed .cap-zoom{ box-shadow:0 12px 40px rgba(0,0,0,.7); }
+  .cap-hero .cap-zoom{ height:auto; }
+  .cap-hero .detail-hero-img{ display:block; }
+  .gallery-item.cap-img:hover img{ transform:none; }
+  .cap-text{ position:absolute; left:0; right:0; bottom:0; box-sizing:border-box; padding:calc(14px / var(--z)) calc(16px / var(--z));
+    font-size:calc(15px / var(--z)); line-height:1.35; color:#fff; background:linear-gradient(0deg, rgba(0,0,0,.88), rgba(0,0,0,.55) 70%, transparent);
+    transform:translateY(101%); transition:transform .25s ease; pointer-events:none; }
+  .cap-img.zoomed .cap-text{ transform:translateY(0); }
+  @media (hover:none), (pointer:coarse){ .cap-text{ display:none; } }
+  .lb{ position:fixed; inset:0; z-index:300; background:rgba(0,0,0,.93); display:flex; align-items:center; justify-content:center; }
+  .lb[hidden]{ display:none; }
+  .lb-fig{ position:relative; margin:0; display:flex; flex-direction:column; align-items:center; max-width:96vw; }
+  .lb-fig img{ display:block; max-width:96vw; max-height:92vh; object-fit:contain; }
+  .lb-cap{ position:absolute; left:0; right:0; bottom:0; box-sizing:border-box; padding:48px 24px 20px; font-size:18px; line-height:1.4; color:#fff; text-align:center;
+    background:linear-gradient(0deg, rgba(0,0,0,.85), transparent); }
+  .lb-x{ position:absolute; top:10px; right:14px; z-index:2; background:none; border:0; color:#fff; font-size:40px; line-height:1; cursor:pointer; padding:6px 12px; }
+  .lb-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:2; background:rgba(0,0,0,.45); border:0; color:#fff; font-size:44px; line-height:1; cursor:pointer; padding:10px 16px; }
+  .lb-prev{ left:6px; } .lb-next{ right:6px; }
+  .lb.single .lb-nav{ display:none; }
+  @media (hover:none), (pointer:coarse), (max-width:700px){
+    .lb-fig img{ max-height:78vh; }
+    .lb-cap{ position:static; padding:12px 16px 4px; font-size:15px; background:none; text-align:left; max-width:96vw; }
+    .lb-nav{ font-size:34px; padding:8px 12px; }
+  }
   .gallery-credit{ margin-top:18px; font-size:13px; color:var(--text-dim); }
 
   .video-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:2px; background:var(--line-soft); }
@@ -977,7 +1007,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 </section>
 <section class="detail-section">
   <div class="wrap">
-    <div class="detail-hero"><img src="../User Input/portfolio/VSR HPA Bolt.jpg" alt="VSR HPA Bolt" class="detail-hero-img"></div>
+    <div class="detail-hero"><figure class="cap-img cap-hero" data-full="User Input/portfolio/VSR HPA Bolt.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt.jpg" alt="VSR HPA Bolt" class="detail-hero-img"></div></figure></div>
     <div class="detail-breakdown">
       <p>Here's the first iteration of how I envision an electronically controlled HPA bolt, built for tunability and quietness.<br>It uses a large Wolverine Inferno solenoid, driven by a Bluetooth microcontroller and a prototype coil drive circuit.</p>
       <p>I machined a manifold for the solenoid and air inlet/outlet from solid brass. To minimise the need to modify the blaster itself, I also machined a long solid brass middle section with a well-matched passage size.</p>
@@ -989,16 +1019,85 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <p>Stay tuned, as I'm working on a larger magazine and an adaptor...</p>
     </div>
     <div id="products-used"></div>
-    <div class="gallery-grid" style="margin-top:32px;"><div class="gallery-item"><img src="../User Input/portfolio/VSR HPA Bolt 1.jpg" alt="VSR HPA Bolt"></div>
-<div class="gallery-item"><img src="../User Input/portfolio/VSR HPA Bolt 2.jpg" alt="VSR HPA Bolt"></div>
-<div class="gallery-item"><img src="../User Input/portfolio/VSR HPA Bolt 3.jpg" alt="VSR HPA Bolt"></div>
-<div class="gallery-item"><img src="../User Input/portfolio/VSR HPA Bolt 4.jpg" alt="VSR HPA Bolt"></div>
-<div class="gallery-item"><img src="../User Input/portfolio/VSR HPA Bolt 5.jpg" alt="VSR HPA Bolt"></div>
-<div class="gallery-item"><img src="../User Input/portfolio/VSR HPA Bolt 7.jpg" alt="VSR HPA Bolt"></div></div>
+    <div class="gallery-grid" style="margin-top:32px;"><figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 1.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 1.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 2.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 2.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 3.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 3.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 4.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 4.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 5.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 5.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 7.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 7.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure></div>
     
-    <p style="margin-top:40px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
+    <p style="margin-top:32px;"><a href="../your-build.html?msg=I%20have%20a%20question%20about%20Builds%2C%20looking%20at%20VSR%20HPA%20Bolt#other-enquiries" class="btn primary">Ask about this Build</a></p>
+    <p style="margin-top:24px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
   </div>
 </section>
+<script>
+(function(){
+  const items = Array.from(document.querySelectorAll('.cap-img'));
+  if (!items.length) return;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // ---- PC hover: grow to 2x from the corner furthest from screen centre, never leaving the screen ----
+  if (canHover) {
+    items.forEach(el => {
+      const zoom = el.querySelector('.cap-zoom');
+      el.addEventListener('mouseenter', () => {
+        const r = el.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, m = 8;
+        const growRight = (r.left + r.width / 2) < vw / 2;
+        const growDown = (r.top + r.height / 2) < vh / 2;
+        const availW = growRight ? vw - m - r.left : r.right - m;
+        const availH = growDown ? vh - m - Math.max(r.top, m) : Math.min(r.bottom, vh - m) - m;
+        let z = Math.min(2, availW / r.width, availH / r.height);
+        if (z < 1.08) z = 1;
+        zoom.style.transformOrigin = (growRight ? '0%' : '100%') + ' ' + (growDown ? '0%' : '100%');
+        zoom.style.setProperty('--z', z);
+        zoom.style.transform = 'scale(' + z + ')';
+        el.classList.add('zoomed');
+      });
+      el.addEventListener('mouseleave', () => {
+        el.classList.remove('zoomed');
+        zoom.style.transform = '';
+        zoom.style.setProperty('--z', 1);
+      });
+    });
+  }
+
+  // ---- Click / tap: near full-screen viewer with the caption ----
+  const lb = document.createElement('div');
+  lb.className = 'lb';
+  lb.hidden = true;
+  lb.innerHTML = '<button type="button" class="lb-x" aria-label="Close">&times;</button>' +
+    '<button type="button" class="lb-nav lb-prev" aria-label="Previous">&lsaquo;</button>' +
+    '<button type="button" class="lb-nav lb-next" aria-label="Next">&rsaquo;</button>' +
+    '<figure class="lb-fig"><img alt=""><figcaption class="lb-cap"></figcaption></figure>';
+  document.body.appendChild(lb);
+  const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+  let cur = 0;
+  function show(i) {
+    cur = (i + items.length) % items.length;
+    lbImg.src = items[cur].querySelector("img").currentSrc || items[cur].querySelector("img").src;
+    lbImg.alt = items[cur].querySelector('img').alt;
+    lbCap.textContent = items[cur].dataset.cap || '';
+    lbCap.style.display = items[cur].dataset.cap ? '' : 'none';
+  }
+  function open(i) {
+    show(i);
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lb.classList.toggle('single', items.length < 2);
+  }
+  function close() { lb.hidden = true; lbImg.src = ''; document.body.style.overflow = ''; }
+  items.forEach((el, i) => el.addEventListener('click', () => open(i)));
+  lb.addEventListener('click', e => { if (e.target === lb || e.target.closest('.lb-x')) close(); });
+  lb.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); show(cur - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); show(cur + 1); });
+  document.addEventListener('keydown', e => {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(cur - 1);
+    else if (e.key === 'ArrowRight') show(cur + 1);
+  });
+})();
+</script>
 </main>
 <footer id="contact">
   <div class="wrap">
