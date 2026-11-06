@@ -47,6 +47,8 @@ def parse_txt(path):
                 key = m.group(1).strip()
                 fields[key] = m.group(2).strip()
                 last_key = key
+            elif last_key == "Captions":
+                fields[last_key] += "\n" + line.strip()
             elif last_key == "Breakdown":
                 cur = fields[last_key]
                 fields[last_key] = cur + (line.strip() if cur.endswith("\n\n") else "\n" + line.strip())
@@ -57,8 +59,28 @@ def parse_txt(path):
 
 KNOWN_KEYS = {
     "Title", "Description", "Breakdown", "Type", "Location", "Keywords",
-    "YouTube", "Hover Start", "Highlight Length", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
+    "YouTube", "Hover Start", "Highlight Length", "Captions", "Brand", "Status", "Price", "Supplier Link", "Priority", "Series",
 }
+
+
+def parse_captions(raw):
+    """Captions field -> {number: text}. One caption per line, e.g.
+         1: Front view with the suppressor fitted
+         Image 2: Close-up of the hop-up
+       "image", "photo" and "pic" before the number are allowed; the separator
+       can be : . ) or -. A line with no number carries on the previous caption."""
+    out, last = {}, None
+    for line in (raw or "").split("\n"):
+        line = line.strip()
+        if not line:
+            continue
+        m = re.match(r"^(?:image|photo|pic)?[ _]*(\d+)\s*[:.)\-]\s*(.*)$", line, re.I)
+        if m:
+            last = int(m.group(1))
+            out[last] = m.group(2).strip()
+        elif last is not None:
+            out[last] = (out[last] + " " + line).strip()
+    return {k: v for k, v in out.items() if v}
 
 
 def parse_length(raw, default=20):
@@ -201,6 +223,7 @@ def parse_portfolio():
             "location": fields.get("Location", ""),
             "keywords": parse_keywords_field(fields.get("Keywords", "")),
             "images": images,
+            "captions": parse_captions(fields.get("Captions", "")),
             "youtube": fields.get("YouTube") or None,
             "hover_start": fields.get("Hover Start") or None,
             "highlight_length": parse_length(fields.get("Highlight Length")),

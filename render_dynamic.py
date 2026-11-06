@@ -9,6 +9,8 @@ build/event detail pages as separate files.
 
 import re
 import os
+import html
+import urllib.parse
 import parse_content
 
 UI_PATH = "User Input"  # relative path prefix used in generated <img src="">
@@ -362,16 +364,56 @@ def _fmt_ts(seconds):
     return f"{m}:{s:02d}"
 
 
+def _image_numbers(images):
+    """Photo number for each image: 'name 3.jpg' and 'name_3.jpg' are both 3.
+    The un-numbered main photo counts as 1 (unless a 'name 1' / 'name_1' exists)."""
+    nums = []
+    for img in images:
+        stem = os.path.splitext(os.path.basename(str(img)))[0]
+        m = re.search(r"[ _](\d+)$", stem) if not str(img).startswith("http") else None
+        nums.append(int(m.group(1)) if m else None)
+    has_one = 1 in nums
+    return [n if n is not None else (0 if has_one else 1) for n in nums]
+
+
+CATEGORY_WORDS = {  # category -> (word used in the question, word on the button)
+    "builds": ("Builds", "Build"),
+    "events": ("Events", "Event"),
+    "tech-tips": ("Tech-Tips", "Tech Tip"),
+    "reviews": ("Reviews", "Review"),
+}
+
+
+def ask_about_html(entry):
+    plural, single = CATEGORY_WORDS.get(entry.get("category"), ("Gallery", "Post"))
+    msg = f"I have a question about {plural}, looking at {entry['title']}"
+    href = "../your-build.html?msg=" + urllib.parse.quote(msg) + "#other-enquiries"
+    return f'<p style="margin-top:32px;"><a href="{href}" class="btn primary">Ask about this {single}</a></p>'
+
+
+def cap_img_html(entry, i, nums, extra_class="", hero=False):
+    img = entry["images"][i]
+    cap = html.escape(entry.get("captions", {}).get(nums[i], ""), quote=True)
+    src = portfolio_img_src(img)
+    alt = html.escape(entry["title"], quote=True)
+    cap_el = f'<figcaption class="cap-text">{cap}</figcaption>' if cap else ""
+    cls = f"cap-img {'cap-hero' if hero else 'gallery-item'} {extra_class}".strip()
+    inner_img = f'<img src="{src}" alt="{alt}"' + (' class="detail-hero-img"' if hero else ' loading="lazy"') + ">"
+    return (f'<figure class="{cls}" data-full="{src}" data-cap="{cap}">'
+            f'<div class="cap-zoom">{inner_img}{cap_el}</div></figure>')
+
+
 def detail_page_body(entry, kw_index, brand_lookup, portfolio=None):
+    nums = _image_numbers(entry["images"])
     gallery_imgs = "\n".join(
-        f'<div class="gallery-item"><img src="{portfolio_img_src(img)}" alt="{entry["title"]}"></div>'
-        for img in entry["images"][1:]  # first image already shown as hero/video
+        cap_img_html(entry, i, nums)
+        for i in range(1, len(entry["images"]))  # first image already shown as hero/video
     )
     location_line = f'<p class="kicker">{entry["location"]}</p>' if entry.get("location") else ""
     hero_media = video_block_html(entry, kw_index, portfolio) if entry["youtube"] else (
-        f'<img src="{portfolio_img_src(entry["images"][0])}" alt="{entry["title"]}" class="detail-hero-img">'
-        if entry["images"] else ""
+        cap_img_html(entry, 0, nums, hero=True) if entry["images"] else ""
     )
+    viewer_js = VIEWER_SCRIPT if entry["images"] else ""
 
     kw_buttons = keyword_buttons_html(entry, kw_index)
     brand_section = brand_section_html(entry, kw_index, brand_lookup) if entry.get("category") == "builds" else ""
@@ -391,9 +433,81 @@ def detail_page_body(entry, kw_index, brand_lookup, portfolio=None):
     <div id="products-used">{kw_buttons}</div>
     {gallery_imgs and f'<div class="gallery-grid" style="margin-top:32px;">{gallery_imgs}</div>'}
     {brand_section}
-    <p style="margin-top:40px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
+    {ask_about_html(entry)}
+    <p style="margin-top:24px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
   </div>
-</section>'''
+</section>
+{viewer_js}'''
+
+
+VIEWER_SCRIPT = """<script>
+(function(){
+  const items = Array.from(document.querySelectorAll('.cap-img'));
+  if (!items.length) return;
+  const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  // ---- PC hover: grow to 2x from the corner furthest from screen centre, never leaving the screen ----
+  if (canHover) {
+    items.forEach(el => {
+      const zoom = el.querySelector('.cap-zoom');
+      el.addEventListener('mouseenter', () => {
+        const r = el.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, m = 8;
+        const growRight = (r.left + r.width / 2) < vw / 2;
+        const growDown = (r.top + r.height / 2) < vh / 2;
+        const availW = growRight ? vw - m - r.left : r.right - m;
+        const availH = growDown ? vh - m - Math.max(r.top, m) : Math.min(r.bottom, vh - m) - m;
+        let z = Math.min(2, availW / r.width, availH / r.height);
+        if (z < 1.08) z = 1;
+        zoom.style.transformOrigin = (growRight ? '0%' : '100%') + ' ' + (growDown ? '0%' : '100%');
+        zoom.style.setProperty('--z', z);
+        zoom.style.transform = 'scale(' + z + ')';
+        el.classList.add('zoomed');
+      });
+      el.addEventListener('mouseleave', () => {
+        el.classList.remove('zoomed');
+        zoom.style.transform = '';
+        zoom.style.setProperty('--z', 1);
+      });
+    });
+  }
+
+  // ---- Click / tap: near full-screen viewer with the caption ----
+  const lb = document.createElement('div');
+  lb.className = 'lb';
+  lb.hidden = true;
+  lb.innerHTML = '<button type="button" class="lb-x" aria-label="Close">&times;</button>' +
+    '<button type="button" class="lb-nav lb-prev" aria-label="Previous">&lsaquo;</button>' +
+    '<button type="button" class="lb-nav lb-next" aria-label="Next">&rsaquo;</button>' +
+    '<figure class="lb-fig"><img alt=""><figcaption class="lb-cap"></figcaption></figure>';
+  document.body.appendChild(lb);
+  const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
+  let cur = 0;
+  function show(i) {
+    cur = (i + items.length) % items.length;
+    lbImg.src = items[cur].querySelector("img").currentSrc || items[cur].querySelector("img").src;
+    lbImg.alt = items[cur].querySelector('img').alt;
+    lbCap.textContent = items[cur].dataset.cap || '';
+    lbCap.style.display = items[cur].dataset.cap ? '' : 'none';
+  }
+  function open(i) {
+    show(i);
+    lb.hidden = false;
+    document.body.style.overflow = 'hidden';
+    lb.classList.toggle('single', items.length < 2);
+  }
+  function close() { lb.hidden = true; lbImg.src = ''; document.body.style.overflow = ''; }
+  items.forEach((el, i) => el.addEventListener('click', () => open(i)));
+  lb.addEventListener('click', e => { if (e.target === lb || e.target.closest('.lb-x')) close(); });
+  lb.querySelector('.lb-prev').addEventListener('click', e => { e.stopPropagation(); show(cur - 1); });
+  lb.querySelector('.lb-next').addEventListener('click', e => { e.stopPropagation(); show(cur + 1); });
+  document.addEventListener('keydown', e => {
+    if (lb.hidden) return;
+    if (e.key === 'Escape') close();
+    else if (e.key === 'ArrowLeft') show(cur - 1);
+    else if (e.key === 'ArrowRight') show(cur + 1);
+  });
+})();
+</script>"""
 
 
 def write_detail_pages(output_dir, page_fn, data):
