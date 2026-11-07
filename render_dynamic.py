@@ -457,6 +457,7 @@ VIEWER_SCRIPT = """<script>
   // ---- PC hover: grow to 2x from the corner furthest from screen centre, never leaving the screen ----
   if (canHover) {
     items.forEach(el => {
+      if (el.classList.contains('cap-hero')) return;   // the top image does not pop up
       const zoom = el.querySelector('.cap-zoom');
       el.addEventListener('mouseenter', () => {
         const r = el.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, m = 8;
@@ -491,6 +492,13 @@ VIEWER_SCRIPT = """<script>
   document.body.appendChild(lb);
   const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
   let cur = 0;
+  // Double tap (or double click) the big photo to close it and drop back to the post.
+  let lastTap = 0;
+  lbImg.addEventListener('touchend', e => {
+    const now = Date.now();
+    if (now - lastTap < 350) { e.preventDefault(); lastTap = 0; close(); } else { lastTap = now; }
+  });
+  lbImg.addEventListener('dblclick', () => close());
   function show(i) {
     cur = (i + items.length) % items.length;
     lbImg.src = items[cur].querySelector("img").currentSrc || items[cur].querySelector("img").src;
@@ -695,8 +703,19 @@ VIDEO_SYSTEM_SCRIPT = """
         // allowed) and let the first tap anywhere on the video turn the sound on.
         player.mute();
         player.playVideo();
-        if (shield) shield.addEventListener('click', () => { player.unMute(); }, { once: true });
+        ctrl.player = player;
+        mutedFirstTap = true;
       }
+    });
+    // Clicking (or double clicking) the video opens it on YouTube. If the browser
+    // forced a muted start, the very first tap turns the sound on instead.
+    let mutedFirstTap = false, lastOpen = 0;
+    if (shield) shield.addEventListener('click', () => {
+      if (mutedFirstTap) { mutedFirstTap = false; try { ctrl.player && ctrl.player.unMute(); } catch (e) {} return; }
+      const now = Date.now();
+      if (now - lastOpen < 1000) return;   // a double click only opens one tab
+      lastOpen = now;
+      window.open('https://www.youtube.com/watch?v=' + ytId, '_blank', 'noopener');
     });
     loadYouTubeAPI(() => ctrl.create(false));
 

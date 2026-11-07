@@ -401,7 +401,8 @@ CSS = """
   .lb-cap{ position:absolute; left:0; right:0; bottom:0; box-sizing:border-box; padding:48px 24px 20px; font-size:18px; line-height:1.4; color:#fff; text-align:center;
     background:linear-gradient(0deg, rgba(0,0,0,.85), transparent); }
   .lb-ask{ position:absolute; right:12px; bottom:12px; z-index:3; font-size:12px; padding:9px 16px; min-height:0; }
-  .lb-x{ position:absolute; top:10px; right:14px; z-index:2; background:none; border:0; color:#fff; font-size:40px; line-height:1; cursor:pointer; padding:6px 12px; }
+  .lb-x{ position:absolute; top:12px; right:14px; z-index:4; width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:var(--lime); border:0; color:#08110a; font-size:34px; font-weight:700; line-height:1; cursor:pointer; padding:0 0 4px; opacity:.5; clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px); }
+  .lb-x:hover,.lb-x:active{ opacity:.9; }
   .lb-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:2; background:rgba(0,0,0,.45); border:0; color:#fff; font-size:44px; line-height:1; cursor:pointer; padding:10px 16px; }
   .lb-prev{ left:6px; } .lb-next{ right:6px; }
   .lb.single .lb-nav{ display:none; }
@@ -654,7 +655,7 @@ CSS = """
   .video-highlight-frame{ position:absolute; inset:0; }
   /* iframe is 70px taller top and bottom, so YouTube's title bar and control bar sit outside the visible window; the 16:9 picture stays exactly in view */
   .video-highlight-frame iframe{ position:absolute; left:0; top:-70px; width:100%; height:calc(100% + 140px); border:0; }
-  .video-shield{ position:absolute; inset:0; z-index:2; }
+  .video-shield{ position:absolute; inset:0; z-index:2; cursor:pointer; }
   .video-pause-overlay{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
     background:rgba(8,10,6,.55); backdrop-filter:blur(6px); }
   .video-pause-overlay[hidden]{ display:none; }
