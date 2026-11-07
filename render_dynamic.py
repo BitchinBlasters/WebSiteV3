@@ -7,6 +7,7 @@ brand cards) into its existing pages, and to write the individual
 build/event detail pages as separate files.
 """
 
+import json
 import re
 import os
 import html
@@ -384,11 +385,16 @@ CATEGORY_WORDS = {  # category -> (default prefill word, default button word)
 }
 
 
+def ask_base_msg(entry):
+    plural, single = CATEGORY_WORDS.get(entry.get("category"), ("Gallery", "post"))
+    about = entry.get("ask_prefill") or plural
+    return f"I have a question about {about}, looking at {entry['title']}"
+
+
 def ask_about_html(entry):
     plural, single = CATEGORY_WORDS.get(entry.get("category"), ("Gallery", "post"))
     word = entry.get("ask_about") or single
-    about = entry.get("ask_prefill") or plural
-    msg = f"I have a question about {about}, looking at {entry['title']}"
+    msg = ask_base_msg(entry)
     href = "../your-build.html?msg=" + urllib.parse.quote(msg) + "#other-enquiries"
     return f'<p style="margin-top:32px;"><a href="{href}" class="btn primary">Ask about this {html.escape(word)}</a></p>'
 
@@ -401,7 +407,7 @@ def cap_img_html(entry, i, nums, extra_class="", hero=False):
     cap_el = f'<figcaption class="cap-text">{cap}</figcaption>' if cap else ""
     cls = f"cap-img {'cap-hero' if hero else 'gallery-item'} {extra_class}".strip()
     inner_img = f'<img src="{src}" alt="{alt}"' + (' class="detail-hero-img"' if hero else ' loading="lazy"') + ">"
-    return (f'<figure class="{cls}" data-full="{src}" data-cap="{cap}">'
+    return (f'<figure class="{cls}" data-full="{src}" data-cap="{cap}" data-num="{nums[i]}">'
             f'<div class="cap-zoom">{inner_img}{cap_el}</div></figure>')
 
 
@@ -415,7 +421,7 @@ def detail_page_body(entry, kw_index, brand_lookup, portfolio=None):
     hero_media = video_block_html(entry, kw_index, portfolio) if entry["youtube"] else (
         cap_img_html(entry, 0, nums, hero=True) if entry["images"] else ""
     )
-    viewer_js = VIEWER_SCRIPT if entry["images"] else ""
+    viewer_js = (("<script>window.BB_ASK=" + json.dumps({"base": ask_base_msg(entry), "url": "../your-build.html"}).replace("</", "<\\/") + ";</script>\n" + VIEWER_SCRIPT) if entry["images"] else "")
 
     kw_buttons = keyword_buttons_html(entry, kw_index)
     brand_section = brand_section_html(entry, kw_index, brand_lookup) if entry.get("category") == "builds" else ""
@@ -480,7 +486,8 @@ VIEWER_SCRIPT = """<script>
   lb.innerHTML = '<button type="button" class="lb-x" aria-label="Close">&times;</button>' +
     '<button type="button" class="lb-nav lb-prev" aria-label="Previous">&lsaquo;</button>' +
     '<button type="button" class="lb-nav lb-next" aria-label="Next">&rsaquo;</button>' +
-    '<figure class="lb-fig"><img alt=""><figcaption class="lb-cap"></figcaption></figure>';
+    '<figure class="lb-fig"><img alt=""><figcaption class="lb-cap"></figcaption>' +
+    '<a class="btn small primary lb-ask" href="#">Ask about this photo</a></figure>';
   document.body.appendChild(lb);
   const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
   let cur = 0;
@@ -489,6 +496,11 @@ VIEWER_SCRIPT = """<script>
     lbImg.src = items[cur].querySelector("img").currentSrc || items[cur].querySelector("img").src;
     lbImg.alt = items[cur].querySelector('img').alt;
     lbCap.textContent = items[cur].dataset.cap || '';
+    const ask = lb.querySelector('.lb-ask');
+    if (window.BB_ASK && ask) {
+      const n = items[cur].dataset.num;
+      ask.href = window.BB_ASK.url + '?msg=' + encodeURIComponent(window.BB_ASK.base + (n ? ', photo ' + n : '')) + '#other-enquiries';
+    }
     lbCap.style.display = items[cur].dataset.cap ? '' : 'none';
   }
   function open(i) {
