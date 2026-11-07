@@ -1607,10 +1607,10 @@ HOME_HERO_FIX_CSS = """
 }
 .hero .hero-poster img{ position:static; inset:auto; width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter:none; }
 @media (max-width:900px){
-  .hero.hero-video{ display:flex; flex-direction:column-reverse; align-items:stretch; min-height:0; }
-  .hero.hero-video .hero-content{ padding:22px 20px 30px; }
+  .hero.hero-video{ display:flex; flex-direction:column; align-items:stretch; min-height:0; }
+  .hero.hero-video .hero-content{ padding:30px 20px 24px; }
   .hero.hero-video .hero-content h1{ font-size:36px; }
-  .hero-poster{ position:relative; top:auto; right:auto; transform:none; width:auto; margin:22px 20px 0; }
+  .hero-poster{ position:relative; top:auto; right:auto; transform:none; width:auto; margin:0 20px 32px; }
 }
 """
 
