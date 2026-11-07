@@ -388,6 +388,7 @@
   .lb-fig img{ display:block; max-width:96vw; max-height:92vh; object-fit:contain; }
   .lb-cap{ position:absolute; left:0; right:0; bottom:0; box-sizing:border-box; padding:48px 24px 20px; font-size:18px; line-height:1.4; color:#fff; text-align:center;
     background:linear-gradient(0deg, rgba(0,0,0,.85), transparent); }
+  .lb-ask{ position:absolute; right:12px; bottom:12px; z-index:3; font-size:12px; padding:9px 16px; min-height:0; }
   .lb-x{ position:absolute; top:10px; right:14px; z-index:2; background:none; border:0; color:#fff; font-size:40px; line-height:1; cursor:pointer; padding:6px 12px; }
   .lb-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:2; background:rgba(0,0,0,.45); border:0; color:#fff; font-size:44px; line-height:1; cursor:pointer; padding:10px 16px; }
   .lb-prev{ left:6px; } .lb-next{ right:6px; }
@@ -396,6 +397,7 @@
     .lb-fig img{ max-height:78vh; }
     .lb-cap{ position:static; padding:12px 16px 4px; font-size:15px; background:none; text-align:left; max-width:96vw; }
     .lb-nav{ font-size:34px; padding:8px 12px; }
+    .lb-ask{ position:relative; right:auto; bottom:auto; align-self:flex-end; margin:8px 16px 0; }
   }
   .gallery-credit{ margin-top:18px; font-size:13px; color:var(--text-dim); }
 
@@ -1062,7 +1064,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 </section>
 <section class="detail-section">
   <div class="wrap">
-    <div class="detail-hero"><figure class="cap-img cap-hero" data-full="User Input/portfolio/VSR HPA Bolt.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt.jpg" alt="VSR HPA Bolt" class="detail-hero-img"></div></figure></div>
+    <div class="detail-hero"><figure class="cap-img cap-hero" data-full="User Input/portfolio/VSR HPA Bolt.jpg" data-cap="" data-num="0"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt.jpg" alt="VSR HPA Bolt" class="detail-hero-img"></div></figure></div>
     <div class="detail-breakdown">
       <p>Here's the first iteration of how I envision an electronically controlled HPA bolt, built for tunability and quietness.<br>It uses a large Wolverine Inferno solenoid, driven by a Bluetooth microcontroller and a prototype coil drive circuit.</p>
       <p>I machined a manifold for the solenoid and air inlet/outlet from solid brass. To minimise the need to modify the blaster itself, I also machined a long solid brass middle section with a well-matched passage size.</p>
@@ -1074,17 +1076,18 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
       <p>Stay tuned, as I'm working on a larger magazine and an adaptor...</p>
     </div>
     <div id="products-used"></div>
-    <div class="gallery-grid" style="margin-top:32px;"><figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 1.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 1.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
-<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 2.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 2.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
-<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 3.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 3.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
-<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 4.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 4.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
-<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 5.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 5.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
-<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 7.jpg" data-cap=""><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 7.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure></div>
+    <div class="gallery-grid" style="margin-top:32px;"><figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 1.jpg" data-cap="" data-num="1"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 1.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 2.jpg" data-cap="" data-num="2"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 2.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 3.jpg" data-cap="" data-num="3"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 3.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 4.jpg" data-cap="" data-num="4"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 4.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 5.jpg" data-cap="" data-num="5"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 5.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure>
+<figure class="cap-img gallery-item" data-full="User Input/portfolio/VSR HPA Bolt 7.jpg" data-cap="" data-num="7"><div class="cap-zoom"><img src="../User Input/portfolio/VSR HPA Bolt 7.jpg" alt="VSR HPA Bolt" loading="lazy"></div></figure></div>
     
     <p style="margin-top:32px;"><a href="../your-build.html?msg=I%20have%20a%20question%20about%20Builds%2C%20looking%20at%20VSR%20HPA%20Bolt#other-enquiries" class="btn primary">Ask about this build</a></p>
     <p style="margin-top:24px;"><a href="../build-gallery.html" class="btn">&larr; Back to Gallery</a></p>
   </div>
 </section>
+<script>window.BB_ASK={"base": "I have a question about Builds, looking at VSR HPA Bolt", "url": "../your-build.html"};</script>
 <script>
 (function(){
   const items = Array.from(document.querySelectorAll('.cap-img'));
@@ -1123,7 +1126,8 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   lb.innerHTML = '<button type="button" class="lb-x" aria-label="Close">&times;</button>' +
     '<button type="button" class="lb-nav lb-prev" aria-label="Previous">&lsaquo;</button>' +
     '<button type="button" class="lb-nav lb-next" aria-label="Next">&rsaquo;</button>' +
-    '<figure class="lb-fig"><img alt=""><figcaption class="lb-cap"></figcaption></figure>';
+    '<figure class="lb-fig"><img alt=""><figcaption class="lb-cap"></figcaption>' +
+    '<a class="btn small primary lb-ask" href="#">Ask about this photo</a></figure>';
   document.body.appendChild(lb);
   const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
   let cur = 0;
@@ -1132,6 +1136,11 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
     lbImg.src = items[cur].querySelector("img").currentSrc || items[cur].querySelector("img").src;
     lbImg.alt = items[cur].querySelector('img').alt;
     lbCap.textContent = items[cur].dataset.cap || '';
+    const ask = lb.querySelector('.lb-ask');
+    if (window.BB_ASK && ask) {
+      const n = items[cur].dataset.num;
+      ask.href = window.BB_ASK.url + '?msg=' + encodeURIComponent(window.BB_ASK.base + (n ? ', photo ' + n : '')) + '#other-enquiries';
+    }
     lbCap.style.display = items[cur].dataset.cap ? '' : 'none';
   }
   function open(i) {
