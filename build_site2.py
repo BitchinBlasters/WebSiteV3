@@ -523,7 +523,17 @@ CSS = """
     .page-banner-content h1{ font-size:28px; line-height:1.1; }
     .page-banner-content p{ margin-top:6px; font-size:14px; line-height:1.4; }
     :root{ --nav-h:auto; }
-    header.nav{ position:relative; z-index:100; }
+    /* Phone: the logo scrolls away, then the button grid locks to the top and the
+       page scrolls under it. --nav-hide (px of banner above the buttons) is set by
+       the script in BASE_SCRIPT. A thin lime line shows on top once it's locked. */
+    header.nav{ position:sticky; top:calc(-1 * var(--nav-hide, 0px)); z-index:100; }
+    header.nav::before{
+      content:''; position:absolute; left:0; right:0; z-index:2; pointer-events:none;
+      top:var(--nav-hide, 0px); height:1.25px; background:var(--lime);
+      opacity:0; transition:opacity .15s ease;
+    }
+    header.nav.nav-stuck::before{ opacity:1; }
+    section[id]{ scroll-margin-top:var(--nav-lock, 0px); }
     .brand-logo{ height:104px; }
     .nav-wrap{ justify-content:center; padding:16px 20px; }
     .brand{ width:100%; justify-content:center; margin-bottom:6px; }
@@ -850,6 +860,39 @@ BASE_SCRIPT = """
   // ---- Mobile nav-tile dropdown: first tap opens, second tap on the same tile navigates ----
   function isMobileNav(){ return window.matchMedia('(max-width: 900px)').matches; }
 
+  // ---- Phone: logo scrolls away, the button grid locks to the top of the screen ----
+  (function(){
+    const header = document.querySelector('header.nav');
+    const tiles = header && header.querySelector('.nav-tiles');
+    if (!header || !tiles) return;
+    const root = document.documentElement;
+    let hide = 0, ticking = false;
+    function update(){
+      ticking = false;
+      header.classList.toggle('nav-stuck', isMobileNav() && hide > 0 && window.scrollY >= hide - 1);
+    }
+    function measure(){
+      if (!isMobileNav()) {
+        hide = 0;
+        root.style.removeProperty('--nav-hide');
+        root.style.removeProperty('--nav-lock');
+        header.classList.remove('nav-stuck');
+        return;
+      }
+      // banner height above the buttons (logo + padding). Leave ~16px between the top line and the
+      // buttons (16 + the 1.25px line = 17), matching the 16px of space below the buttons.
+      hide = Math.max(0, Math.round(tiles.getBoundingClientRect().top - header.getBoundingClientRect().top - 17));
+      root.style.setProperty('--nav-hide', hide + 'px');
+      root.style.setProperty('--nav-lock', Math.round(header.offsetHeight - hide) + 'px');
+      update();
+    }
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, {passive:true});
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    measure();
+  })();
+
   let tilesOpenedAtY = 0;
   function closeAllTiles(){
     document.querySelectorAll('.tile-label.tile-open').forEach(t => t.classList.remove('tile-open'));
@@ -967,16 +1010,88 @@ def choice_grid_script():
   });
 """
 
-def mailto_button_script(btn_id, field_ids, subject_js, var_prefix):
-    field_lines = [f"      {fid.replace('-','_')}: document.getElementById('{fid}').value || 'Not given'" for fid in field_ids]
-    fields_js = ",\n".join(field_lines)
+# Enquiry forms post to the "Website Enquiries" Formspree form. If the send
+# fails (no signal, Formspree down) the visitor is handed to their mail app
+# with the same message, so an enquiry is never lost.
+ENQUIRY_ENDPOINT = "https://formspree.io/f/mljjkezl"
+
+def enquiry_send_helper_script():
+    return f"""
+  // ---- Enquiry sending: Formspree first, mail app as fallback ----
+  const ENQ_ENDPOINT = '{ENQUIRY_ENDPOINT}';
+  const ENQ_MAILTO = '{CONTACT_EMAIL}';
+  function enqStatus(id, text, ok){{
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = text;
+    el.style.display = text ? 'block' : 'none';
+    el.style.color = ok ? 'var(--lime)' : 'var(--text-dim)';
+  }}
+  async function sendEnquiry(opts){{
+    // opts: btn, statusId, honeypotId, type, subject, name, contact, body, fields, onSent
+    const btn = document.getElementById(opts.btn);
+    const hp = document.getElementById(opts.honeypotId);
+    const sentText = 'Request sent - thanks! I will get back to you soon.';
+    if (hp && hp.value) {{ enqStatus(opts.statusId, sentText, true); return; }}
+    if (!opts.contact.trim()) {{
+      enqStatus(opts.statusId, 'Add an email or phone number so I can get back to you.', false);
+      return;
+    }}
+    const original = btn.textContent;
+    btn.disabled = true; btn.textContent = 'Sending...';
+    enqStatus(opts.statusId, '', true);
+    const payload = Object.assign({{}}, opts.fields || {{}}, {{
+      _subject: opts.subject + (opts.name ? ' - ' + opts.name : ''),
+      enquiry_type: opts.type,
+      name: opts.name || 'Not given',
+      contact: opts.contact,
+      message: opts.body
+    }});
+    if (opts.contact.indexOf('@') > 0) payload.email = opts.contact.trim();
+    try {{
+      const res = await fetch(ENQ_ENDPOINT, {{
+        method: 'POST',
+        headers: {{ 'Content-Type': 'application/json', 'Accept': 'application/json' }},
+        body: JSON.stringify(payload)
+      }});
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      enqStatus(opts.statusId, sentText, true);
+      btn.textContent = 'Sent';
+      if (opts.onSent) opts.onSent();
+    }} catch (err) {{
+      enqStatus(opts.statusId, 'Could not send from the site - opening your email app instead.', false);
+      btn.disabled = false; btn.textContent = original;
+      setTimeout(() => {{
+        window.location.href = `mailto:${{ENQ_MAILTO}}?subject=${{encodeURIComponent(opts.subject)}}&body=${{encodeURIComponent(opts.body)}}`;
+      }}, 1200);
+      return;
+    }}
+    setTimeout(() => {{ btn.disabled = false; btn.textContent = original; }}, 4000);
+  }}
+"""
+
+def enquiry_button_script(btn_id, status_id, hp_id, field_ids, subject, enq_type, prefix):
+    # Simple forms: name + contact + free-text fields, sent as labelled lines.
+    field_lines = ",\n".join(
+        f"      '{fid[len(prefix) + 1:]}': document.getElementById('{fid}').value || 'Not given'"
+        for fid in field_ids if fid not in (f"{prefix}-name", f"{prefix}-contact")
+    )
+    clear_ids = ", ".join(f"'{fid}'" for fid in field_ids)
     return f"""
   document.getElementById('{btn_id}').addEventListener('click', () => {{
-    const {var_prefix} = {{
-{fields_js}
+    const fields = {{
+{field_lines}
     }};
-    const body = Object.entries({var_prefix}).map(([k,v]) => k + ': ' + v).join('\\n');
-    window.location.href = `mailto:{CONTACT_EMAIL}?subject=${{encodeURIComponent({subject_js})}}&body=${{encodeURIComponent(body)}}`;
+    const name = document.getElementById('{prefix}-name').value;
+    const contact = document.getElementById('{prefix}-contact').value;
+    const body = ['Name: ' + (name || 'Not given'), 'Contact: ' + (contact || 'Not given')]
+      .concat(Object.entries(fields).map(([k,v]) => k + ': ' + v)).join('\\n');
+    sendEnquiry({{
+      btn: '{btn_id}', statusId: '{status_id}', honeypotId: '{hp_id}',
+      type: '{enq_type}', subject: '{subject}',
+      name: name, contact: contact, body: body, fields: fields,
+      onSent: () => [{clear_ids}].forEach(id => {{ document.getElementById(id).value = ''; }})
+    }});
   }});
 """
 
@@ -1026,8 +1141,11 @@ BTN_ASK_QUESTION = enquiry_link("Questions", "I would like to ask a question", s
 HOME_HERO_IMG, HOME_HERO_CLASS = _hero("Homepage Hero", HERO, default_alignment="top-left")
 CONTENT = parse_content.load_all()
 
-INDEX_BODY = f"""<section class="hero" id="top">
-  <img class="{HOME_HERO_CLASS}" src="{HOME_HERO_IMG}" alt="Custom gel blaster build in a ghillie hood, raised mid-game in the trees">
+# "Who we are" video, opened from the play button in the home hero.
+WHO_VIDEO_ID = "F1fNFg3vxtM"
+WHO_VIDEO_URL = "https://youtu.be/" + WHO_VIDEO_ID
+
+INDEX_BODY = f"""<section class="hero hero-video" id="top">
   <div class="hero-content">
     <span class="kicker">Queensland &middot; Custom builds &amp; upgrades</span>
     <h1>Bitchin' Blasters</h1>
@@ -1037,7 +1155,23 @@ INDEX_BODY = f"""<section class="hero" id="top">
       <a href="build-gallery.html" class="btn">See Work</a>
     </div>
   </div>
+  <div class="hero-poster">
+    <img src="images/hero-video-still.jpg" width="1600" height="906" alt="Me in the trees with a case of custom gel blasters, about to explain who we are">
+    <button type="button" class="hero-play" id="hero-play" aria-label="Play video: who we are" aria-haspopup="dialog">
+      <span class="hp-icon" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="currentColor"/></svg></span>
+      <span class="hp-text">Watch our story</span>
+    </button>
+  </div>
 </section>
+
+<div class="vmodal" id="vmodal" hidden role="dialog" aria-modal="true" aria-label="Who we are video">
+  <div class="vm-backdrop" data-close></div>
+  <div class="vm-inner">
+    <button type="button" class="vm-close" id="vm-close" aria-label="Close video">&times;</button>
+    <div class="vm-frame" id="vm-frame"></div>
+    <a class="vm-yt" href="{WHO_VIDEO_URL}" target="_blank" rel="noopener">Not playing? Watch on YouTube</a>
+  </div>
+</div>
 
 <section>
   <div class="wrap">
@@ -1176,9 +1310,11 @@ YOUR_BUILD_BODY = f"""<section class="page-banner" style="--ph:245px">
       <div class="field"><label for="db-notes">Anything else?</label><textarea id="db-notes" placeholder="Budget, timeframe, whatever's on your mind"></textarea></div>
       <div style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
         <button class="btn primary" id="db-generate">Generate Request</button>
-        <button class="btn" id="db-email" style="display:none;">Email This Request</button>
+        <button class="btn" id="db-email" style="display:none;">Send This Request</button>
         <span class="copy-note" id="db-note" style="font-size:13px; color:var(--lime); opacity:0; transition:opacity .2s;">Ready to send</span>
       </div>
+      <input type="text" id="db-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+      <p id="db-status" role="status" style="display:none; margin:14px 0 0; font-size:14px;"></p>
       <div class="summary-box" id="db-summary" style="display:none; margin-top:22px; border:1px solid var(--line); background:var(--ink); padding:20px; font-size:14px; color:var(--text-dim); white-space:pre-wrap;"></div>
     </div>
   </div>
@@ -1198,7 +1334,9 @@ YOUR_BUILD_BODY = f"""<section class="page-banner" style="--ph:245px">
       </div>
       <div class="field"><label for="lu-current">What have you got?</label><input type="text" id="lu-current" placeholder="Make / model / current setup"></div>
       <div class="field"><label for="lu-message">What do you want improved?</label><textarea id="lu-message" placeholder="Range, sound, looks, reliability..."></textarea></div>
-      <button class="btn primary" id="lu-send">Email This Request</button>
+      <button class="btn primary" id="lu-send">Send Request</button>
+      <input type="text" id="lu-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+      <p id="lu-status" role="status" style="display:none; margin:14px 0 0; font-size:14px;"></p>
     </div>
   </div>
 </section>
@@ -1216,12 +1354,14 @@ YOUR_BUILD_BODY = f"""<section class="page-banner" style="--ph:245px">
         <div class="field"><label for="oe-contact">Email or phone</label><input type="text" id="oe-contact" placeholder="Best way to reach you"></div>
       </div>
       <div class="field"><label for="oe-message">Message</label><textarea id="oe-message" placeholder="What's on your mind"></textarea></div>
-      <button class="btn primary" id="oe-send">Email This Enquiry</button>
+      <button class="btn primary" id="oe-send">Send Enquiry</button>
+      <input type="text" id="oe-hp" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute; left:-9999px; width:1px; height:1px; opacity:0;">
+      <p id="oe-status" role="status" style="display:none; margin:14px 0 0; font-size:14px;"></p>
     </div>
   </div>
 </section>"""
 
-YOUR_BUILD_SCRIPT = choice_grid_script() + """
+YOUR_BUILD_SCRIPT = choice_grid_script() + enquiry_send_helper_script() + """
   // ---- Buttons that lead here start the Other enquiries message with "I would like to ..." ----
   (function(){
     const box = document.getElementById('oe-message');
@@ -1260,10 +1400,25 @@ YOUR_BUILD_SCRIPT = choice_grid_script() + """
     document.getElementById('db-email').style.display = 'inline-flex';
   }});
   document.getElementById('db-email').addEventListener('click', () => {{
-    window.location.href = `mailto:{CONTACT_EMAIL}?subject=${{encodeURIComponent('Dream Build request')}}&body=${{encodeURIComponent(dbSummary)}}`;
+    const role = selected('db-role')[0] || 'Not specified';
+    const priorities = selected('db-priority');
+    const extras = selected('db-extras');
+    sendEnquiry({{
+      btn: 'db-email', statusId: 'db-status', honeypotId: 'db-hp',
+      type: 'Dream build', subject: 'Dream Build request',
+      name: document.getElementById('db-name').value,
+      contact: document.getElementById('db-contact').value,
+      body: dbSummary,
+      fields: {{
+        playstyle: role,
+        priorities: priorities.length ? priorities.join(', ') : 'Not specified',
+        extras: extras.length ? extras.join(', ') : 'None selected',
+        notes: document.getElementById('db-notes').value || 'None'
+      }}
+    }});
   }});
-""" + mailto_button_script("lu-send", ["lu-name", "lu-contact", "lu-current", "lu-message"], "'Level Up My Blaster'", "luData") \
-   + mailto_button_script("oe-send", ["oe-name", "oe-contact", "oe-message"], "'General enquiry'", "oeData")
+""" + enquiry_button_script("lu-send", "lu-status", "lu-hp", ["lu-name", "lu-contact", "lu-current", "lu-message"], "Level Up My Blaster", "Upgrade", "lu") \
+   + enquiry_button_script("oe-send", "oe-status", "oe-hp", ["oe-name", "oe-contact", "oe-message"], "General enquiry", "Other enquiry", "oe")
 
 # ---------------------------------------------------------------------------
 # PAGE CONTENT: 3D PRINTING
@@ -1430,10 +1585,92 @@ TERMS_BODY = f"""<section class="page-banner">
   </div>
 </section>"""
 
-# All hero/banner locations have now been resolved above, so their CSS
-# rule blocks are appended to the shared stylesheet once, here — before
-# any page() call embeds CSS into an actual HTML page.
-CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + signup_form.CSS + "\n" + pics_vids.CSS
+# Home hero: headline on the left, the "who we are" video poster (a still from the
+# video) on the right, with a blurred copy of the still filling the background.
+# Phones stack the poster on top of the text.
+HOME_HERO_FIX_CSS = """
+.hero.hero-video{ align-items:center; min-height:min(82svh, 760px); }
+.hero.hero-video::before{
+  content:""; position:absolute; inset:-60px; z-index:0;
+  background:url('images/hero-video-still.jpg') center / cover no-repeat;
+  filter:blur(34px) brightness(.42) saturate(.9);
+}
+.hero.hero-video::after{ background:linear-gradient(180deg, rgba(8,10,6,0.25) 0%, rgba(8,10,6,0.1) 40%, rgba(8,10,6,0.55) 100%); }
+.hero.hero-video .hero-content{ padding:60px calc(min(46%,700px) + 56px) 60px 24px; max-width:var(--wrap); }
+.hero.hero-video .hero-content h1{ font-size:clamp(40px,5.1vw,76px); max-width:none; }
+.hero.hero-video .hero-content .tagline{ max-width:34ch; }
+.hero-poster{
+  position:absolute; z-index:2; top:50%; transform:translateY(-50%);
+  right:max(24px, calc((100vw - var(--wrap)) / 2 + 24px));
+  width:min(46%,700px); aspect-ratio:16/9; overflow:hidden; background:#000;
+  border:1.5px solid var(--lime); box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.hero .hero-poster img{ position:static; inset:auto; width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter:none; }
+@media (max-width:900px){
+  .hero.hero-video{ display:flex; flex-direction:column-reverse; align-items:stretch; min-height:0; }
+  .hero.hero-video .hero-content{ padding:22px 20px 30px; }
+  .hero.hero-video .hero-content h1{ font-size:36px; }
+  .hero-poster{ position:relative; top:auto; right:auto; transform:none; width:auto; margin:22px 20px 0; }
+}
+"""
+
+# Play button in the home hero + the video player that opens over the page.
+# The YouTube iframe is only created when someone taps play, so it costs nothing on load.
+HERO_PLAY_CSS = """
+.hero-play{
+  position:absolute; right:14px; bottom:14px; z-index:3;
+  display:inline-flex; align-items:center; gap:10px; height:44px; padding:0 18px 0 5px;
+  background:rgba(8,10,6,0.78); border:1.5px solid var(--lime); border-radius:999px;
+  color:var(--text); font:inherit; font-weight:700; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; transition:background .15s ease, transform .15s ease;
+}
+.hero-play:hover{ background:rgba(8,10,6,0.92); transform:translateY(-1px); }
+.hero-play .hp-icon{ width:34px; height:34px; border-radius:50%; background:var(--lime); color:#08110a; display:grid; place-items:center; padding-left:2px; }
+@media (max-width:480px){ .hero-play{ right:10px; bottom:10px; height:40px; font-size:11.5px; padding-right:14px; } .hero-play .hp-icon{ width:30px; height:30px; } }
+.vmodal[hidden]{ display:none; }
+.vmodal{ position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; padding:16px; }
+.vm-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.88); }
+.vm-inner{ position:relative; width:min(1100px, 100%); }
+.vm-frame{ position:relative; aspect-ratio:16 / 9; background:#000; border:1px solid var(--line); }
+.vm-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+.vm-close{ position:absolute; top:-46px; right:0; width:40px; height:40px; background:transparent; border:1px solid var(--lime); color:var(--lime); font-size:26px; line-height:1; cursor:pointer; }
+.vm-yt{ display:block; margin-top:12px; text-align:center; font-size:13px; color:var(--text-dim); text-decoration:underline; }
+"""
+
+HERO_VIDEO_SCRIPT = """
+  // ---- Home hero: play button opens the "who we are" video over the page ----
+  (function(){
+    const openBtn = document.getElementById('hero-play');
+    const modal = document.getElementById('vmodal');
+    if (!openBtn || !modal) return;
+    const frame = document.getElementById('vm-frame');
+    const closeBtn = document.getElementById('vm-close');
+    function openVideo(){
+      const f = document.createElement('iframe');
+      f.src = 'https://www.youtube-nocookie.com/embed/""" + WHO_VIDEO_ID + """?autoplay=1&rel=0&playsinline=1&modestbranding=1';
+      f.title = 'Who we are';
+      f.allow = 'autoplay; encrypted-media; picture-in-picture; fullscreen';
+      f.allowFullscreen = true;
+      f.referrerPolicy = 'strict-origin-when-cross-origin';
+      frame.appendChild(f);
+      modal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      closeBtn.focus();
+    }
+    function closeVideo(){
+      frame.innerHTML = '';
+      modal.hidden = true;
+      document.body.style.overflow = '';
+      openBtn.focus();
+    }
+    openBtn.addEventListener('click', openVideo);
+    closeBtn.addEventListener('click', closeVideo);
+    modal.addEventListener('click', (e) => { if (e.target.hasAttribute('data-close')) closeVideo(); });
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeVideo(); });
+  })();
+"""
+
+CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + HOME_HERO_FIX_CSS + "\n" + HERO_PLAY_CSS + "\n" + signup_form.CSS + "\n" + pics_vids.CSS
 
 # ---------------------------------------------------------------------------
 # WRITE FILES
@@ -1441,7 +1678,7 @@ CSS = CSS + "\n" + "\n".join(_HERO_CSS_BLOCKS) + "\n" + signup_form.CSS + "\n" +
 pages = {
     "index.html": page("Gel Blaster Builds, Repairs, Upgrades, Parts & more",
                         "Gel blaster builds, repairs and upgrades. Parts, advice, news and education. Built to how you play, not how I think you should. Caboolture, Queensland.",
-                        "home", INDEX_BODY, sale_banner.popup_script(SALE)),
+                        "home", INDEX_BODY, sale_banner.popup_script(SALE) + HERO_VIDEO_SCRIPT),
     "who-we-are.html": page("Who We Are — Bitchin' Blasters",
                              "Why we build, our background, and what you can count on with every Bitchin' Blasters build.",
                              "who-we-are", HOW_WE_ARE_BODY),
