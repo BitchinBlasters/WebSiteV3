@@ -389,7 +389,8 @@
   .lb-cap{ position:absolute; left:0; right:0; bottom:0; box-sizing:border-box; padding:48px 24px 20px; font-size:18px; line-height:1.4; color:#fff; text-align:center;
     background:linear-gradient(0deg, rgba(0,0,0,.85), transparent); }
   .lb-ask{ position:absolute; right:12px; bottom:12px; z-index:3; font-size:12px; padding:9px 16px; min-height:0; }
-  .lb-x{ position:absolute; top:10px; right:14px; z-index:2; background:none; border:0; color:#fff; font-size:40px; line-height:1; cursor:pointer; padding:6px 12px; }
+  .lb-x{ position:absolute; top:12px; right:14px; z-index:4; width:48px; height:48px; display:flex; align-items:center; justify-content:center; background:var(--lime); border:0; color:#08110a; font-size:34px; font-weight:700; line-height:1; cursor:pointer; padding:0 0 4px; opacity:.5; clip-path:polygon(10px 0,100% 0,100% calc(100% - 10px),calc(100% - 10px) 100%,0 100%,0 10px); }
+  .lb-x:hover,.lb-x:active{ opacity:.9; }
   .lb-nav{ position:absolute; top:50%; transform:translateY(-50%); z-index:2; background:rgba(0,0,0,.45); border:0; color:#fff; font-size:44px; line-height:1; cursor:pointer; padding:10px 16px; }
   .lb-prev{ left:6px; } .lb-next{ right:6px; }
   .lb.single .lb-nav{ display:none; }
@@ -642,7 +643,7 @@
   .video-highlight-frame{ position:absolute; inset:0; }
   /* iframe is 70px taller top and bottom, so YouTube's title bar and control bar sit outside the visible window; the 16:9 picture stays exactly in view */
   .video-highlight-frame iframe{ position:absolute; left:0; top:-70px; width:100%; height:calc(100% + 140px); border:0; }
-  .video-shield{ position:absolute; inset:0; z-index:2; }
+  .video-shield{ position:absolute; inset:0; z-index:2; cursor:pointer; }
   .video-pause-overlay{ position:absolute; inset:0; z-index:3; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:18px;
     background:rgba(8,10,6,.55); backdrop-filter:blur(6px); }
   .video-pause-overlay[hidden]{ display:none; }
@@ -1104,6 +1105,7 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   // ---- PC hover: grow to 2x from the corner furthest from screen centre, never leaving the screen ----
   if (canHover) {
     items.forEach(el => {
+      if (el.classList.contains('cap-hero')) return;   // the top image does not pop up
       const zoom = el.querySelector('.cap-zoom');
       el.addEventListener('mouseenter', () => {
         const r = el.getBoundingClientRect(), vw = window.innerWidth, vh = window.innerHeight, m = 8;
@@ -1138,6 +1140,13 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
   document.body.appendChild(lb);
   const lbImg = lb.querySelector('img'), lbCap = lb.querySelector('.lb-cap');
   let cur = 0;
+  // Double tap (or double click) the big photo to close it and drop back to the post.
+  let lastTap = 0;
+  lbImg.addEventListener('touchend', e => {
+    const now = Date.now();
+    if (now - lastTap < 350) { e.preventDefault(); lastTap = 0; close(); } else { lastTap = now; }
+  });
+  lbImg.addEventListener('dblclick', () => close());
   function show(i) {
     cur = (i + items.length) % items.length;
     lbImg.src = items[cur].querySelector("img").currentSrc || items[cur].querySelector("img").src;
@@ -1439,8 +1448,19 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
         // allowed) and let the first tap anywhere on the video turn the sound on.
         player.mute();
         player.playVideo();
-        if (shield) shield.addEventListener('click', () => { player.unMute(); }, { once: true });
+        ctrl.player = player;
+        mutedFirstTap = true;
       }
+    });
+    // Clicking (or double clicking) the video opens it on YouTube. If the browser
+    // forced a muted start, the very first tap turns the sound on instead.
+    let mutedFirstTap = false, lastOpen = 0;
+    if (shield) shield.addEventListener('click', () => {
+      if (mutedFirstTap) { mutedFirstTap = false; try { ctrl.player && ctrl.player.unMute(); } catch (e) {} return; }
+      const now = Date.now();
+      if (now - lastOpen < 1000) return;   // a double click only opens one tab
+      lastOpen = now;
+      window.open('https://www.youtube.com/watch?v=' + ytId, '_blank', 'noopener');
     });
     loadYouTubeAPI(() => ctrl.create(false));
 
