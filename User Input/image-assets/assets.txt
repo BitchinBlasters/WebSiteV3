@@ -12,3 +12,18 @@ Scale: 110%
 Alignment: center
 Opacity: 100
 Nudge: 0px 0px
+
+## Tech Tips Hero
+Image: hero-tech-tips.jpg
+
+#Desktop
+Scale: 101%
+Alignment: center
+Opacity: 80
+Nudge: 0px -5px
+
+#Mobile
+Scale: 103%
+Alignment: center
+Opacity: 80
+Nudge: 0px 0px
