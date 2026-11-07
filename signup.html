@@ -511,7 +511,17 @@
     .page-banner-content h1{ font-size:28px; line-height:1.1; }
     .page-banner-content p{ margin-top:6px; font-size:14px; line-height:1.4; }
     :root{ --nav-h:auto; }
-    header.nav{ position:relative; z-index:100; }
+    /* Phone: the logo scrolls away, then the button grid locks to the top and the
+       page scrolls under it. --nav-hide (px of banner above the buttons) is set by
+       the script in BASE_SCRIPT. A thin lime line shows on top once it's locked. */
+    header.nav{ position:sticky; top:calc(-1 * var(--nav-hide, 0px)); z-index:100; }
+    header.nav::before{
+      content:''; position:absolute; left:0; right:0; z-index:2; pointer-events:none;
+      top:var(--nav-hide, 0px); height:1.25px; background:var(--lime);
+      opacity:0; transition:opacity .15s ease;
+    }
+    header.nav.nav-stuck::before{ opacity:1; }
+    section[id]{ scroll-margin-top:var(--nav-lock, 0px); }
     .brand-logo{ height:104px; }
     .nav-wrap{ justify-content:center; padding:16px 20px; }
     .brand{ width:100%; justify-content:center; margin-bottom:6px; }
@@ -740,6 +750,51 @@ img.hero-photo-tech-tips-hero{ object-fit:cover; object-position:center center; 
 img.hero-photo-reviews-hero{ object-fit:cover; object-position:center center; transform-origin:50% 50%; }
 
 img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; transform-origin:50% 50%; }
+
+
+.hero.hero-video{ align-items:center; min-height:min(82svh, 760px); }
+.hero.hero-video::before{
+  content:""; position:absolute; inset:-60px; z-index:0;
+  background:url('images/hero-video-still.jpg') center / cover no-repeat;
+  filter:blur(34px) brightness(.42) saturate(.9);
+}
+.hero.hero-video::after{ background:linear-gradient(180deg, rgba(8,10,6,0.25) 0%, rgba(8,10,6,0.1) 40%, rgba(8,10,6,0.55) 100%); }
+.hero.hero-video .hero-content{ padding:60px calc(min(46%,700px) + 56px) 60px 24px; max-width:var(--wrap); }
+.hero.hero-video .hero-content h1{ font-size:clamp(40px,5.1vw,76px); max-width:none; }
+.hero.hero-video .hero-content .tagline{ max-width:34ch; }
+.hero-poster{
+  position:absolute; z-index:2; top:50%; transform:translateY(-50%);
+  right:max(24px, calc((100vw - var(--wrap)) / 2 + 24px));
+  width:min(46%,700px); aspect-ratio:16/9; overflow:hidden; background:#000;
+  border:1.5px solid var(--lime); box-shadow:0 20px 60px rgba(0,0,0,.6);
+}
+.hero .hero-poster img{ position:static; inset:auto; width:100%; height:100%; object-fit:cover; object-position:center; display:block; filter:none; }
+@media (max-width:900px){
+  .hero.hero-video{ display:flex; flex-direction:column-reverse; align-items:stretch; min-height:0; }
+  .hero.hero-video .hero-content{ padding:22px 20px 30px; }
+  .hero.hero-video .hero-content h1{ font-size:36px; }
+  .hero-poster{ position:relative; top:auto; right:auto; transform:none; width:auto; margin:22px 20px 0; }
+}
+
+
+.hero-play{
+  position:absolute; right:14px; bottom:14px; z-index:3;
+  display:inline-flex; align-items:center; gap:10px; height:44px; padding:0 18px 0 5px;
+  background:rgba(8,10,6,0.78); border:1.5px solid var(--lime); border-radius:999px;
+  color:var(--text); font:inherit; font-weight:700; font-size:12.5px; letter-spacing:.08em; text-transform:uppercase;
+  cursor:pointer; transition:background .15s ease, transform .15s ease;
+}
+.hero-play:hover{ background:rgba(8,10,6,0.92); transform:translateY(-1px); }
+.hero-play .hp-icon{ width:34px; height:34px; border-radius:50%; background:var(--lime); color:#08110a; display:grid; place-items:center; padding-left:2px; }
+@media (max-width:480px){ .hero-play{ right:10px; bottom:10px; height:40px; font-size:11.5px; padding-right:14px; } .hero-play .hp-icon{ width:30px; height:30px; } }
+.vmodal[hidden]{ display:none; }
+.vmodal{ position:fixed; inset:0; z-index:300; display:flex; align-items:center; justify-content:center; padding:16px; }
+.vm-backdrop{ position:absolute; inset:0; background:rgba(0,0,0,0.88); }
+.vm-inner{ position:relative; width:min(1100px, 100%); }
+.vm-frame{ position:relative; aspect-ratio:16 / 9; background:#000; border:1px solid var(--line); }
+.vm-frame iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+.vm-close{ position:absolute; top:-46px; right:0; width:40px; height:40px; background:transparent; border:1px solid var(--lime); color:var(--lime); font-size:26px; line-height:1; cursor:pointer; }
+.vm-yt{ display:block; margin-top:12px; text-align:center; font-size:13px; color:var(--text-dim); text-decoration:underline; }
 
 
   .su-cats{ border:1px solid var(--line); margin:0 0 18px; padding:12px 16px; }
@@ -1069,6 +1124,39 @@ img.hero-photo-brands-hero{ object-fit:cover; object-position:center center; tra
 
   // ---- Mobile nav-tile dropdown: first tap opens, second tap on the same tile navigates ----
   function isMobileNav(){ return window.matchMedia('(max-width: 900px)').matches; }
+
+  // ---- Phone: logo scrolls away, the button grid locks to the top of the screen ----
+  (function(){
+    const header = document.querySelector('header.nav');
+    const tiles = header && header.querySelector('.nav-tiles');
+    if (!header || !tiles) return;
+    const root = document.documentElement;
+    let hide = 0, ticking = false;
+    function update(){
+      ticking = false;
+      header.classList.toggle('nav-stuck', isMobileNav() && hide > 0 && window.scrollY >= hide - 1);
+    }
+    function measure(){
+      if (!isMobileNav()) {
+        hide = 0;
+        root.style.removeProperty('--nav-hide');
+        root.style.removeProperty('--nav-lock');
+        header.classList.remove('nav-stuck');
+        return;
+      }
+      // banner height above the buttons (logo + padding). Leave ~16px between the top line and the
+      // buttons (16 + the 1.25px line = 17), matching the 16px of space below the buttons.
+      hide = Math.max(0, Math.round(tiles.getBoundingClientRect().top - header.getBoundingClientRect().top - 17));
+      root.style.setProperty('--nav-hide', hide + 'px');
+      root.style.setProperty('--nav-lock', Math.round(header.offsetHeight - hide) + 'px');
+      update();
+    }
+    window.addEventListener('scroll', () => { if (!ticking) { ticking = true; requestAnimationFrame(update); } }, {passive:true});
+    window.addEventListener('resize', measure);
+    window.addEventListener('load', measure);
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(measure);
+    measure();
+  })();
 
   let tilesOpenedAtY = 0;
   function closeAllTiles(){
